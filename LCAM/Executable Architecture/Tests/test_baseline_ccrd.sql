@@ -1,20 +1,7 @@
 --setup tests
 BEGIN;
-select plan(9);
-
---this test should fail as verification
-select ok(false);
-
---basic functionality testing at 0c and converting to desired sets.
-select results_eq('select converter.ccrd(1,''¬∞C'',''Air Temperature'',0)',ARRAY[0::real]);
-select results_eq('select converter.ccrd(1,''¬∞C'',''Soil Temperature'',0)',ARRAY[0::real]);
-select results_eq('select converter.ccrd(9,''¬∞C'',''Air Temperature'',0)',ARRAY[32::real]);
-select results_eq('select converter.ccrd(9,''¬∞C'',''Soil Temperature'',0)',ARRAY[32::real]);
-select results_eq('select converter.ccrd(15,''¬∞C'',''Air Temperature'',0)',ARRAY[273.15::real]);
-select results_eq('select converter.ccrd(15,''¬∞C'',''Soil Temperature'',0)',ARRAY[491.67::real]);
 
 --Test on a randomized data set converting to the metric conversion set.
-
 --Build Randomized data set using hardcoded converted value for testing.
 drop table if exists pairtreeTestData;
 create table pairtreeTestData (value real, metric text, uom text, resultsc real, resultsf real);
@@ -49,13 +36,34 @@ begin
     end loop;
 END $$;
 
+select plan(9)
+union all
+
+--this test should fail as verification
+select ok(false)
+union all
+
+--basic functionality testing at 0c and converting to desired sets.
+select results_eq('select converter.ccrd(1,''¬∞C'',''Air Temperature'',0)',ARRAY[0::real])
+union all
+select results_eq('select converter.ccrd(1,''¬∞C'',''Soil Temperature'',0)',ARRAY[0::real])
+union all
+select results_eq('select converter.ccrd(9,''¬∞C'',''Air Temperature'',0)',ARRAY[32::real])
+union all
+select results_eq('select converter.ccrd(9,''¬∞C'',''Soil Temperature'',0)',ARRAY[32::real])
+union all
+select results_eq('select converter.ccrd(15,''¬∞C'',''Air Temperature'',0)',ARRAY[273.15::real])
+union all
+select results_eq('select converter.ccrd(15,''¬∞C'',''Soil Temperature'',0)',ARRAY[491.67::real])
+union all
 --test randomized data.
 select results_eq('select converter.ccrd(1,pairtreeTestData.uom,pairtreeTestData.metric,pairtreeTestData.value) from pairtreeTestData',
-    'select resultsc from pairtreeTestData');
+    'select resultsc from pairtreeTestData')
+union all
 
 select results_eq('select converter.ccrd(9,pairtreeTestData.uom,pairtreeTestData.metric,pairtreeTestData.value) from pairtreeTestData',
-    'select resultsf from pairtreeTestData');
+    'select resultsf from pairtreeTestData')
+union all
 
 select finish();
 rollback;
-

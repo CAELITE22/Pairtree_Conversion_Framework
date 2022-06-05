@@ -1,5 +1,5 @@
 -- # FINAL CCRD Conversion Function
-CREATE OR REPLACE FUNCTION converter.ccrd_final(in_user_id int, in_uom text, in_data_category text, in_value float)
+CREATE OR REPLACE FUNCTION converter.ccrd(in_user_id int, in_uom text, in_data_category text, in_value float)
 RETURNS real
 language plpgsql
 as
