@@ -1,6 +1,9 @@
 --setup tests
 BEGIN;
-select no_plan();
+select plan(9);
+
+--this test should fail as verification
+select ok(false);
 
 --basic functionality testing at 0c and converting to desired sets.
 select results_eq('select converter.ccrd(1,''¬∞C'',''Air Temperature'',0)',ARRAY[0::real]);
@@ -55,3 +58,4 @@ select results_eq('select converter.ccrd(9,pairtreeTestData.uom,pairtreeTestData
 
 select finish();
 rollback;
+
