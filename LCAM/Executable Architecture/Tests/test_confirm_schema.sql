@@ -1,6 +1,9 @@
 --Setup tests
 BEGIN;
-select plan(27);
+select plan(28);
+
+--this test should fail as verification
+select ok(false);
 
 --verifies the schema has been created correctly by script
 select has_schema('converter');
@@ -33,7 +36,7 @@ select columns_are('converter','data_category',ARRAY['id','name','type_id','crea
     'created_by','updated_by','active']);
 select columns_are('converter','permission',ARRAY['id','name']);
 select columns_are('converter','access_rights',ARRAY['id','owner_id','user_id','created','updated',
-    'created_by','updated_by','active']);
+    'created_by','updated_by','active','permission_id']);
 select columns_are('converter','response',ARRAY['id','description']);
 select columns_are('converter','conversion_set',ARRAY['id','name','owner_user_id','created','updated',
     'created_by','updated_by','active']);
@@ -43,7 +46,7 @@ select columns_are('converter','category_to_conversion_set',ARRAY['id','conversi
     'uom_id','created','updated','created_by','updated_by','active']);
 select columns_are('converter','translation_table',ARRAY['id','source_uom_id','source_val','destination_uom_id',
     'destination_val','created','updated','created_by','updated_by','active']);
-select columns_are('converter','conversions_rate',ARRAY['id','uom_id','rate','constant',
+select columns_are('converter','conversion_rate',ARRAY['id','uom_id','rate','constant',
     'created','updated','created_by','updated_by','active']);
 
 --verify required function has been created
