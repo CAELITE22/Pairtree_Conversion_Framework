@@ -18,12 +18,3 @@ begin
       currentrecord := currentrecord + 1;
     end loop;
 END $$;
-
-
-update pairtreeTestData set uom = (
-  case
-  when mod((floor(random()*10)::int),4)=0 then '¬∞K'
-  when mod((floor(random()*10)::int),4)=1 then '¬∞F'
-  when mod((floor(random()*10)::int),4)=2 then '¬∞Ra'
-  else '¬∞C'
-  end);
