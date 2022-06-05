@@ -2,7 +2,7 @@ DROP SCHEMA converter CASCADE;
 CREATE SCHEMA converter;
 CREATE TABLE IF NOT EXISTS converter.data_type(
 id SERIAL,
-NAME TEXT,
+name TEXT,
 translation BOOLEAN,
 created TIMESTAMPTZ,
 updated TIMESTAMPTZ,
@@ -16,7 +16,7 @@ id SERIAL,
 data_type_id INT,
 uom_name TEXT,
 uom_abbreviation TEXT,
-PRECISION INT,
+precision INT,
 upper_boundary REAL,
 lower_boundary REAL,
 upper_uom INT,
@@ -54,7 +54,7 @@ CONSTRAINT fk_default_units_default_uom_id
 
 CREATE TABLE IF NOT EXISTS converter.data_category(
 id SERIAL,
-NAME TEXT,
+name TEXT,
 type_id INT,
 created TIMESTAMPTZ,
 updated TIMESTAMPTZ,
@@ -69,7 +69,7 @@ CONSTRAINT fk_data_category_type_id
 
 CREATE TABLE IF NOT EXISTS converter.permission(
 id SERIAL,
-NAME TEXT,
+name TEXT,
 PRIMARY KEY (id));
 
 CREATE TABLE IF NOT EXISTS converter.access_rights(
@@ -95,7 +95,7 @@ PRIMARY KEY (id));
 
 CREATE TABLE IF NOT EXISTS converter.conversion_set(
 id SERIAL,
-NAME TEXT,
+name TEXT,
 owner_user_id INT,
 created TIMESTAMPTZ,
 updated TIMESTAMPTZ,
@@ -103,7 +103,6 @@ created_by INT,
 updated_by INT,
 active BOOLEAN,
 PRIMARY KEY (id));
-
 
 CREATE TABLE IF NOT EXISTS converter.user_conversion_set(
 id SERIAL,
@@ -149,7 +148,7 @@ id SERIAL,
 source_uom_id INT,
 source_val REAL,
 destination_uom_id INT,
-destionation_val REAL,
+destination_val REAL,
 created TIMESTAMPTZ,
 updated TIMESTAMPTZ,
 created_by INT,
