@@ -1,5 +1,5 @@
 -- #test cases
-select converter.ccrd(1,'¬∞C','Air Temperature',0)
+select converter.ccrd(21,'¬∞C','Air Temperature',0)
 Union All
 select converter.ccrd(1,'¬∞C','Soil Temperature',0)
 Union All
