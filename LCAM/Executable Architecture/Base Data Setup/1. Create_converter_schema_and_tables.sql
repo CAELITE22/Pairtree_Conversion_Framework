@@ -1,4 +1,4 @@
-DROP SCHEMA converter CASCADE;
+DROP SCHEMA if exists converter CASCADE;
 CREATE SCHEMA converter;
 CREATE TABLE IF NOT EXISTS converter.data_type(
 id SERIAL,
