@@ -9,7 +9,8 @@ begin
     WHILE currentrecord <= 1000000 loop
     adjustment = mod((floor(random()*39+1)::int),4);
     insert into pairtreeTestData (value, metric, uom) values (floor(random()*70000)/1000-20,
-      case when mod((floor(random()*10)::int),2)= 0 then'Air Temperature' else 'Soil Temperature' end,
+      case when mod((floor(random()*10)::int),2)= 0 then'Air Temperature'
+          else 'Soil Temperature' end,
       case when adjustment = 0 then '¬∞C'
       when adjustment = 1 then '¬∞F'
       when adjustment = 2 then '¬∞Ra'

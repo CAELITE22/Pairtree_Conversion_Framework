@@ -1,15 +1,21 @@
-insert into converter.data_type (name, translation, created, created_by, updated, updated_by, active)
+insert into converter.data_type (name, translation, created, created_by,
+                                 updated, updated_by, active)
   values ('Temperature', FALSE, now(), -1, now(), -1, TRUE);
 
 insert into converter.uom (data_type_id, uom_name, uom_abbreviation, precision,
     owner_user_id, created, created_by, updated, updated_by, active)
         values
-          ((SELECT ID FROM CONVERTER.data_type where name = 'Temperature'), 'Celsius', '¬∞C', 3, -1, now(), -1, now(), -1, TRUE),
-          ((SELECT ID FROM CONVERTER.data_type where name = 'Temperature'), 'Fahrenheit', '¬∞F', 3, -1, now(), -1, now(), -1, TRUE),
-          ((SELECT ID FROM CONVERTER.data_type where name = 'Temperature'), 'Kelvin', '¬∞K', 3, -1, now(), -1, now(), -1, TRUE),
-          ((SELECT ID FROM CONVERTER.data_type where name = 'Temperature'), 'Rankine', '¬∞Ra', 3, -1, now(), -1, now(), -1, TRUE);
+          ((SELECT ID FROM CONVERTER.data_type where name = 'Temperature'),
+                'Celsius', '¬∞C', 3, -1, now(), -1, now(), -1, TRUE),
+          ((SELECT ID FROM CONVERTER.data_type where name = 'Temperature'),
+                'Fahrenheit', '¬∞F', 3, -1, now(), -1, now(), -1, TRUE),
+          ((SELECT ID FROM CONVERTER.data_type where name = 'Temperature'),
+                'Kelvin', '¬∞K', 3, -1, now(), -1, now(), -1, TRUE),
+          ((SELECT ID FROM CONVERTER.data_type where name = 'Temperature'),
+                'Rankine', '¬∞Ra', 3, -1, now(), -1, now(), -1, TRUE);
 
-insert into converter.default_units (data_type_id, default_uom_id, created, created_by, updated, updated_by, active)
+insert into converter.default_units (data_type_id, default_uom_id, created, created_by,
+                                     updated, updated_by, active)
     values ((SELECT ID FROM CONVERTER.data_type where name = 'Temperature'),
       (SELECT ID FROM CONVERTER.uom where uom_name = 'Kelvin'), now(), -1, now(), -1, TRUE);
 
@@ -38,7 +44,7 @@ insert into converter.user_conversion_set (user_id, conversion_set_id, created, 
       (14, (select id from converter.conversion_set where name = 'Imperial'), now(), -1, now(), -1, TRUE),
       (15, (select id from converter.conversion_set where name = 'Custom'), now(), -1, now(), -1, TRUE);
 
-insert into converter.category_to_conversion_set (conversion_set_id, data_category_id, uom_id, created, created_by, updated, updated_by, active)
+insert into converter.category_to_conversion_set (conversion_set_id, data_category_id, uom_id, created,created_by, updated, updated_by, active)
     values ((select id from converter.conversion_set where name = 'Metric'),
               (select id from converter.data_category where name = 'Soil Temperature'), (select id from converter.uom where uom_name = 'Celsius'),
                 now(), -1, now(), -1, TRUE),
