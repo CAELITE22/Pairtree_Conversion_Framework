@@ -5,7 +5,7 @@
  - add - add a datatype - return text "Datatype X has been created with id: Y"
  - enable - enable/disable a datatype return text "Datatype X has been disabled"
  - update - update a datatype return text "Datatype has been updated from X to Y"
- - search - search for a datatype - return ID if exists, return -1 no not exists
+ - get_id_from_data_type - search for a datatype - return ID if exists, return -1 no not exists
  */
 
 -- Add a new data_type to the converter
@@ -31,7 +31,7 @@ begin
         return concat('Error! There was a problem adding data type" "', data_type_name, '".');
     end if;
 
-    -- return sucessful confirmation
+    -- return successful confirmation
     return concat('Data type: "', data_type_name, '" was added successfully.');
 end
 $$;
@@ -76,7 +76,7 @@ end
 $$;
 
 -- Enable/Disable an existing data type
-CREATE OR REPLACE FUNCTION converter.enable_data_type(in_user_id int, data_type_name text, isEnabled boolean)
+CREATE OR REPLACE FUNCTION converter.set_enabled_data_type(in_user_id int, data_type_name text, isEnabled boolean)
 
 RETURNS text
 language plpgsql
@@ -105,5 +105,37 @@ begin
     end if;
 
     return concat('There was a problem updating data type: "', data_type_name, '".');
+end
+$$;
+
+-- Add a new data_type to the converter
+CREATE OR REPLACE FUNCTION converter.get_id_from_data_type(in_user_id int, data_type_name text)
+
+RETURNS real
+language plpgsql
+as
+$$
+declare
+    outcome int;
+    num_records int;
+begin
+    -- store the number of records for error checking - requires on one query.
+    num_records = (select count(*) from converter.data_type where name = data_type_name);
+
+    -- return the ID
+    if (num_records) = 1 then
+        outcome = (select id from converter.data_type where name = data_type_name);
+        return outcome;
+    end if;
+
+    -- ensure that the requested data_type exists, or return -1 if it doesn't
+    if (num_records) = 0 then
+        return -1;
+    end if;
+
+    -- if there are multiple records containing the same data type, return -2
+    if (num_records) > 1 then
+        return -2;
+    end if;
 end
 $$;
