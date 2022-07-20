@@ -18,6 +18,12 @@ $$
 --declare
 --  outcome text;
 begin
+
+    -- Ensure there are no NULL values
+    if (in_user_id is NULL OR data_type_name is NULL) then
+        return concat('Error! Cannot input <NULL> values.');
+    end if;
+
     -- ensure that the requested data_type does not already exist
     if (select count(*) from converter.data_type where name = data_type_name) > 0 then
         return concat('Error! The data type: "', data_type_name, '" already exists.');
@@ -28,7 +34,7 @@ begin
 
     --check to confirm it was added.
     if (select count(*) from converter.data_type where name = data_type_name) = 0 then
-        return concat('Error! There was a problem adding data type" "', data_type_name, '".');
+        return concat('Error! There was a problem adding data type: "', data_type_name, '".');
     end if;
 
     -- return successful confirmation
@@ -46,6 +52,12 @@ $$
 -- declare
 --     outcome text;
 begin
+
+    -- Ensure there are no NULL values
+    if (in_user_id is NULL OR old_data_type_name is NULL OR new_data_type_name is NULL) then
+        return concat('Error! Cannot input <NULL> values.');
+    end if;
+
     -- Ensure the old name exists
     if (select count(*) from converter.data_type where name = old_data_type_name) = 0 then
         return concat('Error! The data type: "', old_data_type_name, '" does not exist.');
@@ -71,7 +83,7 @@ begin
         end if;
     end if;
 
-    return concat('There was a problem adding data type: "', new_data_type_name, '".');
+    return concat('There was a problem updating data type: "', old_data_type_name, '" to: "', new_data_type_name, '".');
 end
 $$;
 
@@ -83,6 +95,11 @@ language plpgsql
 as
 $$
 begin
+    -- Ensure there are no NULL values
+    if (in_user_id is NULL OR data_type_name is NULL OR isEnabled is NULL) then
+        return concat('Error! Cannot input <NULL> values.');
+    end if;
+
     -- Ensure the old name exists
     if (select count(*) from converter.data_type where name = data_type_name) = 0 then
         return concat('Error! The data type: "', data_type_name, '" does not exist.');
@@ -104,7 +121,7 @@ begin
         end if;
     end if;
 
-    return concat('There was a problem updating data type: "', data_type_name, '".');
+    return concat('Error! There was a problem updating data type: "', data_type_name, '".');
 end
 $$;
 
@@ -119,6 +136,11 @@ declare
     outcome int;
     num_records int;
 begin
+    -- Ensure there are no NULL values
+    if (in_user_id is NULL OR data_type_name is NULL) then
+        return concat('Error! Cannot input <NULL> values.');
+    end if;
+
     -- store the number of records for error checking - requires on one query.
     num_records = (select count(*) from converter.data_type where name = data_type_name);
 
