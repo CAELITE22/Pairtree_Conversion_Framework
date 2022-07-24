@@ -1,5 +1,9 @@
-create or replace function  test_use_case_1(
+set search_path = "converter_tests";
+create or replace function  converter_tests.test_use_case_1(
 ) returns setof text as $$
+    --verify required function has been created
+    select has_function('converter','ccrd',ARRAY['integer','text','text','float'])
+    union all
 
     --basic functionality testing at 0c and converting to desired sets.
     select results_eq('select converter.ccrd(1,''¬∞C'',''Air Temperature'',0)',

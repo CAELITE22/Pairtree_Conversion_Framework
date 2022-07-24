@@ -1,5 +1,5 @@
-
-create or replace function  startup_schema(
+set search_path = "converter_tests";
+create or replace function  converter_tests.startup_schema(
 ) returns setof text as $$
     declare
         currentrecord INT = 1;

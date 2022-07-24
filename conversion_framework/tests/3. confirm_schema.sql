@@ -1,4 +1,5 @@
-create or replace function  test_schema(
+set search_path = "converter_tests";
+create or replace function  converter_tests.test_schema(
 ) returns setof text as $$
 
     --verifies the schema has been created correctly by script
@@ -71,10 +72,7 @@ create or replace function  test_schema(
         'active'])
     union all
     select columns_are('converter','conversion_rate',ARRAY['id','uom_id','rate','constant',
-        'created','updated','created_by','updated_by','active'])
-    union all
+        'created','updated','created_by','updated_by','active']);
 
-    --verify required function has been created
-    select has_function('converter','ccrd',ARRAY['integer','text','text','float']);
 
 $$ language sql;
