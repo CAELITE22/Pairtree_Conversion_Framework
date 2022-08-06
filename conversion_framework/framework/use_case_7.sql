@@ -130,4 +130,235 @@ begin
 
 
 end
+$$;
+
+CREATE OR REPLACE FUNCTION converter.update_uom_data_type(
+    in_user_id int,
+    in_uom_id int,
+    in_data_type_id int
+)
+
+RETURNS text
+language plpgsql
+as
 $$
+-- declare
+--     outcome text;
+begin
+    if(in_user_id is NULL OR in_uom_id is NULL or in_data_type_id is NULL) then
+        return concat('in_user_id, in_uom_id or in_data_type_id cannot be null');
+    end if;
+
+    if(select(*) from converter.uom where id = in_uom_id) = 0 then
+        return concat('uom with id: ' + in_uom_id + ' , does not exist');
+    end if;
+
+    if(select(*) from converter.data_type where id = in_data_type_id) = 0 then
+        return concat('data_type with id: ' + in_data_type_id + ' , does not exist');
+    end if;
+
+    UPDATE converter.uom
+    SET
+        data_type_id = in_data_type_id,
+        updated = now(),
+        updated_by = in_user_id
+    WHERE id = in_uom_id;
+
+    if(select count(*) from converter.uom WHERE id = in_uom_id AND data_type_id = in_data_type_id) then
+        return concat('uom successfully updated');
+    end if;
+
+    return concat('error updating uom');
+end
+$$;
+
+CREATE OR REPLACE FUNCTION converter.update_uom_name(
+    in_user_id int,
+    in_uom_id int,
+    in_uom_name text,
+    in_uom_abbreviation text
+)
+
+RETURNS text
+language plpgsql
+as
+$$
+-- declare
+--     outcome text;
+begin
+
+    if(in_user_id is NULL OR in_uom_id is NULL OR in_uom_name is NULL OR in_uom_abbreviation is NULL) then
+        return concat('in_user_id, in_uom_id, in_uom_name or in_uom_abbreviation cannot be null');
+    end if;
+
+    if(select(*) from converter.uom where id = in_uom_id) = 0 then
+        return concat('uom with id: ' + in_uom_id + ' , does not exist');
+    end if;
+
+    UPDATE converter.uom
+    SET
+        uom_name = in_uom_name,
+        uom_abbreviation = in_uom_abbreviation,
+        updated = now(),
+        updated_by = in_user_id
+    WHERE id = in_uom_id;
+
+    if(select count(*) from converter.uom WHERE id = in_uom_id AND uom_name = in_uom_name AND uom_abbreviation = in_uom_abbreviation) then
+        return concat('uom successfully updated');
+    end if;
+
+    return concat('error updating uom');
+end
+$$;
+
+CREATE OR REPLACE FUNCTION converter.update_uom_precision(
+    in_user_id int,
+    in_uom_id int,
+    in_prec int
+)
+
+RETURNS text
+language plpgsql
+as
+$$
+-- declare
+--     outcome text;
+begin
+    if(in_user_id is NULL OR in_uom_id is NULL or in_prec is NULL) then
+        return concat('in_user_id, in_uom_id or in_prec cannot be null');
+    end if;
+
+    if(select(*) from converter.uom where id = in_uom_id) = 0 then
+        return concat('uom with id: ' + in_uom_id + ' , does not exist');
+    end if;
+
+    UPDATE converter.uom
+    SET
+        precision = in_prec,
+        updated = now(),
+        updated_by = in_user_id
+    WHERE id = in_uom_id;
+
+    if(select count(*) from converter.uom WHERE id = in_uom_id AND precision = in_prec) then
+        return concat('uom successfully updated');
+    end if;
+
+    return concat('error updating uom');
+
+end
+$$;
+
+CREATE OR REPLACE FUNCTION converter.update_uom_lower(
+    in_user_id int,
+    in_uom_id int,
+    in_lower_boundary real,
+    in_lower_uom int
+)
+
+RETURNS text
+language plpgsql
+as
+$$
+-- declare
+--     outcome text;
+begin
+    if(in_user_id is NULL OR in_uom_id is NULL) then
+        return concat('in_user_id or in_uom_id  cannot be null');
+    end if;
+
+    if(select(*) from converter.uom where id = in_uom_id) = 0 then
+        return concat('uom with id: ' + in_uom_id + ' , does not exist');
+    end if;
+
+    UPDATE converter.uom
+    SET
+        lower_boundary = in_lower_boundary,
+        lower_uom = in_lower_uom,
+        updated = now(),
+        updated_by = in_user_id
+    WHERE id = in_uom_id;
+
+    if(select count(*) from converter.uom WHERE id = in_uom_id AND lower_boundary = in_lower_boundary AND lower_uom = in_lower_uom) then
+        return concat('uom successfully updated');
+    end if;
+
+    return concat('error updating uom');
+
+end
+$$;
+
+CREATE OR REPLACE FUNCTION converter.update_uom_upper(
+    in_user_id int,
+    in_uom_id int,
+    in_upper_boundary real,
+    in_upper_uom int
+)
+
+RETURNS text
+language plpgsql
+as
+$$
+-- declare
+--     outcome text;
+begin
+    if(in_user_id is NULL OR in_uom_id is NULL ) then
+        return concat('in_user_id or in_uom_id cannot be null');
+    end if;
+
+    if(select(*) from converter.uom where id = in_uom_id) = 0 then
+        return concat('uom with id: ' + in_uom_id + ' , does not exist');
+    end if;
+
+    UPDATE converter.uom
+    SET
+        upper_boundary = in_upper_boundary,
+        upper_uom = in_upper_uom,
+        updated = now(),
+        updated_by = in_user_id
+    WHERE id = in_uom_id;
+
+    if(select count(*) from converter.uom WHERE id = in_uom_id AND upper_boundary = in_upper_boundary AND upper_uom = in_upper_uom) then
+        return concat('uom successfully updated');
+    end if;
+
+    return concat('error updating uom');
+end
+$$;
+
+CREATE OR REPLACE FUNCTION converter.update_uom_isActive(
+    in_user_id int,
+    in_uom_id int,
+    in_active boolean
+)
+
+RETURNS text
+language plpgsql
+as
+$$
+-- declare
+--     outcome text;
+begin
+
+    if(in_user_id is NULL OR in_uom_id is NULL or in_active is NULL) then
+        return concat('in_user_id, in_uom_id or in_active cannot be null');
+    end if;
+
+    if(select(*) from converter.uom where id = in_uom_id) = 0 then
+        return concat('uom with id: ' + in_uom_id + ' , does not exist');
+    end if;
+
+    UPDATE converter.uom
+    SET
+        active = in_active,
+        updated = now(),
+        updated_by = in_user_id
+    WHERE id = in_uom_id;
+
+    if(select count(*) from converter.uom WHERE id = in_uom_id AND active = in_active) then
+        return concat('uom successfully updated');
+    end if;
+
+    return concat('error updating uom');
+end
+$$;
+
