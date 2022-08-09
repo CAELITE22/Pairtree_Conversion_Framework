@@ -132,7 +132,7 @@ begin
 
     -- check to confirm the data category was updated
     -- Ensure the new type now exists
-    if (select count(*) from converter.data_category where name = data_category_name AND id = new_data_type_id) > 0 then -- check syntax
+    if (select count(*) from converter.data_category where name = data_category_name AND type_id = new_data_type_id) > 0 then -- check syntax
         return concat('Data category: "', data_category_name, '" was successfully updated to use data type: "', new_data_type_id, '".');
     end if;
 
@@ -220,7 +220,7 @@ end
 $$;
 
 -- check if a data_category exists in an active conversion set - used before disabling
-CREATE OR REPLACE FUNCTION converter.isDependency(in_user_id int, data_category_id int)
+CREATE OR REPLACE FUNCTION converter.is_data_category_dependency(in_user_id int, data_category_id int)
 
 RETURNS text -- todo what do we want this to return?
 language plpgsql
