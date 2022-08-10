@@ -149,11 +149,11 @@ begin
         return concat('in_user_id, in_uom_id or in_data_type_id cannot be null');
     end if;
 
-    if(select(*) from converter.uom where id = in_uom_id) = 0 then
+    if(select * from converter.uom where id = in_uom_id) = 0 then
         return concat('uom with id: ' + in_uom_id + ' , does not exist');
     end if;
 
-    if(select(*) from converter.data_type where id = in_data_type_id) = 0 then
+    if(select * from converter.data_type where id = in_data_type_id) = 0 then
         return concat('data_type with id: ' + in_data_type_id + ' , does not exist');
     end if;
 
@@ -191,7 +191,7 @@ begin
         return concat('in_user_id, in_uom_id, in_uom_name or in_uom_abbreviation cannot be null');
     end if;
 
-    if(select(*) from converter.uom where id = in_uom_id) = 0 then
+    if(select * from converter.uom where id = in_uom_id) = 0 then
         return concat('uom with id: ' + in_uom_id + ' , does not exist');
     end if;
 
@@ -228,7 +228,7 @@ begin
         return concat('in_user_id, in_uom_id or in_prec cannot be null');
     end if;
 
-    if(select(*) from converter.uom where id = in_uom_id) = 0 then
+    if(select * from converter.uom where id = in_uom_id) = 0 then
         return concat('uom with id: ' + in_uom_id + ' , does not exist');
     end if;
 
@@ -266,7 +266,7 @@ begin
         return concat('in_user_id or in_uom_id  cannot be null');
     end if;
 
-    if(select(*) from converter.uom where id = in_uom_id) = 0 then
+    if(select * from converter.uom where id = in_uom_id) = 0 then
         return concat('uom with id: ' + in_uom_id + ' , does not exist');
     end if;
 
@@ -305,7 +305,7 @@ begin
         return concat('in_user_id or in_uom_id cannot be null');
     end if;
 
-    if(select(*) from converter.uom where id = in_uom_id) = 0 then
+    if(select * from converter.uom where id = in_uom_id) = 0 then
         return concat('uom with id: ' + in_uom_id + ' , does not exist');
     end if;
 
@@ -343,7 +343,7 @@ begin
         return concat('in_user_id, in_uom_id or in_active cannot be null');
     end if;
 
-    if(select(*) from converter.uom where id = in_uom_id) = 0 then
+    if(select * from converter.uom where id = in_uom_id) = 0 then
         return concat('uom with id: ' + in_uom_id + ' , does not exist');
     end if;
 
