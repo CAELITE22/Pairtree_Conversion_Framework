@@ -325,7 +325,7 @@ begin
 end
 $$;
 
-CREATE OR REPLACE FUNCTION converter.update_uom_isActive(
+CREATE OR REPLACE FUNCTION converter.update_uom_is_active(
     in_user_id int,
     in_uom_id int,
     in_active boolean
