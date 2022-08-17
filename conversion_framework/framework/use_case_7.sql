@@ -3,7 +3,7 @@
 /*
  activity list:
  add - add a UOM - return new UOM id if added, if error return -1
- delete - delete a datatype by id + delete a datatype by name - if succesful return text "datatype X has been deleted else return descript error,
+ delete - delete a datatype by id , delete a datatype by name - if succesful return text "datatype X has been deleted else return descript error,
  "data type X does not exist"
  update - update a UOM with defined ID, or name, with the passed parameters
 
@@ -149,12 +149,12 @@ begin
         return concat('in_user_id, in_uom_id or in_data_type_id cannot be null');
     end if;
 
-    if(select * from converter.uom where id = in_uom_id) = 0 then
-        return concat('uom with id: ' + in_uom_id + ' , does not exist');
+    if(select count(*) from converter.uom where id = in_uom_id) = 0 then
+        return concat('uom with id: ' , in_uom_id , ' , does not exist');
     end if;
 
-    if(select * from converter.data_type where id = in_data_type_id) = 0 then
-        return concat('data_type with id: ' + in_data_type_id + ' , does not exist');
+    if(select count(*) from converter.data_type where id = in_data_type_id) = 0 then
+        return concat('data_type with id: ' , in_data_type_id , ' , does not exist');
     end if;
 
     UPDATE converter.uom
@@ -191,8 +191,8 @@ begin
         return concat('in_user_id, in_uom_id, in_uom_name or in_uom_abbreviation cannot be null');
     end if;
 
-    if(select * from converter.uom where id = in_uom_id) = 0 then
-        return concat('uom with id: ' + in_uom_id + ' , does not exist');
+    if(select count(*) from converter.uom where id = in_uom_id) = 0 then
+        return concat('uom with id: ' , in_uom_id , ' , does not exist');
     end if;
 
     UPDATE converter.uom
@@ -228,8 +228,8 @@ begin
         return concat('in_user_id, in_uom_id or in_prec cannot be null');
     end if;
 
-    if(select * from converter.uom where id = in_uom_id) = 0 then
-        return concat('uom with id: ' + in_uom_id + ' , does not exist');
+    if(select count(*) from converter.uom where id = in_uom_id) = 0 then
+        return concat('uom with id: ' , in_uom_id , ' , does not exist');
     end if;
 
     UPDATE converter.uom
@@ -266,8 +266,8 @@ begin
         return concat('in_user_id or in_uom_id  cannot be null');
     end if;
 
-    if(select * from converter.uom where id = in_uom_id) = 0 then
-        return concat('uom with id: ' + in_uom_id + ' , does not exist');
+    if(select count(*) from converter.uom where id = in_uom_id) = 0 then
+        return concat('uom with id: ' , in_uom_id , ' , does not exist');
     end if;
 
     UPDATE converter.uom
@@ -305,8 +305,8 @@ begin
         return concat('in_user_id or in_uom_id cannot be null');
     end if;
 
-    if(select * from converter.uom where id = in_uom_id) = 0 then
-        return concat('uom with id: ' + in_uom_id + ' , does not exist');
+    if(select count(*) from converter.uom where id = in_uom_id) = 0 then
+        return concat('uom with id: ' , in_uom_id , ' , does not exist');
     end if;
 
     UPDATE converter.uom
@@ -343,8 +343,8 @@ begin
         return concat('in_user_id, in_uom_id or in_active cannot be null');
     end if;
 
-    if(select * from converter.uom where id = in_uom_id) = 0 then
-        return concat('uom with id: ' + in_uom_id + ' , does not exist');
+    if(select count(*) from converter.uom where id = in_uom_id) = 0 then
+        return concat('uom with id: ' , in_uom_id , ' , does not exist');
     end if;
 
     UPDATE converter.uom
