@@ -125,7 +125,7 @@ begin
 end
 $$;
 
--- Add a new data_type to the converter
+-- Get the id from a data_type
 CREATE OR REPLACE FUNCTION converter.get_id_from_data_type(in_user_id int, data_type_name text)
 
 RETURNS real
