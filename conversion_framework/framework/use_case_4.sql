@@ -39,5 +39,5 @@ BEGIN
     end if;
     
     return concat('There was an error setting the conversion set');
-end;
+end
 $$
