@@ -1,6 +1,6 @@
-create schema converter_tests;
+create schema if not exists converter_tests;
 
-set search_path = "kris.converter_tests";
+set search_path = "converter_tests";
 create or replace function  converter_tests.test_usecase_9 (
 ) returns setof text as $$
 --verify functions have been created.
@@ -24,13 +24,13 @@ create or replace function  converter_tests.test_usecase_9 (
     union all
     select results_eq('select count(*) from converter.data_category where name is NULL ',ARRAY[0 :: BIGINT],'\NULL VALUE NOT added')
     union all
-    select results_eq('select converter.add_data_category(1, ''testcase'')','select ''Error! The data category: "testcase" already exists.''','add_data_category failure duplicate')
+    select results_eq('select converter.add_data_category(1, ''testcase'',1)','select ''Error! The data category: "testcase" already exists.''','add_data_category failure duplicate')
     union all
     select results_eq('select count(*) from converter.data_category where name = ''testcase'' and type_id = 1',ARRAY[1 :: BIGINT],'Confirmed duplicate entry not added' )
     union all
 
 --Check update sub case. Current add value is testcase plus values existing in the database
-    select results_eq('select converter.update_data_category_data_type(1,''testcase'', 2)','select ''Data category: "testcase" was successfully updated to use data type: "2".','testcase updated to data_type: 2')
+    select results_eq('select converter.update_data_category_data_type(1,''testcase'', 2)','select ''Data category: "testcase" was successfully updated to use data type: "2".''','testcase updated to data_type: 2')
     union all
     select results_eq('select count(*) from converter.data_category where name = ''testcase'' and type_id = 2',ARRAY[1 :: BIGINT],'Confirmed testcase is using datatype 2' )
     union all
@@ -52,7 +52,7 @@ create or replace function  converter_tests.test_usecase_9 (
     union all
     select results_eq('select converter.update_data_category_data_type(1,''testcase'',NULL)','select ''Error! Cannot input <NULL> values.''','\NULL Value Error Caught')
     union all
-    select results_eq('select count(*) from converter.data_category where name = "testcase" and type_id is NULL ',ARRAY[0 :: BIGINT],'\NULL VALUE NOT added during update')
+    select results_eq('select count(*) from converter.data_category where name = ''testcase'' and type_id is NULL ',ARRAY[0 :: BIGINT],'\NULL VALUE NOT added during update')
     union all
 
 --Check enable/disable sub case
