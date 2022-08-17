@@ -57,7 +57,7 @@ begin
     -- ensure that the requested source_conversion_set_name exists and get the source_id
     source_id = (converter.get_conversion_set_id_from_name(in_user_id, source_conversion_set_name));
     if (source_id = (-1)) then
-        return concat('Error! The source Conversion set: "', source_conversion_set_name, '" does not exists.');
+        return concat('Error! The source conversion set: "', source_conversion_set_name, '" does not exist.');
     end if;
 
     -- create the new conversion_set
@@ -67,7 +67,7 @@ begin
     --check to confirm destination_conversion_set was added
     destination_id = (converter.get_conversion_set_id_from_name(in_user_id, destination_conversion_set_name));
     if (destination_id = (-1)) then
-        return concat('Error! The destination Conversion set: "', destination_conversion_set_name, '" does not exists.');
+        return concat('Error! The destination Conversion set: "', destination_conversion_set_name, '" does not exist.');
     end if;
 
     -- cloning the category to conversion set relationships from the source_conversion_set to the destination_conversion_set
@@ -90,8 +90,8 @@ $$
 declare
   outcome int;
 begin
-    if (select count(*) from converter.conversion_set where name = conversion_set_name and active = 1) = 1 then
-        outcome = (select id from converter.conversion_set where name = conversion_set_name and active = 1);
+    if (select count(*) from converter.conversion_set where name = conversion_set_name and active = true) = 1 then
+        outcome = (select id from converter.conversion_set where name = conversion_set_name and active = true);
         return outcome;
     end if;
 
