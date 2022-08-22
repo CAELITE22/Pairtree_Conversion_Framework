@@ -16,11 +16,11 @@ begin
     end if;
 
     if ((select count(id) from converter.uom where id = out_uom) = 0) then
-            RAISE EXCEPTION SQLSTATE 'CF008' USING MESSAGE = 'Error! The specified OUT_UOM ID does not exist.';
+            RAISE EXCEPTION SQLSTATE 'CF008' USING MESSAGE = 'Error! The supplied OUT_UOM ID does not exist.';
     end if;
 
     if ((select count(id) from converter.uom where id = in_uom) = 0) then
-            RAISE EXCEPTION SQLSTATE 'CF005' USING MESSAGE = 'Error! The specified IN_UOM ID does not exist.';
+            RAISE EXCEPTION SQLSTATE 'CF005' USING MESSAGE = 'Error! The supplied IN_UOM ID does not exist.';
     end if;
 
     if ((select data_type_id from converter.uom where id = in_uom) <> (select data_type_id from converter.uom where id = out_uom)) then
