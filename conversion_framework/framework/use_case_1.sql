@@ -34,7 +34,7 @@ begin
     end if;
 
     if ((select count(id) from converter.uom where id = in_uom) = 0) then
-            RAISE EXCEPTION SQLSTATE 'CF005' USING MESSAGE = 'Error! The supplied UOM ID is not found in the UOM list.';
+            RAISE EXCEPTION SQLSTATE 'CF005' USING MESSAGE = 'Error! The supplied IN_UOM ID is not found in the UOM list.';
     end if;
 
     if ((select data_type_id from converter.uom where id = in_uom) <> (select data_type_id from converter.uom where id = out_uom_id)) then
