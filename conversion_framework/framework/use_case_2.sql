@@ -12,15 +12,15 @@ declare
     converted_value real;
 begin
     -- Ensure there are no NULL values
-    if (in_user_id is NULL OR in_uom is NULL OR in_data_category is NULL OR in_value is NULL) then
+    if (in_user_id is NULL OR in_uom is NULL OR in_data_category is NULL OR in_value is NULL OR in_conversion_set is NULL) then
         RAISE EXCEPTION SQLSTATE 'CF001' USING MESSAGE = 'Error! Cannot input <NULL> values.';
     end if;
 
-    if (select count(id) from converter.conversion_set where id = in_conversion_set = 0) then
+    if ((select count(id) from converter.conversion_set where id = in_conversion_set) = 0) then
             RAISE EXCEPTION SQLSTATE 'CF007' USING MESSAGE = 'Error! The specified conversion set ID does not exist.';
     end if;
 
-    if (select count(id) from converter.data_category where id = in_data_category = 0) then
+    if ((select count(id) from converter.data_category where id = in_data_category) = 0) then
             RAISE EXCEPTION SQLSTATE 'CF003' USING MESSAGE = 'Error! The specified data_category ID does not exist.';
     end if;
 
@@ -30,18 +30,17 @@ begin
         RAISE EXCEPTION SQLSTATE 'CF004' USING MESSAGE = 'Error! The UOM for this data category is not set in the conversion set.';
     end if;
 
-    in_uom_id = (select id from converter.uom where uom_abbreviation = in_uom);
-    if (in_uom_id is null) then
-        RAISE EXCEPTION SQLSTATE 'CF005' USING MESSAGE = 'Error! The supplied UOM is not found in the UOM list.';
+    if ((select count(id) from converter.uom where id = in_uom) = 0) then
+            RAISE EXCEPTION SQLSTATE 'CF005' USING MESSAGE = 'Error! The specified IN_UOM ID does not exist.';
     end if;
 
-    if ((select data_type_id from converter.uom where id = in_uom_id) <> (select data_type_id from converter.uom where id = out_uom_id)) then
+    if ((select data_type_id from converter.uom where id = in_uom) <> (select data_type_id from converter.uom where id = out_uom_id)) then
         RAISE EXCEPTION SQLSTATE 'CF006' USING MESSAGE = 'Error! The origin and destination UOMs are not of the same data type.';
     end if;
 
-    if in_uom_id <> out_uom_id then
+    if in_uom <> out_uom_id then
         select rate, constant into in_values from converter.conversion_rate
-            where uom_id = in_uom_id;
+            where uom_id = in_uom;
         select rate, constant into out_values from converter.conversion_rate
             where uom_id = out_uom_id;
         in_precision := precision from converter.uom where id = out_uom_id;
