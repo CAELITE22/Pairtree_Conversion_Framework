@@ -43,6 +43,12 @@ create or replace function converter_tests.test_use_case_6(
     select results_eq('select converter.update_default_conversion_set_category_uom(1, ''use_case_6_test_dc'', ''use_case_6_test_uom'')', 'select ''Conversion set was updated successfully''', 'functions works correctly')
     union all
 
-    select results_eq('update_target_conversion_set_category(1, ''failed_cs_name'', ''failed_dc_name'', ''failed_uom_name'')', '','')
+    select results_eq('update_target_conversion_set_category(1, ''failed_cs_name'', ''failed_dc_name'', NULL)', 'select ''Error! Cannot input <NULL> values.''','Does not accept null values')
+    union all
+    select results_eq('update_target_conversion_set_category(1, ''failed_cs_name'', NULL, ''failed_uom_name'')', 'select ''Error! Cannot input <NULL> values.''','Does not accept null values')
+    union all
+    select results_eq('update_target_conversion_set_category(1, NULL, ''failed_dc_name'', ''failed_uom_name'')', 'select ''Error! Cannot input <NULL> values.''','Does not accept null values')
+    union all
+    select results_eq('update_target_conversion_set_category(NULL, ''failed_cs_name'', ''failed_dc_name'', ''failed_uom_name'')', 'select ''Error! Cannot input <NULL> values.''','Does not accept null values')
 
 $$ language sql;
