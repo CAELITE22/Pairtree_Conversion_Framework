@@ -17,11 +17,11 @@ begin
     end if;
 
     if ((select count(id) from converter.conversion_set where id = in_conversion_set) = 0) then
-            RAISE EXCEPTION SQLSTATE 'CF007' USING MESSAGE = 'Error! The specified conversion set ID does not exist.';
+            RAISE EXCEPTION SQLSTATE 'CF007' USING MESSAGE = 'Error! The supplied conversion set ID does not exist.';
     end if;
 
     if ((select count(id) from converter.data_category where id = in_data_category) = 0) then
-            RAISE EXCEPTION SQLSTATE 'CF003' USING MESSAGE = 'Error! The specified data_category ID does not exist.';
+            RAISE EXCEPTION SQLSTATE 'CF003' USING MESSAGE = 'Error! The supplied data_category ID does not exist.';
     end if;
 
     out_uom_id = (select uom_id from converter.category_to_conversion_set
@@ -31,7 +31,7 @@ begin
     end if;
 
     if ((select count(id) from converter.uom where id = in_uom) = 0) then
-            RAISE EXCEPTION SQLSTATE 'CF005' USING MESSAGE = 'Error! The specified IN_UOM ID does not exist.';
+            RAISE EXCEPTION SQLSTATE 'CF005' USING MESSAGE = 'Error! The supplied IN_UOM ID does not exist.';
     end if;
 
     if ((select data_type_id from converter.uom where id = in_uom) <> (select data_type_id from converter.uom where id = out_uom_id)) then

@@ -24,7 +24,7 @@ begin
     end if;
 
     if ((select count(id) from converter.data_category where id = in_data_category) = 0) then
-            RAISE EXCEPTION SQLSTATE 'CF003' USING MESSAGE = 'Error! The specified data_category ID does not exist.';
+            RAISE EXCEPTION SQLSTATE 'CF003' USING MESSAGE = 'Error! The supplied data_category ID does not exist.';
     end if;
 
     out_uom_id = (select uom_id from converter.category_to_conversion_set
