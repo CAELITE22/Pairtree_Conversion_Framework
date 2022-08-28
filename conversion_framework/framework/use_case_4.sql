@@ -13,7 +13,7 @@ declare
 BEGIN
     conversion_set_name = (select name from converter.conversion_set where id = in_cs_id)::text;
     if (in_cs_id is null or in_user_id is null) then
-        return concat('conversion set or user ID can''t be NULL');
+        return concat('conversion set or user ID can not be NULL');
     end if;
     
     if (in_cs_id not in (select id from converter.conversion_set)) then
