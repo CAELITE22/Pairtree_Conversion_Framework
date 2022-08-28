@@ -33,8 +33,8 @@ begin
         return concat('Error! The data category: "', data_category_name, '" already exists.');
     end if;
 
-    -- Ensure that the request data_category exists
-    if (select count(*) from converter.data_category where id = data_type_id) = 0 then
+    -- Ensure that the request data_type exists
+    if (select count(*) from converter.data_type where id = data_type_id) = 0 then
         return concat('Error! The data type association "', data_type_id, '" does not exist.');
     end if;
 
