@@ -1,12 +1,21 @@
 set search_path = "converter_tests";
-create or replace function converter_tests.test_usecase_6(
+create or replace function converter_tests.test_use_case_6_update_default_conversion_set_category_uom(
 
 ) returns setof text as $$
+
 -- verify functions have been created
-    select has_function('converter', 'update_default_conversion_set_category_uom', ARRAY['integer', 'text', 'text'])
+    select has_function('converter', 'update_default_conversion_set_category_uom', ARRAY['integer', 'integer', 'integer'])
     union all
-    select has_function('converter', 'update_target_conversion_set_category', ARRAY['integer', 'text', 'text', 'text'])
+    select ok((select converter.update_default_conversion_set_category_uom(-1,(select converter.get_data_category_id_from(-1,'Air Temperature')), (select converter.get_uom_id_from_abbreviation(-1,'°C')))),'UOM updated OK - Unit Test 1')
     union all
+
+
+
+    -- test error states
+    select throws_ok ('select converter.convert_by_uom(null,2,2,2)', 'CF001', (select error_description from converter.response where error_code = 'CF001')::text,
+    'User ID cannot be null - Unit Test 7')
+    union all
+
 
     select results_eq('select converter.update_default_conversion_set_category_uom(NULL, ''test_case'', ''test_case'')', 'select ''Error! Cannot input <NULL> values.''', 'will not accept null user id')
     union all
@@ -54,6 +63,17 @@ create or replace function converter_tests.test_usecase_6(
     select converter.add_conversion_set(1, 'use_case_6_conversion_set')
     union all
     select results_eq('select converter.update_target_conversion_set_category(1, ''use_case_6_conversion_set'', ''use_case_6_test_dc'', ''use_case_6_test_uom'')', 'select ''Conversion set was updated successfully.''', 'updates correctly')
+
+
+$$ language sql;
+
+set search_path = "converter_tests";
+create or replace function converter_tests.test_use_case_6_update_default_conversion_set_category_uom(
+
+) returns setof text as $$
+-- verify functions have been created
+    select has_function('converter', 'update_target_conversion_set_category', ARRAY['integer', 'text', 'text', 'text'])
+    union all
 
 
 $$ language sql;
