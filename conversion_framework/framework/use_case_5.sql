@@ -1,14 +1,13 @@
 -- Add a new empty conversion_set to the converter
 CREATE OR REPLACE FUNCTION converter.add_conversion_set(in_user_id int, conversion_set_name text)
 
-RETURNS text
+RETURNS int
 language plpgsql
 as
 $$
 --declare
 --  outcome text;
 begin
-
     -- Ensure there are no NULL values
     if (in_user_id is NULL OR conversion_set_name is NULL) then
         return concat('Error! Cannot input <NULL> values.');
