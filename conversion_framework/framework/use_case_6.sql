@@ -1,7 +1,8 @@
 -- Add a new empty conversion_set to the converter
+
 CREATE OR REPLACE FUNCTION converter.update_default_conversion_set_category_uom(in_user_id int, in_data_category_name text, in_uom_name text)
 
-RETURNS text
+RETURNS bool
 language plpgsql
 as
 $$
@@ -14,25 +15,25 @@ begin
 
     -- Ensure there are no NULL values
     if (in_user_id is NULL OR in_data_category_name is NULL or in_uom_name is NULL) then
-        return concat('Error! Cannot input <NULL> values.');
+        raise exception sqlstate 'CF001' using message = 'Error! Cannot input <NULL> values.';
     end if;
 
     -- ensure that the requested data_category exists
     lu_data_category_id = (select id from converter.data_category where name = in_data_category_name);
-    if (lu_data_category_id = -1) then
-        return concat('Error! The specified data category does not exist.');
+    if (lu_data_category_id is null) then
+        raise exception sqlstate 'CF014' using message = 'Error! The supplied in_data_category_name does not exist.';
     end if;
 
     -- ensure that the requested uom exists
     lu_uom_id = (select id from converter.uom where uom_name = in_uom_name);
-    if (lu_uom_id = -1) then
-        return concat('Error! The specified uom does not exist.');
+    if (lu_uom_id is null) then
+        raise exception sqlstate 'CF009' using message = 'Error! The supplied in_uom_name does not exist.';
     end if;
 
     -- ensure that the requested conversion set exists
     lu_user_conversion_set_id = (select conversion_set_id from converter.user_conversion_set ucs where ucs.user_id = in_user_id and ucs.active = true);
-    if (lu_user_conversion_set_id = -1) then
-        return concat('Error! The specified user does not have a default conversion set.');
+    if (lu_user_conversion_set_id is null) then
+        raise exception sqlstate 'CF002' using message = 'Error! User does not have a default conversion set.';
     end if;
 
         -- update or create the category_uom record
@@ -53,20 +54,19 @@ begin
                 and ctcs.data_category_id = lu_data_category_id
                 and ctcs.uom_id = lu_uom_id) = 0
         then
-        return concat('Error! There was a problem updating the conversion set.');
+        raise exception sqlstate 'CF000' using message = 'Error! An unknown error occurred while performing this action.';
     end if;
 
     -- return successful confirmation
-    return concat('Conversion set was updated successfully.');
+    return true;
 end
 $$;
-
 
 -- Add a new empty conversion_set to the converter
 CREATE OR REPLACE FUNCTION converter.update_target_conversion_set_category(in_user_id int, in_conversion_set_name text,
                                     in_data_category_name text, in_uom_name text)
 
-RETURNS text
+RETURNS bool
 language plpgsql
 as
 $$
@@ -79,25 +79,25 @@ begin
 
     -- Ensure there are no NULL values
     if (in_user_id is NULL OR in_data_category_name is NULL or in_uom_name is NULL) then
-        return concat('Error! Cannot input <NULL> values.');
+        raise exception sqlstate 'CF001' using message = 'Error! Cannot input <NULL> values.';
     end if;
 
     -- ensure that the requested data_category exists
     lu_data_category_id = (select id from converter.data_category where name = in_data_category_name);
-    if (lu_data_category_id = -1) then
-        return concat('Error! The specified data category does not exist.');
+    if (lu_data_category_id is null) then
+        raise exception sqlstate 'CF014' using message = 'Error! The supplied in_data_category_name does not exist.';
     end if;
 
     -- ensure that the requested uom exists
     lu_uom_id = (select id from converter.uom where uom_name = in_uom_name);
-    if (lu_uom_id = -1) then
-        return concat('Error! The specified uom does not exist.');
+    if (lu_uom_id is null) then
+        raise exception sqlstate 'CF009' using message = 'Error! The supplied in_uom_name does not exist.';
     end if;
 
     -- ensure that the requested conversion set exists
     lu_conversion_set_id = (select id from converter.conversion_set  where name = in_conversion_set_name and active = true);
-    if (lu_conversion_set_id = -1) then
-        return concat('Error! The specified user does not have a default conversion set.');
+    if (lu_conversion_set_id is null) then
+        raise exception sqlstate 'CF013' using message = 'Error! The supplied in_conversion_set_name does not exist.';
     end if;
 
     -- update or create the category_uom record
@@ -118,10 +118,10 @@ begin
                 and ctcs.data_category_id = lu_data_category_id
                 and ctcs.uom_id = lu_uom_id) = 0
         then
-        return concat('Error! There was a problem updating the conversion set.');
+        raise exception sqlstate 'CF000' using message = 'Error! An unknown error occurred while performing this action.';
     end if;
 
     -- return successful confirmation
-    return concat('Conversion set was updated successfully.');
+    return true;
 end
 $$;
