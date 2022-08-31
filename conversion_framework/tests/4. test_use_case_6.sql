@@ -1,5 +1,5 @@
 set search_path = "converter_tests";
-create or replace function converter_tests.test_use_case_6(
+create or replace function converter_tests.test_usecase_6(
 
 ) returns setof text as $$
 -- verify functions have been created

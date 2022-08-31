@@ -362,3 +362,54 @@ begin
 end
 $$;
 
+CREATE OR REPLACE FUNCTION converter.get_uom_id_from_name(
+    in_user_id int,
+    in_uom_name text
+)
+
+RETURNS int
+language plpgsql
+as
+$$
+declare
+    uom_id int;
+begin
+
+    if(in_user_id is NULL OR in_uom_name is NULL) then
+        RAISE EXCEPTION SQLSTATE 'CF001' USING MESSAGE = 'Error! Cannot input <NULL> values.';
+    end if;
+
+    uom_id = (select id from converter.uom where uom_name = in_uom_name);
+    if uom_id is null then
+        RAISE EXCEPTION SQLSTATE 'CF009' USING MESSAGE = 'Error! The supplied in_uom_name name does not exist.';
+    end if;
+
+    return uom_id;
+end
+$$;
+
+CREATE OR REPLACE FUNCTION converter.get_uom_id_from_abbreviation(
+    in_user_id int,
+    in_uom_abbr text
+)
+
+RETURNS int
+language plpgsql
+as
+$$
+declare
+    uom_id int;
+begin
+
+    if(in_user_id is NULL OR in_uom_abbr is NULL) then
+        RAISE EXCEPTION SQLSTATE 'CF001' USING MESSAGE = 'Error! Cannot input <NULL> values.';
+    end if;
+
+    uom_id = (select id from converter.uom where uom_abbreviation = in_uom_abbr);
+    if uom_id is null then
+        RAISE EXCEPTION SQLSTATE 'CF010' USING MESSAGE = 'Error! The supplied in_uom_abbr name does not exist.';
+    end if;
+
+    return uom_id;
+end
+$$;

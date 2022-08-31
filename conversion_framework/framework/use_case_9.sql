@@ -181,11 +181,10 @@ begin
 end
 $$;
 
-
 -- get the id from a data_category
-CREATE OR REPLACE FUNCTION converter.get_id_from_data_category(in_user_id int, data_category_name text)
+CREATE OR REPLACE FUNCTION converter.get_data_category_id_from(in_user_id int, data_category_name text)
 
-RETURNS real
+RETURNS int
 language plpgsql
 as
 $$
