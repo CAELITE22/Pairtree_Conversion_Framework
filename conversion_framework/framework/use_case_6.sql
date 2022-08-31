@@ -15,25 +15,25 @@ begin
 
     -- Ensure there are no NULL values
     if (in_user_id is NULL OR in_data_category_name is NULL or in_uom_name is NULL) then
-        raise exception sqlstate 'CF001' using message = 'Error! Cannot input <NULL> values.';
+        RAISE EXCEPTION SQLSTATE 'CF001' USING MESSAGE = (select error_description from converter.response where error_code = 'CF001');
     end if;
 
     -- ensure that the requested data_category exists
     lu_data_category_id = (select id from converter.data_category where name = in_data_category_name);
     if (lu_data_category_id is null) then
-        raise exception sqlstate 'CF014' using message = 'Error! The supplied in_data_category_name does not exist.';
+        RAISE EXCEPTION SQLSTATE 'CF014' USING MESSAGE = (select error_description from converter.response where error_code = 'CF014');
     end if;
 
     -- ensure that the requested uom exists
     lu_uom_id = (select id from converter.uom where uom_name = in_uom_name);
     if (lu_uom_id is null) then
-        raise exception sqlstate 'CF009' using message = 'Error! The supplied in_uom_name does not exist.';
+        RAISE EXCEPTION SQLSTATE 'CF009' USING MESSAGE = (select error_description from converter.response where error_code = 'CF009');
     end if;
 
     -- ensure that the requested conversion set exists
     lu_user_conversion_set_id = (select conversion_set_id from converter.user_conversion_set ucs where ucs.user_id = in_user_id and ucs.active = true);
     if (lu_user_conversion_set_id is null) then
-        raise exception sqlstate 'CF002' using message = 'Error! User does not have a default conversion set.';
+        RAISE EXCEPTION SQLSTATE 'CF002' USING MESSAGE = (select error_description from converter.response where error_code = 'CF002');
     end if;
 
         -- update or create the category_uom record
@@ -54,7 +54,7 @@ begin
                 and ctcs.data_category_id = lu_data_category_id
                 and ctcs.uom_id = lu_uom_id) = 0
         then
-        raise exception sqlstate 'CF000' using message = 'Error! An unknown error occurred while performing this action.';
+        raise exception sqlstate 'CF000' USING MESSAGE = (select error_description from converter.response where error_code = 'CF000');
     end if;
 
     -- return successful confirmation
@@ -79,25 +79,25 @@ begin
 
     -- Ensure there are no NULL values
     if (in_user_id is NULL OR in_data_category_name is NULL or in_uom_name is NULL) then
-        raise exception sqlstate 'CF001' using message = 'Error! Cannot input <NULL> values.';
+        RAISE EXCEPTION SQLSTATE 'CF001' USING MESSAGE = (select error_description from converter.response where error_code = 'CF001');
     end if;
 
     -- ensure that the requested data_category exists
     lu_data_category_id = (select id from converter.data_category where name = in_data_category_name);
     if (lu_data_category_id is null) then
-        raise exception sqlstate 'CF014' using message = 'Error! The supplied in_data_category_name does not exist.';
+        RAISE EXCEPTION SQLSTATE 'CF014' USING MESSAGE = (select error_description from converter.response where error_code = 'CF014');
     end if;
 
     -- ensure that the requested uom exists
     lu_uom_id = (select id from converter.uom where uom_name = in_uom_name);
     if (lu_uom_id is null) then
-        raise exception sqlstate 'CF009' using message = 'Error! The supplied in_uom_name does not exist.';
+        RAISE EXCEPTION SQLSTATE 'CF009' USING MESSAGE = (select error_description from converter.response where error_code = 'CF009');
     end if;
 
     -- ensure that the requested conversion set exists
     lu_conversion_set_id = (select id from converter.conversion_set  where name = in_conversion_set_name and active = true);
     if (lu_conversion_set_id is null) then
-        raise exception sqlstate 'CF013' using message = 'Error! The supplied in_conversion_set_name does not exist.';
+        RAISE EXCEPTION SQLSTATE 'CF013' USING MESSAGE = (select error_description from converter.response where error_code = 'CF013');
     end if;
 
     -- update or create the category_uom record
@@ -118,7 +118,7 @@ begin
                 and ctcs.data_category_id = lu_data_category_id
                 and ctcs.uom_id = lu_uom_id) = 0
         then
-        raise exception sqlstate 'CF000' using message = 'Error! An unknown error occurred while performing this action.';
+        RAISE EXCEPTION SQLSTATE 'CF000' USING MESSAGE = (select error_description from converter.response where error_code = 'CF000');
     end if;
 
     -- return successful confirmation

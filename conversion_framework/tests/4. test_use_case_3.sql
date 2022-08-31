@@ -30,13 +30,13 @@ create or replace function  converter_tests.test_usecase_3(
         'User ID cannot be null - Unit Test 7')
     union all
     select throws_ok ('select converter.convert_by_uom(-1,null,2,2)', 'CF001', (select error_description from converter.response where error_code = 'CF001')::text,
-        'User ID cannot be null - Unit Test 8')
+        'Source UOM ID cannot be null - Unit Test 8')
     union all
     select throws_ok ('select converter.convert_by_uom(-1,2,null,2)', 'CF001', (select error_description from converter.response where error_code = 'CF001')::text,
-        'User ID cannot be null - Unit Test 9')
+        'Destination UOM ID cannot be null - Unit Test 9')
     union all
     select throws_ok ('select converter.convert_by_uom(-1,2,2,null)', 'CF001', (select error_description from converter.response where error_code = 'CF001')::text,
-        'User ID cannot be null - Unit Test 10')
+        'Value cannot be null - Unit Test 10')
     union all
     select throws_ok ('select converter.convert_by_uom(-1,(select converter.get_uom_id_from_abbreviation(-1,''°C'')),-1,0)', 'CF008', (select error_description from converter.response where error_code = 'CF008')::text,
         'Out UOM ID does not exist - Unit Test 11')

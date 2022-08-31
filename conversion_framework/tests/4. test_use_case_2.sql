@@ -33,13 +33,13 @@ create or replace function  converter_tests.test_usecase_2(
         'User ID cannot be null - Unit Test 7')
     union all
     select throws_ok ('select converter.convert_by_conversion_set(-4,null,2,2,2)', 'CF001', (select error_description from converter.response where error_code = 'CF001')::text,
-        'UOM cannot be null - Unit Test 8')
+        'Conversion Set ID cannot be null - Unit Test 8')
     union all
     select throws_ok ('select converter.convert_by_conversion_set(-4,1,null,2,2)', 'CF001', (select error_description from converter.response where error_code = 'CF001')::text,
-        'Data Category cannot be null - Unit Test 9')
+        'UOM ID cannot be null - Unit Test 9')
     union all
     select throws_ok ('select converter.convert_by_conversion_set(-4,1,2,null,2)', 'CF001', (select error_description from converter.response where error_code = 'CF001')::text,
-        'Data Category cannot be null - Unit Test 10')
+        'Data Category ID cannot be null - Unit Test 10')
     union all
     select throws_ok ('select converter.convert_by_conversion_set(-4,2,2,2,null)', 'CF001', (select error_description from converter.response where error_code = 'CF001')::text,
         'Value cannot be null - Unit Test 11')
