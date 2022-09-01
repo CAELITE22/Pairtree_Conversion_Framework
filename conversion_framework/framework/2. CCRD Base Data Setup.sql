@@ -28,21 +28,21 @@
 --     ('Imperial', -1, now(), -1, now(), -1, TRUE),
 --     ('Custom', -1, now(), -1, now(), -1, TRUE);
 
-insert into converter.user_conversion_set (user_id, conversion_set_id, created, created_by, updated, updated_by, active)
-    values (1, (select id from converter.conversion_set where name = 'Metric'), now(), -1, now(), -1, TRUE),
-      (2, (select id from converter.conversion_set where name = 'Metric'), now(), -1, now(), -1, TRUE),
-      (3, (select id from converter.conversion_set where name = 'Metric'), now(), -1, now(), -1, TRUE),
-      (4, (select id from converter.conversion_set where name = 'Metric'), now(), -1, now(), -1, TRUE),
-      (5, (select id from converter.conversion_set where name = 'Metric'), now(), -1, now(), -1, TRUE),
-      (6, (select id from converter.conversion_set where name = 'Metric'), now(), -1, now(), -1, TRUE),
-      (7, (select id from converter.conversion_set where name = 'Metric'), now(), -1, now(), -1, TRUE),
-      (8, (select id from converter.conversion_set where name = 'Metric'), now(), -1, now(), -1, TRUE),
-      (9, (select id from converter.conversion_set where name = 'Imperial'), now(), -1, now(), -1, TRUE),
-      (11, (select id from converter.conversion_set where name = 'Imperial'), now(), -1, now(), -1, TRUE),
-      (12, (select id from converter.conversion_set where name = 'Imperial'), now(), -1, now(), -1, TRUE),
-      (13, (select id from converter.conversion_set where name = 'Imperial'), now(), -1, now(), -1, TRUE),
-      (14, (select id from converter.conversion_set where name = 'Imperial'), now(), -1, now(), -1, TRUE),
-      (15, (select id from converter.conversion_set where name = 'Custom'), now(), -1, now(), -1, TRUE);
+-- insert into converter.user_conversion_set (user_id, conversion_set_id, created, created_by, updated, updated_by, active)
+--     values (1, (select id from converter.conversion_set where name = 'Metric'), now(), -1, now(), -1, TRUE),
+--       (2, (select id from converter.conversion_set where name = 'Metric'), now(), -1, now(), -1, TRUE),
+--       (3, (select id from converter.conversion_set where name = 'Metric'), now(), -1, now(), -1, TRUE),
+--       (4, (select id from converter.conversion_set where name = 'Metric'), now(), -1, now(), -1, TRUE),
+--       (5, (select id from converter.conversion_set where name = 'Metric'), now(), -1, now(), -1, TRUE),
+--       (6, (select id from converter.conversion_set where name = 'Metric'), now(), -1, now(), -1, TRUE),
+--       (7, (select id from converter.conversion_set where name = 'Metric'), now(), -1, now(), -1, TRUE),
+--       (8, (select id from converter.conversion_set where name = 'Metric'), now(), -1, now(), -1, TRUE),
+--       (9, (select id from converter.conversion_set where name = 'Imperial'), now(), -1, now(), -1, TRUE),
+--       (11, (select id from converter.conversion_set where name = 'Imperial'), now(), -1, now(), -1, TRUE),
+--       (12, (select id from converter.conversion_set where name = 'Imperial'), now(), -1, now(), -1, TRUE),
+--       (13, (select id from converter.conversion_set where name = 'Imperial'), now(), -1, now(), -1, TRUE),
+--       (14, (select id from converter.conversion_set where name = 'Imperial'), now(), -1, now(), -1, TRUE),
+--       (15, (select id from converter.conversion_set where name = 'Custom'), now(), -1, now(), -1, TRUE);
 
 -- insert into converter.category_to_conversion_set (conversion_set_id, data_category_id, uom_id, created,created_by, updated, updated_by, active)
 --     values ((select id from converter.conversion_set where name = 'Metric'),

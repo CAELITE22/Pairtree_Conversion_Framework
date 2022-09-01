@@ -1,5 +1,7 @@
 create schema if not exists converter_tests;
 
+drop function converter_tests.test_usecase_9;
+
 set search_path = "converter_tests";
 create or replace function  converter_tests.test_usecase_9 (
 ) returns setof text as $$
@@ -12,7 +14,7 @@ create or replace function  converter_tests.test_usecase_9 (
     union all
     select has_function('converter','set_enabled_data_category',ARRAY['integer','text','boolean'])
     union all
-    select has_function('converter','get_id_from_data_category',ARRAY['integer','text'])
+    select has_function('converter','get_data_category_id_from',ARRAY['integer','text'])
     union all
 
 --Check Add sub case
@@ -77,8 +79,8 @@ create or replace function  converter_tests.test_usecase_9 (
 
 --check the datatype getter
 
-    select results_eq('select converter.get_id_from_data_category(1,''testcase'')::INT','select id from converter.data_category where name = ''testcase''','ID retrieved.')
+    select results_eq('select converter.get_data_category_id_from(1,''testcase'')::INT','select id from converter.data_category where name = ''testcase''','ID retrieved.')
     union all
-    select results_eq('select converter.get_id_from_data_category(1,''testcase23'')::INT',ARRAY[-1],'ID does not exist')
+    select results_eq('select converter.get_data_category_id_from(1,''testcase23'')::INT',ARRAY[-1],'ID does not exist')
 ;
     $$ language sql;

@@ -1,7 +1,9 @@
 set search_path = "converter_tests";
 create or replace function  converter_tests.test_schema(
 ) returns setof text as $$
-
+    -- label testing
+    select '# # # Testing Schema Build and Structure # # #'
+    union all
     --verifies the schema has been created correctly by script
     select has_schema('converter')
     union all
@@ -10,8 +12,6 @@ create or replace function  converter_tests.test_schema(
     select has_table('converter'::name,'data_type'::name)
     union all
     select has_table('converter'::name,'uom'::name)
-    union all
-    select has_table('converter'::name,'default_units'::name)
     union all
     select has_table('converter'::name,'data_category'::name)
     union all
@@ -31,7 +31,7 @@ create or replace function  converter_tests.test_schema(
     union all
     select has_table('converter'::name,'conversion_rate'::name)
     union all
-    select tables_are('converter'::name, ARRAY['data_type','uom','default_units','data_category',
+    select tables_are('converter'::name, ARRAY['data_type','uom','data_category',
         'permission','response','conversion_set','translation_table','conversion_rate',
         'access_rights','category_to_conversion_set','user_conversion_set'])
     union all
@@ -43,10 +43,6 @@ create or replace function  converter_tests.test_schema(
         'precision','upper_boundary','lower_boundary','upper_uom','lower_uom','owner_user_id',
         'created','updated','created_by','updated_by','active'])
     union all
-    select columns_are('converter','default_units',ARRAY['id','data_type_id','default_uom_id',
-        'created','updated','created_by','updated_by','active'])
-
-    union all
     select columns_are('converter','data_category',ARRAY['id','name','type_id','created',
         'updated','created_by','updated_by','active'])
 
@@ -56,7 +52,7 @@ create or replace function  converter_tests.test_schema(
     select columns_are('converter','access_rights',ARRAY['id','owner_id','user_id','created',
         'updated','created_by','updated_by','active','permission_id'])
     union all
-    select columns_are('converter','response',ARRAY['id','description'])
+    select columns_are('converter','response',ARRAY['id','error_code','error_description'])
     union all
     select columns_are('converter','conversion_set',ARRAY['id','name','owner_user_id','created',
         'updated','created_by','updated_by','active'])

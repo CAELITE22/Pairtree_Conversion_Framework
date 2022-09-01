@@ -1,12 +1,14 @@
 set search_path = "converter_tests";
-
 create or replace function converter_tests.test_use_case_5_add_conversion_set(
 ) returns setof text as $$
--- check if all functions exist
+    -- label testing
+    select '# # # Testing Use Case 5 - Add Conversion Set # # #'
+    union all
+    -- check if all functions exist
     select has_function('converter', 'add_conversion_set', ARRAY['integer', 'text'])
     union all
 
--- test add_conversion_set
+    -- test add_conversion_set
 
     select isa_ok((select converter.add_conversion_set(-1, 'TestConversionSet')),
        'integer', 'Conversion set was successfully created - Unit Test 1')
@@ -23,7 +25,10 @@ $$ language sql;
 
 create or replace function converter_tests.test_use_case_5_clone_conversion_set(
 ) returns setof text as $$
--- check if all functions exist
+    -- label testing
+    select '# # # Testing Use Case 5 - Clone Conversion Set # # #'
+    union all
+    -- check if all functions exist
     select has_function('converter', 'clone_conversion_set', ARRAY['integer', 'text', 'text'])
     union all
     select isa_ok((select converter.clone_conversion_set(-1, 'Metric','TestConversionSet')),
@@ -47,13 +52,19 @@ $$ language sql;
 
 set search_path = "converter_tests";
 
-create or replace function converter_tests.test_usecase_5_add_conversion_set(
+create or replace function converter_tests.test_usecase_5_get_conversion_set_id_from_name(
 ) returns setof text as $$
+    -- label testing
+    select '# # # Testing Use Case 5 - Clone Conversion Set # # #'
+    union all
+    --confirm function exists
     select has_function('converter', 'get_conversion_set_id_from_name', ARRAY['integer', 'text'])
     union all
+    --test operation
     select isa_ok((select converter.get_conversion_set_id_from_name(-1, 'Metric')),
        'integer', 'Conversion set was successfully cloned - Unit Test 1')
     union all
+    --test error states
     select throws_ok ('select converter.add_conversion_set(null,''Metric'')', 'CF001', (select error_description from converter.response where error_code = 'CF001')::text,
         'User ID cannot be null - Unit Test 2')
     union all

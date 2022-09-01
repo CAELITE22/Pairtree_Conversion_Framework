@@ -1,4 +1,5 @@
 set search_path = "converter_tests";
+drop function converter_tests.test_usecase_7;
 create or replace function  converter_tests.test_usecase_7(
 ) returns setof text as $$
 -- setup for test.

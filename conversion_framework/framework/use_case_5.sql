@@ -14,7 +14,7 @@ begin
     end if;
 
     -- ensure that the requested conversion_set_name does not already exist
-    if (select count(*) from converter.conversion_set where name = conversion_set_name) > 0 then
+    if (select count(*) from converter.conversion_set where lower(name) = lower(conversion_set_name)) > 0 then
         RAISE EXCEPTION SQLSTATE 'CF011' USING MESSAGE = (select error_description from converter.response where error_code = 'CF011');
     end if;
     -- create the new conversion_set
@@ -22,7 +22,7 @@ begin
             values (conversion_set_name, now(), in_user_id, now(), in_user_id, in_user_id, true);
 
     --check to confirm it was added.
-    conversion_set_id = (select id from converter.conversion_set where name = conversion_set_name);
+    conversion_set_id = (select id from converter.conversion_set where lower(name) = lower(conversion_set_name));
     if (conversion_set_id is null) then
         RAISE EXCEPTION SQLSTATE 'CF000' USING MESSAGE = (select error_description from converter.response where error_code = 'CF000');
     end if;
@@ -50,7 +50,7 @@ begin
     end if;
 
     -- ensure that the requested new_conversion_set_name does not already exist
-    if (select count(*) from converter.conversion_set where name = destination_conversion_set_name) > 0 then
+    if (select count(*) from converter.conversion_set where lower(name) = lower(destination_conversion_set_name)) > 0 then
         RAISE EXCEPTION SQLSTATE 'CF011' USING MESSAGE = (select error_description from converter.response where error_code = 'CF011');
     end if;
 
@@ -95,7 +95,7 @@ begin
         RAISE EXCEPTION SQLSTATE 'CF001' USING MESSAGE = (select error_description from converter.response where error_code = 'CF001');
     end if;
 
-    outcome = (select id from converter.conversion_set where name = conversion_set_name and active = true);
+    outcome = (select id from converter.conversion_set where lower(name) = lower(conversion_set_name) and active = true);
     if (outcome is null) then
         RAISE EXCEPTION SQLSTATE 'CF012' USING MESSAGE = (select error_description from converter.response where error_code = 'CF012');
     end if;

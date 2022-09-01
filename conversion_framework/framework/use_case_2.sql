@@ -12,8 +12,12 @@ declare
     out_precision integer;
     converted_value real;
 begin
-    -- Ensure there are no NULL values
-    if (in_user_id is NULL OR in_uom_id is NULL OR in_data_category_id is NULL OR in_value is NULL OR in_conversion_set_id is NULL) then
+    -- check for null value input
+    if (in_value is NULL) then
+        return null;
+    end if;
+    -- Ensure there are no other NULL values
+    if (in_user_id is NULL OR in_uom_id is NULL OR in_data_category_id is NULL OR in_conversion_set_id is NULL) then
         RAISE EXCEPTION SQLSTATE 'CF001' USING MESSAGE = (select error_description from converter.response where error_code = 'CF001');
     end if;
 

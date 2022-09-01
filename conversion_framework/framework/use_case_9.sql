@@ -180,9 +180,8 @@ begin
     return concat('Error! There was a problem updating data category: "', data_category_name, '".');
 end
 $$;
-
 -- get the id from a data_category
-CREATE OR REPLACE FUNCTION converter.get_data_category_id_from(in_user_id int, data_category_name text)
+CREATE OR REPLACE FUNCTION converter.get_data_category_id_from_name(in_user_id int, data_category_name text)
 
 RETURNS int
 language plpgsql
