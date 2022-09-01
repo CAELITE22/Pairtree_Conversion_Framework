@@ -16,12 +16,12 @@ begin
     end if;
 
     -- ensure that the requested data_category exists
-    if ((select id from converter.data_category where id = in_data_category_id)is null) then
+    if ((select id from converter.data_category where id = in_data_category_id) is null) then
         RAISE EXCEPTION SQLSTATE 'CF014' USING MESSAGE = (select error_description from converter.response where error_code = 'CF014');
     end if;
 
     -- ensure that the requested uom exists
-    if ((select id from converter.uom where id = in_uom_id)is null) then
+    if ((select id from converter.uom where id = in_uom_id) is null) then
         RAISE EXCEPTION SQLSTATE 'CF009' USING MESSAGE = (select error_description from converter.response where error_code = 'CF009');
     end if;
 
@@ -70,7 +70,7 @@ $$
 begin
 
     -- Ensure there are no NULL values
-    if (in_user_id is NULL OR in_data_category_id is NULL or in_uom_id is NULL) then
+    if (in_user_id is NULL OR in_conversion_set_id is null OR in_data_category_id is NULL or in_uom_id is NULL) then
         RAISE EXCEPTION SQLSTATE 'CF001' USING MESSAGE = (select error_description from converter.response where error_code = 'CF001');
     end if;
 
