@@ -52,7 +52,7 @@ $$ language sql;
 
 set search_path = "converter_tests";
 
-create or replace function converter_tests.test_usecase_5_get_conversion_set_id_from_name(
+create or replace function converter_tests.test_use_case_5_get_conversion_set_id_from_name(
 ) returns setof text as $$
     -- label testing
     select '# # # Testing Use Case 5 - Clone Conversion Set # # #'

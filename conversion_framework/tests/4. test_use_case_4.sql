@@ -1,5 +1,5 @@
 set search_path = "converter_tests";
-create or replace function converter_tests.test_use_case_4(
+create or replace function converter_tests.test_use_case_4_set_user_conversion_set(
 ) returns setof text as $$
     -- label testing
     select '# # # Testing Use Case 4 - Set users conversion set # # #'
@@ -31,4 +31,23 @@ create or replace function converter_tests.test_use_case_4(
     union all
     select throws_ok ('select converter.set_user_conversion_set(-1,-5)', 'CF007', (select error_description from converter.response where error_code = 'CF007')::text,
         'Conversion Set ID cannot be found - Unit Test 5')
+$$ language sql;
+
+create or replace function converter_tests.test_use_case_4_get_user_conversion_set_id(
+) returns setof text as $$
+    -- label testing
+    select '# # # Testing Use Case 4 - Set users conversion set # # #'
+    union all
+    --verify required function has been created
+    select has_function('converter', 'get_user_conversion_set_id', ARRAY['integer'])
+    union all
+    --verify function
+    select ok((select converter.get_user_conversion_set_id(-1) = 1),'Confirm happy path - Unit Test 1a')
+    union all
+    -- test error states
+    select throws_ok ('select converter.get_user_conversion_set_id(null)', 'CF001', (select error_description from converter.response where error_code = 'CF001')::text,
+        'User ID cannot be null - Unit Test 2')
+    union all
+    select throws_ok ('select converter.set_user_conversion_set(-5)', 'CF002', (select error_description from converter.response where error_code = 'CF001')::text,
+        'Conversion Set ID cannot be null - Unit Test 3')
 $$ language sql;

@@ -1,5 +1,5 @@
 set search_path = "converter_tests";
-create or replace function  converter_tests.test_use_case_1(
+create or replace function  converter_tests.test_use_case_1_convert(
 ) returns setof text as $$
     --data setup
     INSERT INTO converter.data_category (id,name, type_id, created, updated, created_by, updated_by, active)

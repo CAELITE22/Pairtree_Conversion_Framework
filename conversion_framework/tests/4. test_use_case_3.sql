@@ -1,5 +1,5 @@
 set search_path = "converter_tests";
-create or replace function  converter_tests.test_use_case_3(
+create or replace function  converter_tests.test_use_case_3_convert_by_uom(
 ) returns setof text as $$
     -- label testing
     select '# # # Testing Use Case 3 - Convert using source and destination UOM # # #'

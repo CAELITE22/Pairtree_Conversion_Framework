@@ -1,5 +1,4 @@
--- Add a new empty conversion_set to the converter
-
+-- Updates a category UOM in the users default conversion set
 CREATE OR REPLACE FUNCTION converter.update_default_conversion_set_category_uom(in_user_id int, in_data_category_id int, in_uom_id int)
 
 RETURNS bool
@@ -57,8 +56,8 @@ begin
 end
 $$;
 
--- Add a new empty conversion_set to the converter
-CREATE OR REPLACE FUNCTION converter.update_target_conversion_set_category(in_user_id int, in_conversion_set_id int,
+-- Updates a category UOM in a specified conversion set
+CREATE OR REPLACE FUNCTION converter.update_target_conversion_set_category_uom(in_user_id int, in_conversion_set_id int,
                                     in_data_category_id int, in_uom_id int)
 
 RETURNS bool

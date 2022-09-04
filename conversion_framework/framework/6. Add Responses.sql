@@ -1,4 +1,5 @@
-insert into converter.response (error_code, error_description) values ('CF000','Error! An unknown error occurred while performing this action.'),
+truncate table converter.response;
+insert into converter.response (error_code, error_description) values('CF000','Error! An unknown error occurred while performing this action.'),
 ('CF001','Error! Cannot input <NULL> values.'),
 ('CF002','Error! User does not have a default conversion set.'),
 ('CF003','Error! The supplied in_data_category_id does not exist.'),
@@ -12,4 +13,7 @@ insert into converter.response (error_code, error_description) values ('CF000','
 ('CF011','Error! The supplied destination_conversion_set_name already exists.'),
 ('CF012','Error! The supplied source_conversion_set_name does not exist.'),
 ('CF013','Error! The supplied in_conversion_set_name does not exist.'),
-('CF014','Error! The supplied in_data_category_id does not exist.');
+('CF014','Error! The supplied in_data_category_id does not exist.'),
+('CF015','Error! The supplied in_data_type_id does not exist.'),
+('CF016','Error! The supplied UOM already exists in this data type.'),
+('CF017','Error! The supplied in_uom_name or in_uom_abbr already exists.');

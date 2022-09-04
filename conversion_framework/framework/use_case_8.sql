@@ -126,7 +126,7 @@ end
 $$;
 
 -- Get the id from a data_type
-CREATE OR REPLACE FUNCTION converter.get_id_from_data_type(in_user_id int, data_type_name text)
+CREATE OR REPLACE FUNCTION converter.get_data_type_id_from_name(in_user_id int, data_type_name text)
 
 RETURNS real
 language plpgsql
