@@ -304,12 +304,24 @@ $$
 -- declare
 --     outcome text;
 begin
-    if(in_user_id is NULL OR in_uom_id is NULL) then
+    if(in_user_id is NULL OR in_uom_id is NULL ) then
         RAISE EXCEPTION SQLSTATE 'CF001' USING MESSAGE = (select error_description from converter.response where error_code = 'CF001');
+    end if;
+
+    if((in_lower_uom is NULL and in_lower_boundary is not NULL) OR (in_lower_uom is not NULL and in_lower_boundary is NULL)) then
+        RAISE EXCEPTION SQLSTATE 'CF018' USING MESSAGE = (select error_description from converter.response where error_code = 'CF018');
     end if;
 
     if(select count(*) from converter.uom where id = in_uom_id) = 0 then
         RAISE EXCEPTION SQLSTATE 'CF005' USING MESSAGE = (select error_description from converter.response where error_code = 'CF005');
+    end if;
+
+    if(select count(*) from converter.uom where id = in_lower_uom) = 0 then
+        RAISE EXCEPTION SQLSTATE 'CF020' USING MESSAGE = (select error_description from converter.response where error_code = 'CF020');
+    end if;
+
+    if(select data_type_id from converter.uom where id = in_uom_id) <> (select data_type_id from converter.uom where id = in_lower_uom) then
+        RAISE EXCEPTION SQLSTATE 'CF019' USING MESSAGE = (select error_description from converter.response where error_code = 'CF019');
     end if;
 
     UPDATE converter.uom
@@ -346,8 +358,20 @@ begin
         RAISE EXCEPTION SQLSTATE 'CF001' USING MESSAGE = (select error_description from converter.response where error_code = 'CF001');
     end if;
 
+    if((in_upper_uom is NULL and in_upper_boundary is not NULL) OR (in_upper_uom is not NULL and in_upper_boundary is NULL)) then
+        RAISE EXCEPTION SQLSTATE 'CF018' USING MESSAGE = (select error_description from converter.response where error_code = 'CF018');
+    end if;
+
     if(select count(*) from converter.uom where id = in_uom_id) = 0 then
         RAISE EXCEPTION SQLSTATE 'CF005' USING MESSAGE = (select error_description from converter.response where error_code = 'CF005');
+    end if;
+
+    if(select count(*) from converter.uom where id = in_upper_uom) = 0 then
+        RAISE EXCEPTION SQLSTATE 'CF020' USING MESSAGE = (select error_description from converter.response where error_code = 'CF020');
+    end if;
+
+    if(select data_type_id from converter.uom where id = in_uom_id) <> (select data_type_id from converter.uom where id = in_upper_uom) then
+        RAISE EXCEPTION SQLSTATE 'CF019' USING MESSAGE = (select error_description from converter.response where error_code = 'CF019');
     end if;
 
     UPDATE converter.uom
@@ -359,43 +383,6 @@ begin
     WHERE id = in_uom_id;
 
     if ((select count(*) from converter.uom WHERE id = in_uom_id AND upper_boundary = in_upper_boundary AND upper_uom = in_upper_uom) = 0) then
-        RAISE EXCEPTION SQLSTATE 'CF000' USING MESSAGE = (select error_description from converter.response where error_code = 'CF000');
-    end if;
-
-    return true;
-end
-$$;
-
-CREATE OR REPLACE FUNCTION converter.update_uom_is_active(
-    in_user_id int,
-    in_uom_id int,
-    in_active boolean
-)
-
-RETURNS bool
-language plpgsql
-as
-$$
--- declare
---     outcome text;
-begin
-
-    if(in_user_id is NULL OR in_uom_id is NULL or in_active is NULL) then
-        RAISE EXCEPTION SQLSTATE 'CF001' USING MESSAGE = (select error_description from converter.response where error_code = 'CF001');
-    end if;
-
-    if(select count(*) from converter.uom where id = in_uom_id) = 0 then
-        RAISE EXCEPTION SQLSTATE 'CF005' USING MESSAGE = (select error_description from converter.response where error_code = 'CF005');
-    end if;
-
-    UPDATE converter.uom
-    SET
-        active = in_active,
-        updated = now(),
-        updated_by = in_user_id
-    WHERE id = in_uom_id;
-
-    if ((select count(*) from converter.uom WHERE id = in_uom_id AND active = in_active) = 0) then
         RAISE EXCEPTION SQLSTATE 'CF000' USING MESSAGE = (select error_description from converter.response where error_code = 'CF000');
     end if;
 
@@ -422,7 +409,7 @@ begin
 
     uom_id = (select id from converter.uom where uom_name = in_uom_name);
     if uom_id is null then
-        RAISE EXCEPTION SQLSTATE 'CF009' USING MESSAGE = (select error_description from converter.response where error_code = 'CF009');
+        RAISE EXCEPTION SQLSTATE 'CF005' USING MESSAGE = (select error_description from converter.response where error_code = 'CF005');
     end if;
 
     return uom_id;
@@ -557,5 +544,109 @@ begin
     end if;
 
     return out_uom_name;
+end
+$$;
+
+CREATE OR REPLACE FUNCTION converter.get_uom_name_abbr_from_id(
+    in_user_id int,
+    in_uom_id int
+)
+
+RETURNS text
+language plpgsql
+as
+$$
+declare
+    out_uom_concat text;
+begin
+
+    if(in_user_id is NULL OR in_uom_id is NULL) then
+        RAISE EXCEPTION SQLSTATE 'CF001' USING MESSAGE = (select error_description from converter.response where error_code = 'CF001');
+    end if;
+
+    out_uom_concat = (select (uom_name || '|' || uom.uom_abbreviation) from converter.uom where id = in_uom_id);
+    if out_uom_concat is null then
+        RAISE EXCEPTION SQLSTATE 'CF005' USING MESSAGE = (select error_description from converter.response where error_code = 'CF005');
+    end if;
+
+    return out_uom_concat;
+end
+$$;
+
+CREATE OR REPLACE FUNCTION converter.get_uom_prec_from_id(
+    in_user_id int,
+    in_uom_id int
+)
+
+RETURNS int
+language plpgsql
+as
+$$
+declare
+    out_uom_prec text;
+begin
+
+    if(in_user_id is NULL OR in_uom_id is NULL) then
+        RAISE EXCEPTION SQLSTATE 'CF001' USING MESSAGE = (select error_description from converter.response where error_code = 'CF001');
+    end if;
+
+    out_uom_prec = (select precision from converter.uom where id = in_uom_id);
+    if out_uom_prec is null then
+        RAISE EXCEPTION SQLSTATE 'CF005' USING MESSAGE = (select error_description from converter.response where error_code = 'CF005');
+    end if;
+
+    return out_uom_prec;
+end
+$$;
+
+CREATE OR REPLACE FUNCTION converter.get_uom_lower_from_id(
+    in_user_id int,
+    in_uom_id int
+)
+
+RETURNS text
+language plpgsql
+as
+$$
+declare
+    out_uom_concat text;
+begin
+
+    if(in_user_id is NULL OR in_uom_id is NULL) then
+        RAISE EXCEPTION SQLSTATE 'CF001' USING MESSAGE = (select error_description from converter.response where error_code = 'CF001');
+    end if;
+
+    if (select id from converter.uom where id = in_uom_id) is null then
+        RAISE EXCEPTION SQLSTATE 'CF005' USING MESSAGE = (select error_description from converter.response where error_code = 'CF005');
+    end if;
+    out_uom_concat = (select (lower_uom || '|' || lower_boundary) from converter.uom where id = in_uom_id);
+
+    return out_uom_concat;
+end
+$$;
+
+CREATE OR REPLACE FUNCTION converter.get_uom_upper_from_id(
+    in_user_id int,
+    in_uom_id int
+)
+
+RETURNS text
+language plpgsql
+as
+$$
+declare
+    out_uom_concat text;
+begin
+
+    if(in_user_id is NULL OR in_uom_id is NULL) then
+        RAISE EXCEPTION SQLSTATE 'CF001' USING MESSAGE = (select error_description from converter.response where error_code = 'CF001');
+    end if;
+
+    if (select id from converter.uom where id = in_uom_id) is null then
+        RAISE EXCEPTION SQLSTATE 'CF005' USING MESSAGE = (select error_description from converter.response where error_code = 'CF005');
+    end if;
+    out_uom_concat = (select (upper_uom || '|' || upper_boundary) from converter.uom where id = in_uom_id);
+
+    return out_uom_concat;
 end
 $$;
