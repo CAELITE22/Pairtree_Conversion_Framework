@@ -1,441 +1,510 @@
+--add types
+SELECT converter.add_data_type(-1, 'angle')
+UNION ALL
+SELECT converter.add_data_type(-1, 'fire_rating')
+UNION ALL
+SELECT converter.add_data_type(-1, 'humidity')
+UNION ALL
+SELECT converter.add_data_type(-1, 'length')
+UNION ALL
+SELECT converter.add_data_type(-1, 'ozone')
+UNION ALL
+SELECT converter.add_data_type(-1, 'percentage')
+UNION ALL
+SELECT converter.add_data_type(-1, 'power_level')
+UNION ALL
+SELECT converter.add_data_type(-1, 'pressure')
+UNION ALL
+SELECT converter.add_data_type(-1, 'electric_conductivity')
+UNION ALL
+SELECT converter.add_data_type(-1, 'solar_radiation')
+UNION ALL
+SELECT converter.add_data_type(-1, 'speed')
+UNION ALL
+SELECT converter.add_data_type(-1, 'temperature')
+UNION ALL
+SELECT converter.add_data_type(-1, 'uv_index')
+UNION ALL
+SELECT converter.add_data_type(-1, 'voltage')
+UNION ALL
+SELECT converter.add_data_type(-1, 'volume')
+UNION ALL
+SELECT converter.add_data_type(-1, 'mass')
+UNION ALL
+SELECT converter.add_data_type(-1, 'area')
+UNION ALL
+SELECT converter.add_data_type(-1, 'energy')
+UNION ALL
+SELECT converter.add_data_type(-1, 'time')
+UNION ALL
+SELECT converter.add_data_type(-1, 'electrical_current')
+UNION ALL
+SELECT converter.add_data_type(-1, 'luminosity')
+UNION ALL
+SELECT converter.add_data_type(-1, 'frequency');
 
--- add types
-INSERT INTO converter.data_type (active, created, updated, created_by, updated_by, translation, name) VALUES (true, now(), now(), -1, -1, false, 'angle');
-INSERT INTO converter.data_type (active, created, updated, created_by, updated_by, translation, name) VALUES (true, now(), now(), -1, -1, false, 'fire_rating');
-INSERT INTO converter.data_type (active, created, updated, created_by, updated_by, translation, name) VALUES (true, now(), now(), -1, -1, false, 'humidity');
-INSERT INTO converter.data_type (active, created, updated, created_by, updated_by, translation, name) VALUES (true, now(), now(), -1, -1, false, 'length');
-INSERT INTO converter.data_type (active, created, updated, created_by, updated_by, translation, name) VALUES (true, now(), now(), -1, -1, false, 'ozone');
-INSERT INTO converter.data_type (active, created, updated, created_by, updated_by, translation, name) VALUES (true, now(), now(), -1, -1, false, 'percentage');
-INSERT INTO converter.data_type (active, created, updated, created_by, updated_by, translation, name) VALUES (true, now(), now(), -1, -1, false, 'power_level');
-INSERT INTO converter.data_type (active, created, updated, created_by, updated_by, translation, name) VALUES (true, now(), now(), -1, -1, false, 'pressure');
-INSERT INTO converter.data_type (active, created, updated, created_by, updated_by, translation, name) VALUES (true, now(), now(), -1, -1, false, 'electric_conductivity');
-INSERT INTO converter.data_type (active, created, updated, created_by, updated_by, translation, name) VALUES (true, now(), now(), -1, -1, false, 'solar_radiation');
-INSERT INTO converter.data_type (active, created, updated, created_by, updated_by, translation, name) VALUES (true, now(), now(), -1, -1, false, 'speed');
-INSERT INTO converter.data_type (active, created, updated, created_by, updated_by, translation, name) VALUES (true, now(), now(), -1, -1, false, 'temperature');
-INSERT INTO converter.data_type (active, created, updated, created_by, updated_by, translation, name) VALUES (true, now(), now(), -1, -1, false, 'uv_index');
-INSERT INTO converter.data_type (active, created, updated, created_by, updated_by, translation, name) VALUES (true, now(), now(), -1, -1, false, 'voltage');
-INSERT INTO converter.data_type (active, created, updated, created_by, updated_by, translation, name) VALUES (true, now(), now(), -1, -1, false, 'volume');
-INSERT INTO converter.data_type (active, created, updated, created_by, updated_by, translation, name) VALUES (true, now(), now(), -1, -1, false, 'mass');
-INSERT INTO converter.data_type (active, created, updated, created_by, updated_by, translation, name) VALUES (true, now(), now(), -1, -1, false, 'area');
-INSERT INTO converter.data_type (active, created, updated, created_by, updated_by, translation, name) VALUES (true, now(), now(), -1, -1, false, 'energy');
-INSERT INTO converter.data_type (active, created, updated, created_by, updated_by, translation, name) VALUES (true, now(), now(), -1, -1, false, 'time');
-INSERT INTO converter.data_type (active, created, updated, created_by, updated_by, translation, name) VALUES (true, now(), now(), -1, -1, false, 'electrical_current');
-INSERT INTO converter.data_type (active, created, updated, created_by, updated_by, translation, name) VALUES (true, now(), now(), -1, -1, false, 'luminosity');
-INSERT INTO converter.data_type (active, created, updated, created_by, updated_by, translation, name) VALUES (true, now(), now(), -1, -1, false, 'frequency');
 
 
 --Add UOMs
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'mrad','miliradians',converter.get_id_from_data_type(1,'angle'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'°','degrees',converter.get_id_from_data_type(1,'angle'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'rad','radians',converter.get_id_from_data_type(1,'angle'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'grad','gradians',converter.get_id_from_data_type(1,'angle'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'rev','revolutions',converter.get_id_from_data_type(1,'angle'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'','',converter.get_id_from_data_type(1,'fire_rating'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'g/m³','g/m³',converter.get_id_from_data_type(1,'humidity'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'mm','mm',converter.get_id_from_data_type(1,'length'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'cm','cm',converter.get_id_from_data_type(1,'length'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'m','m',converter.get_id_from_data_type(1,'length'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'km','km',converter.get_id_from_data_type(1,'length'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'in','inches',converter.get_id_from_data_type(1,'length'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'ft','foot',converter.get_id_from_data_type(1,'length'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'yd','yards',converter.get_id_from_data_type(1,'length'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'fl','furlong',converter.get_id_from_data_type(1,'length'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'mi','miles',converter.get_id_from_data_type(1,'length'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'nmi','nautical miles',converter.get_id_from_data_type(1,'length'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'DU','Dobson Unit',converter.get_id_from_data_type(1,'ozone'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'%','percent',converter.get_id_from_data_type(1,'percentage'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'?','decimal',converter.get_id_from_data_type(1,'percentage'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'dBm','decibel-milliwatt',converter.get_id_from_data_type(1,'power_level'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'mW','milliwatt',converter.get_id_from_data_type(1,'power_level'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'W','watt',converter.get_id_from_data_type(1,'power_level'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'kW','kilowatt',converter.get_id_from_data_type(1,'power_level'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'MW','megawatt',converter.get_id_from_data_type(1,'power_level'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'Wh','watt hours',converter.get_id_from_data_type(1,'energy'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'kWh','kilo-watt hours',converter.get_id_from_data_type(1,'energy'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'mWh','mega-watt hours',converter.get_id_from_data_type(1,'energy'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'mPa','mili-pascal',converter.get_id_from_data_type(1,'pressure'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'Pa','Pascal',converter.get_id_from_data_type(1,'pressure'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'hPa','hectoPascals',converter.get_id_from_data_type(1,'pressure'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'psi','pounds per square inch',converter.get_id_from_data_type(1,'pressure'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'kPa','kiloPascals',converter.get_id_from_data_type(1,'pressure'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'bar','bar',converter.get_id_from_data_type(1,'pressure'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'dS/m','dS/m',converter.get_id_from_data_type(1,'electric_conductivity'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'mmhos/cm','millimhos/centimetre',converter.get_id_from_data_type(1,'electric_conductivity'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'W/m2','Watts per square metre',converter.get_id_from_data_type(1,'solar_radiation'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'m/h','m/h',converter.get_id_from_data_type(1,'speed'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'km/h','km/h',converter.get_id_from_data_type(1,'speed'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'m/s','m/s',converter.get_id_from_data_type(1,'speed'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'yd/s','yd/s',converter.get_id_from_data_type(1,'speed'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'yd/h','yd/h',converter.get_id_from_data_type(1,'speed'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'mi/h','mi/h',converter.get_id_from_data_type(1,'speed'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'knot','knots',converter.get_id_from_data_type(1,'speed'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'°C','Celsius',converter.get_id_from_data_type(1,'temperature'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'°K','Kelvin',converter.get_id_from_data_type(1,'temperature'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'°F','Fahrenheit',converter.get_id_from_data_type(1,'temperature'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'°Ra','Rankine',converter.get_id_from_data_type(1,'temperature'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'index','index',converter.get_id_from_data_type(1,'uv_index'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'V','volt',converter.get_id_from_data_type(1,'voltage'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'kV','kilovolt',converter.get_id_from_data_type(1,'voltage'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'MV','mega-volt',converter.get_id_from_data_type(1,'voltage'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'ml','ml',converter.get_id_from_data_type(1,'volume'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'cm3','cm^3',converter.get_id_from_data_type(1,'volume'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'L','L',converter.get_id_from_data_type(1,'volume'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'m3','m^3',converter.get_id_from_data_type(1,'volume'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'kL','kilo-liter',converter.get_id_from_data_type(1,'volume'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'ML','mega-liter',converter.get_id_from_data_type(1,'volume'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'tsp','teaspoon',converter.get_id_from_data_type(1,'volume'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'tbsp','tablespoon',converter.get_id_from_data_type(1,'volume'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'fl. oz','fluid ounce',converter.get_id_from_data_type(1,'volume'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'c','cup',converter.get_id_from_data_type(1,'volume'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'pt','pint',converter.get_id_from_data_type(1,'volume'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'qt','quart',converter.get_id_from_data_type(1,'volume'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'gal','gallon',converter.get_id_from_data_type(1,'volume'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'cu in','cubic in',converter.get_id_from_data_type(1,'volume'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'cu ft','cubic foot',converter.get_id_from_data_type(1,'volume'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'mg','mili-gram',converter.get_id_from_data_type(1,'mass'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'gr','gram',converter.get_id_from_data_type(1,'mass'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'kg','kilogram',converter.get_id_from_data_type(1,'mass'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'t','ton',converter.get_id_from_data_type(1,'mass'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'MT','mega-ton',converter.get_id_from_data_type(1,'mass'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'oz','ounce',converter.get_id_from_data_type(1,'mass'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'lb','pound',converter.get_id_from_data_type(1,'mass'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'st','stone',converter.get_id_from_data_type(1,'mass'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'cm^2','square centimetre',converter.get_id_from_data_type(1,'area'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'m^2','square metre',converter.get_id_from_data_type(1,'area'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'km^2','square kilometre',converter.get_id_from_data_type(1,'area'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'ha','hectare',converter.get_id_from_data_type(1,'area'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'sq. in','square inch',converter.get_id_from_data_type(1,'area'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'sq. ft','square foot',converter.get_id_from_data_type(1,'area'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'sq. yd','square yard',converter.get_id_from_data_type(1,'area'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'ac','acre',converter.get_id_from_data_type(1,'area'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'sq. mi','square mile',converter.get_id_from_data_type(1,'area'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'J','joule',converter.get_id_from_data_type(1,'energy'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'kJ','kilo-joule',converter.get_id_from_data_type(1,'energy'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'MJ','mega-joule',converter.get_id_from_data_type(1,'energy'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'GJ','giga-joule',converter.get_id_from_data_type(1,'energy'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'Cal','kilocalorie',converter.get_id_from_data_type(1,'energy'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'mCal','megacalorie?',converter.get_id_from_data_type(1,'energy'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'TJ','tera-joule',converter.get_id_from_data_type(1,'energy'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'sec','seconds',converter.get_id_from_data_type(1,'time'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'min','minutes',converter.get_id_from_data_type(1,'time'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'hrs','hours',converter.get_id_from_data_type(1,'time'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'days','days',converter.get_id_from_data_type(1,'time'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'wks','weeks',converter.get_id_from_data_type(1,'time'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'yrs','years',converter.get_id_from_data_type(1,'time'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'μA','micro-ampere',converter.get_id_from_data_type(1,'electrical_current'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'mA','mili-ampere',converter.get_id_from_data_type(1,'electrical_current'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'A','ampere',converter.get_id_from_data_type(1,'electrical_current'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'kA','kilo-ampere',converter.get_id_from_data_type(1,'electrical_current'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'MA','mega-ampere',converter.get_id_from_data_type(1,'electrical_current'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'cd','candela',converter.get_id_from_data_type(1,'luminosity'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'lm','lumen',converter.get_id_from_data_type(1,'luminosity'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'mHz','milihertz',converter.get_id_from_data_type(1,'frequency'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'Hz','Hertz',converter.get_id_from_data_type(1,'frequency'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'kHz','kilohertz',converter.get_id_from_data_type(1,'frequency'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'MHz','megahertz',converter.get_id_from_data_type(1,'frequency'));
-INSERT INTO converter.uom (active, created, updated, created_by, updated_by, owner_user_id, uom_abbreviation, uom_name, data_type_id) VALUES (true, now(), now(), -1, -1,-1,'gHz','gigahertz',converter.get_id_from_data_type(1,'frequency'));
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'angle')), 'milliradians', 'mrad')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'angle')), 'degrees', '°')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'angle')), 'radians', 'rad')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'angle')), 'gradians', 'grad')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'angle')), 'revolutions', 'rev')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'area')), 'square centimetre', 'cm^2')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'area')), 'square metre', 'm^2')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'area')), 'square kilometre', 'km^2')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'area')), 'hectare', 'ha')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'area')), 'square inch', 'sq. in')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'area')), 'square foot', 'sq. ft')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'area')), 'square yard', 'sq. yd')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'area')), 'acre', 'ac')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'area')), 'square mile', 'sq. mi')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'electrical_current')), 'micro-ampere', 'μA')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'electrical_current')), 'milli-ampere', 'mA')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'electrical_current')), 'ampere', 'A')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'electrical_current')), 'kilo-ampere', 'kA')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'electrical_current')), 'mega-ampere', 'MA')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'electric_conductivity')), 'deciSiemens per meter', 'dS/m')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'electric_conductivity')), 'millimhos per centimetre', 'mmhos/cm')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'energy')), 'joule', 'J')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'energy')), 'kilojoule', 'kJ')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'energy')), 'megajoule', 'MJ')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'energy')), 'gigajoule', 'GJ')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'energy')), 'kilocalorie', 'kCal')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'energy')), 'megacalorie', 'MCal')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'energy')), 'terajoule', 'TJ')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'energy')), 'watt hours', 'Wh')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'energy')), 'kilowatt hours', 'kWh')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'energy')), 'megawatt hours', 'mWh')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'frequency')), 'millihertz', 'mHz')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'frequency')), 'Hertz', 'Hz')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'frequency')), 'kilohertz', 'kHz')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'frequency')), 'megahertz', 'MHz')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'frequency')), 'gigahertz', 'gHz')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'humidity')), 'grams per cubic meter', 'g/m³')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'length')), 'millimetres', 'mm')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'length')), 'centimetres', 'cm')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'length')), 'metres', 'm')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'length')), 'kilometres', 'km')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'length')), 'inches', 'in')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'length')), 'foot', 'ft')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'length')), 'yards', 'yd')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'length')), 'furlong', 'fl')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'length')), 'miles', 'mi')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'length')), 'nautical miles', 'nmi')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'luminosity')), 'candela', 'cd')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'luminosity')), 'lumen', 'lm')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'mass')), 'milligram', 'mg')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'mass')), 'gram', 'gr')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'mass')), 'kilogram', 'kg')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'mass')), 'tonne', 't')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'mass')), 'megatonne', 'MT')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'mass')), 'ounce', 'oz')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'mass')), 'pound', 'lb')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'mass')), 'stone', 'st')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'ozone')), 'dobson unit', 'DU')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'percentage')), 'percent', '%')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'percentage')), 'decimal', '?')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'power_level')), 'decibel-milliwatt', 'dBm')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'power_level')), 'milliwatt', 'mW')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'power_level')), 'watt', 'W')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'power_level')), 'kilowatt', 'kW')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'power_level')), 'megawatt', 'MW')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'pressure')), 'millipascal', 'mPa')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'pressure')), 'pascal', 'Pa')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'pressure')), 'hectopascals', 'hPa')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'pressure')), 'pounds per square inch', 'psi')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'pressure')), 'kilopascals', 'kPa')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'pressure')), 'bar', 'bar')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'solar_radiation')), 'Watts per square meter', 'W/m2')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'speed')), 'metres per hour', 'm/h')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'speed')), 'kilometres per hour', 'km/h')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'speed')), 'metres per second', 'm/s')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'speed')), 'yards per second', 'yd/s')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'speed')), 'yards per hour', 'yd/h')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'speed')), 'miles per hour', 'mi/h')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'speed')), 'knots', 'knot')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'temperature')), 'celsius', '°C')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'temperature')), 'kelvin', '°K')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'temperature')), 'fahrenheit', '°F')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'temperature')), 'rankine', '°Ra')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'time')), 'seconds', 'sec')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'time')), 'minutes', 'min')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'time')), 'hours', 'hrs')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'time')), 'days', 'days')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'time')), 'weeks', 'wks')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'time')), 'years', 'yrs')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'voltage')), 'volt', 'V')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'voltage')), 'kilovolt', 'kV')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'voltage')), 'megavolt', 'MV')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'volume')), 'milliliter', 'ml')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'volume')), 'cubic centimetres', 'cm3')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'volume')), 'liter', 'L')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'volume')), 'cubic metres', 'm3')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'volume')), 'kiloliter', 'kL')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'volume')), 'megaliter', 'ML')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'volume')), 'teaspoon', 'tsp')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'volume')), 'tablespoon', 'tbsp')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'volume')), 'fluid ounce', 'fl. oz')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'volume')), 'cup', 'c')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'volume')), 'pint', 'pt')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'volume')), 'quart', 'qt')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'volume')), 'gallon', 'gal')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'volume')), 'cubic inch', 'cu in')
+UNION ALL
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'volume')), 'cubic foot', 'cu ft');
 
--- Link upper and lower UOMs
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'mm') where uom_name = 'cm';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'm') where uom_name = 'm';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'm') where uom_name = 'km';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'in') where uom_name = 'foot';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'ft') where uom_name = 'yards';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'yd') where uom_name = 'miles';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'mW') where uom_name = 'watt';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'W') where uom_name = 'kilowatt';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'kW') where uom_name = 'megawatt';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'Wh') where uom_name = 'kilo-watt hours';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'kWh') where uom_name = 'mega-watt hours';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'mPa') where uom_name = 'Pascal';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'Pa') where uom_name = 'hectoPascals';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'hPa') where uom_name = 'kiloPascals';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'cm/h') where uom_name = 'm/h';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'm/h') where uom_name = 'km/h';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'ft/h') where uom_name = 'yd/h';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'yd/h') where uom_name = 'mi/h';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'dV') where uom_name = 'volt';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'hV') where uom_name = 'kilovolt';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'kV') where uom_name = 'mega-volt';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'ml') where uom_name = 'L';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'cm3') where uom_name = 'm^3';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'L') where uom_name = 'kilo-liter';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'kL') where uom_name = 'mega-liter';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'tsp') where uom_name = 'tablespoon';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'tbsp') where uom_name = 'fluid ounce';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'fl. oz') where uom_name = 'cup';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'c') where uom_name = 'pint';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'pt') where uom_name = 'quart';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'qt') where uom_name = 'gallon';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'cu in') where uom_name = 'cubic foot';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'mg') where uom_name = 'gram';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'gr') where uom_name = 'kilogram';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'kg') where uom_name = 'ton';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 't') where uom_name = 'mega-ton';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'oz') where uom_name = 'pound';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'lb') where uom_name = 'stone';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'cm2') where uom_name = 'square metre';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'm2') where uom_name = 'square kilometre';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'km2') where uom_name = 'hectare';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'sq. in') where uom_name = 'square foot';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'sq. ft') where uom_name = 'square yard';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'sq. yd') where uom_name = 'acre';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'ac') where uom_name = 'square mile';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'kJ') where uom_name = 'joule';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'J') where uom_name = 'kilo-joule';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'kJ') where uom_name = 'mega-joule';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'MJ') where uom_name = 'giga-joule';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'GJ') where uom_name = 'tera-joule';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'sec') where uom_name = 'minutes';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'min') where uom_name = 'hours';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'hrs') where uom_name = 'days';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'days') where uom_name = 'weeks';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'wks') where uom_name = 'years';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'μA') where uom_name = 'mili-ampere';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'mA') where uom_name = 'ampere';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'A') where uom_name = 'kilo-ampere';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'kA') where uom_name = 'mega-ampere';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'mHz') where uom_name = 'Hertz';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'Hz') where uom_name = 'kilohertz';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'kHz') where uom_name = 'megahertz';
-UPDATE converter.uom set lower_uom = (select id from converter.uom where uom_abbreviation  = 'MHz') where uom_name = 'gigahertz';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'cm') where uom_name = 'mm';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'm') where uom_name = 'cm';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'km') where uom_name = 'm';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'ft') where uom_name = 'inches';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'yd') where uom_name = 'foot';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'mi') where uom_name = 'yards';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'W') where uom_name = 'milliwatt';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'kW') where uom_name = 'watt';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'MW') where uom_name = 'kilowatt';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'kWh') where uom_name = 'watt hours';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'mWh') where uom_name = 'kilo-watt hours';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'Pa') where uom_name = 'mili-pascal';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'hPa') where uom_name = 'Pascal';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'kPa') where uom_name = 'hectoPascals';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'km/h') where uom_name = 'm/h';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'mi/h') where uom_name = 'yd/h';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'DV') where uom_name = 'volt';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'MV') where uom_name = 'kilovolt';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'L') where uom_name = 'ml';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'm3') where uom_name = 'cm^3';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'kL') where uom_name = 'L';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'ML') where uom_name = 'kilo-liter';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'tbsp') where uom_name = 'teaspoon';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'fl. oz') where uom_name = 'tablespoon';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'c') where uom_name = 'fluid ounce';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'pt') where uom_name = 'cup';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'qt') where uom_name = 'pint';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'gal') where uom_name = 'quart';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'cu ft') where uom_name = 'cubic in';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'gr') where uom_name = 'mili-gram';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'kg') where uom_name = 'gram';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 't') where uom_name = 'kilogram';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'MT') where uom_name = 'ton';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'lb') where uom_name = 'ounce';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'st') where uom_name = 'pound';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'm2') where uom_name = 'square centimetre';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'km2') where uom_name = 'square metre';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'ha') where uom_name = 'square kilometre';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'sq. ft') where uom_name = 'square inch';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'sq. yd') where uom_name = 'square foot';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'ac') where uom_name = 'square yard';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'sq. mi') where uom_name = 'acre';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'kJ') where uom_name = 'joule';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'MJ') where uom_name = 'kilo-joule';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'GJ') where uom_name = 'mega-joule';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'TJ') where uom_name = 'giga-joule';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'min') where uom_name = 'seconds';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'hrs') where uom_name = 'minutes';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'days') where uom_name = 'hours';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'wks') where uom_name = 'days';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'yrs') where uom_name = 'weeks';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'mA') where uom_name = 'micro-ampere';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'A') where uom_name = 'mili-ampere';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'kA') where uom_name = 'ampere';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'MA') where uom_name = 'kilo-ampere';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'Hz') where uom_name = 'milihertz';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'kHz') where uom_name = 'Hertz';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'MHz') where uom_name = 'kilohertz';
-UPDATE converter.uom set upper_uom = (select id from converter.uom where uom_abbreviation = 'gHz') where uom_name = 'megahertz';
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'milliradians')),0.001, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'degrees')),57.2958, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'radians')),1, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'gradians')),63.662, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'revolutions')),0.159155, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'square centimetre')),100, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'square metre')),1, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'square kilometre')),0.001, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'hectare')),0.0001, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'square inch')),39.3701, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'square foot')),3.28084, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'square yard')),1.094, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'acre')),0.000247105, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'square mile')),0.000621371, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'micro-ampere')),1000000, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'milli-ampere')),1000, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'ampere')),1, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'kilo-ampere')),0.001, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'mega-ampere')),0.000001, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'deciSiemens per meter')),1, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'millimhos per centimetre')),1, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'joule')),1, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'kilojoule')),0.001, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'megajoule')),0.000001, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'gigajoule')),0.000000001, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'kilocalorie')),0.000238095, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'megacalorie')),2.38095E-07, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'terajoule')),1E-12, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'watt hours')),1, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'kilowatt hours')),0.001, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'megawatt hours')),0.000001, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'millihertz')),1000, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'Hertz')),1, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'kilohertz')),0.001, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'megahertz')),0.000001, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'gigahertz')),0.000000001, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'grams per cubic meter')),1, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'millimetres')),1000, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'centimetres')),100, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'metres')),1, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'kilometres')),0.001, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'inches')),39.3701, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'foot')),3.28084, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'yards')),1.094, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'furlong')),0.00497097, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'miles')),0.000621371, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'nautical miles')),0.000539957, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'candela')),1, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'lumen')),12.57, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'milligram')),1000000, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'gram')),1000, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'kilogram')),1, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'tonne')),0.001, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'megatonne')),0.000001,0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'ounce')),35.274, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'pound')),2.205, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'stone')),0.157473, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'dobson unit')),1, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'percent')),0, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'decimal')),0.01, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'decibel-milliwatt')),1, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'milliwatt')),1000, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'watt')),1, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'kilowatt')),0.001, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'megawatt')),0.000001, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'millipascal')),1000, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'pascal')),1, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'hectopascals')),0.01, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'pounds per square inch')),0.000145038, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'kilopascals')),0.001, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'bar')),0.000001, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'Watts per square meter')),1, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'metres per hour')),3600, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'kilometres per hour')),3.6, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'metres per second')),1, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'yards per second')),1.094, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'yards per hour')),3937.007, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'miles per hour')),2.23694, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'knots')),1.94384, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'celsius')),1, -273.15, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'kelvin')),1, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'fahrenheit')),1.8, -459.67, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'rankine')),1.8, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'seconds')),1, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'minutes')),0.016666667, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'hours')),0.000277778, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'days')),1.15741E-05, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'weeks')),1.65343E-06, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'years')),1/220752000, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'volt')),1, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'kilovolt')),0.001, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'megavolt')),0.000001, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'milliliter')),1000000, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'cubic centimetres')),1000000, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'liter')),1000, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'cubic metres')),1, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'kiloliter')),1, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'megaliter')),0.001, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'teaspoon')),202884, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'tablespoon')),67628, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'fluid ounce')),33814, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'cup')),4227, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'pint')),2113.38, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'quart')),1056.69, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'gallon')),264.172, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'cubic inch')),61023.7, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'cubic foot')),35.3147, 0, now(), now(), -1, -1, TRUE);
 
-
--- add conversion rates
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 0.001,0,(select id from converter.uom where uom_name = 'miliradians'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 57.2958,0,(select id from converter.uom where uom_name = 'degrees'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 1,0,(select id from converter.uom where uom_name = 'radians'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 63.662,0,(select id from converter.uom where uom_name = 'gradians'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 0.159155,0,(select id from converter.uom where uom_name = 'revolutions'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 1,0,(select id from converter.uom where uom_name = 'g/m³'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 1000,0,(select id from converter.uom where uom_name = 'mm'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 100,0,(select id from converter.uom where uom_name = 'cm'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 1,0,(select id from converter.uom where uom_name = 'm'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 0.001,0,(select id from converter.uom where uom_name = 'km'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 39.3701,0,(select id from converter.uom where uom_name = 'inches'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 3.28084,0,(select id from converter.uom where uom_name = 'foot'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 1.094,0,(select id from converter.uom where uom_name = 'yards'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 0.00497096953,0,(select id from converter.uom where uom_name = 'furlong'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 0.000621371,0,(select id from converter.uom where uom_name = 'miles'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 0.000539957,0,(select id from converter.uom where uom_name = 'nautical miles'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 1,0,(select id from converter.uom where uom_name = 'Dobson Unit'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 0,0,(select id from converter.uom where uom_name = 'percent'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 0.01,0,(select id from converter.uom where uom_name = 'decimal'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 1,0,(select id from converter.uom where uom_name = 'decibel-milliwatt'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 1000,0,(select id from converter.uom where uom_name = 'milliwatt'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 1,0,(select id from converter.uom where uom_name = 'watt'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 0.001,0,(select id from converter.uom where uom_name = 'kilowatt'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 0.000001,0,(select id from converter.uom where uom_name = 'megawatt'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 1,0,(select id from converter.uom where uom_name = 'watt hours'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 0.001,0,(select id from converter.uom where uom_name = 'kilo-watt hours'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 0.000001,0,(select id from converter.uom where uom_name = 'mega-watt hours'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 1000,0,(select id from converter.uom where uom_name = 'mili-pascal'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 1,0,(select id from converter.uom where uom_name = 'Pascal'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 0.01,0,(select id from converter.uom where uom_name = 'hectoPascals'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 0.000145038,0,(select id from converter.uom where uom_name = 'pounds per square inch'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 0.001,0,(select id from converter.uom where uom_name = 'kiloPascals'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 0.000001,0,(select id from converter.uom where uom_name = 'bar'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 1,0,(select id from converter.uom where uom_name = 'dS/m'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 1,0,(select id from converter.uom where uom_name = 'millimhos/centimetre'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 1,0,(select id from converter.uom where uom_name = 'Watts per square metre'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 3600,0,(select id from converter.uom where uom_name = 'm/h'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 3.6,0,(select id from converter.uom where uom_name = 'km/h'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 1,0,(select id from converter.uom where uom_name = 'm/s'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 1.094,0,(select id from converter.uom where uom_name = 'yd/s'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 3937.007,0,(select id from converter.uom where uom_name = 'yd/h'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 2.23694,0,(select id from converter.uom where uom_name = 'mi/h'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 1.94384,0,(select id from converter.uom where uom_name = 'knots'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 1,-273.15,(select id from converter.uom where uom_name = 'Celsius'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 1,0,(select id from converter.uom where uom_name = 'Kelvin'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 1.8,-459.67,(select id from converter.uom where uom_name = 'Fahrenheit'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 1.8,0,(select id from converter.uom where uom_name = 'Rankine'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 1,0,(select id from converter.uom where uom_name = 'volt'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 0.001,0,(select id from converter.uom where uom_name = 'kilovolt'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 0.000001,0,(select id from converter.uom where uom_name = 'mega-volt'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 1000000,0,(select id from converter.uom where uom_name = 'ml'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 1000000,0,(select id from converter.uom where uom_name = 'cm^3'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 1000,0,(select id from converter.uom where uom_name = 'L'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 1,0,(select id from converter.uom where uom_name = 'm^3'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 1,0,(select id from converter.uom where uom_name = 'kilo-liter'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 0.001,0,(select id from converter.uom where uom_name = 'mega-liter'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 202884,0,(select id from converter.uom where uom_name = 'teaspoon'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 67628,0,(select id from converter.uom where uom_name = 'tablespoon'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 33814,0,(select id from converter.uom where uom_name = 'fluid ounce'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 4227,0,(select id from converter.uom where uom_name = 'cup'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 2113.38,0,(select id from converter.uom where uom_name = 'pint'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 1056.69,0,(select id from converter.uom where uom_name = 'quart'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 264.172,0,(select id from converter.uom where uom_name = 'gallon'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 61023.7,0,(select id from converter.uom where uom_name = 'cubic in'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 35.3147,0,(select id from converter.uom where uom_name = 'cubic foot'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 1000000,0,(select id from converter.uom where uom_name = 'mili-gram'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 1000,0,(select id from converter.uom where uom_name = 'gram'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 1,0,(select id from converter.uom where uom_name = 'kilogram'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 0.001,0,(select id from converter.uom where uom_name = 'ton'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 0.000001,0,(select id from converter.uom where uom_name = 'mega-ton'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 35.274,0,(select id from converter.uom where uom_name = 'ounce'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 2.205,0,(select id from converter.uom where uom_name = 'pound'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 0.157473,0,(select id from converter.uom where uom_name = 'stone'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 100,0,(select id from converter.uom where uom_name = 'square centimetre'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 1,0,(select id from converter.uom where uom_name = 'square metre'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 0.001,0,(select id from converter.uom where uom_name = 'square kilometre'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 0.0001,0,(select id from converter.uom where uom_name = 'hectare'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 39.3701,0,(select id from converter.uom where uom_name = 'square inch'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 3.28084,0,(select id from converter.uom where uom_name = 'square foot'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 1.094,0,(select id from converter.uom where uom_name = 'square yard'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 0.000247105,0,(select id from converter.uom where uom_name = 'acre'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 0.000621371,0,(select id from converter.uom where uom_name = 'square mile'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 1,0,(select id from converter.uom where uom_name = 'joule'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 0.001,0,(select id from converter.uom where uom_name = 'kilo-joule'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 0.000001,0,(select id from converter.uom where uom_name = 'mega-joule'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 0.000000001,0,(select id from converter.uom where uom_name = 'giga-joule'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 0.00023809523,0,(select id from converter.uom where uom_name = 'kilocalorie'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 0.000000000001,0,(select id from converter.uom where uom_name = 'tera-joule'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 1,0,(select id from converter.uom where uom_name = 'seconds'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 0.01666666666,0,(select id from converter.uom where uom_name = 'minutes'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 0.00027777777,0,(select id from converter.uom where uom_name = 'hours'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 0.00001157407,0,(select id from converter.uom where uom_name = 'days'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 0.00000165343,0,(select id from converter.uom where uom_name = 'weeks'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 1/220752000,0,(select id from converter.uom where uom_name = 'years'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 1000000,0,(select id from converter.uom where uom_name = 'micro-ampere'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 1000,0,(select id from converter.uom where uom_name = 'mili-ampere'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 1,0,(select id from converter.uom where uom_name = 'ampere'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 0.001,0,(select id from converter.uom where uom_name = 'kilo-ampere'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 0.000001,0,(select id from converter.uom where uom_name = 'mega-ampere'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 1,0,(select id from converter.uom where uom_name = 'candela'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 12.57,0,(select id from converter.uom where uom_name = 'lumen'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 1000,0,(select id from converter.uom where uom_name = 'milihertz'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 1,0,(select id from converter.uom where uom_name = 'Hertz'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 0.001,0,(select id from converter.uom where uom_name = 'kilohertz'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 0.000001,0,(select id from converter.uom where uom_name = 'megahertz'));
-INSERT INTO converter.conversion_rate (active, created, updated, created_by, updated_by, rate, constant, uom_id) VALUES (true, now(), now(), -1, -1, 0.000000001,0,(select id from converter.uom where uom_name = 'gigahertz'));
-
--- add data categories
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Wind Direction',(select id from converter.data_type where name = 'angle'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Fire Danger Index',(select id from converter.data_type where name = 'fire_rating'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Absolute Humidity',(select id from converter.data_type where name = 'humidity'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Height',(select id from converter.data_type where name = 'length'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'ETo',(select id from converter.data_type where name = 'length'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Rainfall',(select id from converter.data_type where name = 'length'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Visibilty',(select id from converter.data_type where name = 'length'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Ozone',(select id from converter.data_type where name = 'ozone'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Soil Moisture',(select id from converter.data_type where name = 'percentage'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Soil Moisture 010 cm',(select id from converter.data_type where name = 'percentage'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Soil Moisture 020 cm',(select id from converter.data_type where name = 'percentage'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Soil Moisture 030 cm',(select id from converter.data_type where name = 'percentage'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Soil Moisture 040 cm',(select id from converter.data_type where name = 'percentage'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Pecentage Full',(select id from converter.data_type where name = 'percentage'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Relative Humidity',(select id from converter.data_type where name = 'percentage'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Leaf Wetness',(select id from converter.data_type where name = 'percentage'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Cloud Cover',(select id from converter.data_type where name = 'percentage'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Rainfall Probability',(select id from converter.data_type where name = 'percentage'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Soil Moisture 050 cm',(select id from converter.data_type where name = 'percentage'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Soil Moisture 060 cm',(select id from converter.data_type where name = 'percentage'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Soil Moisture 070 cm',(select id from converter.data_type where name = 'percentage'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Soil Moisture 080 cm',(select id from converter.data_type where name = 'percentage'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Soil Moisture 090 cm',(select id from converter.data_type where name = 'percentage'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Soil Moisture 100 cm',(select id from converter.data_type where name = 'percentage'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Soil Moisture 110 cm',(select id from converter.data_type where name = 'percentage'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Soil Moisture 120 cm',(select id from converter.data_type where name = 'percentage'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Soil Moisture 130 cm',(select id from converter.data_type where name = 'percentage'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Signal Strength',(select id from converter.data_type where name = 'power_level'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Barometric Pressure',(select id from converter.data_type where name = 'pressure'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Vapour Pressure',(select id from converter.data_type where name = 'pressure'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Vapour Pressure Deficit',(select id from converter.data_type where name = 'pressure'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Soil Salinity 010 cm',(select id from converter.data_type where name = 'electric_conductivity'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Soil Salinity 020 cm',(select id from converter.data_type where name = 'electric_conductivity'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Soil Salinity 030 cm',(select id from converter.data_type where name = 'electric_conductivity'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Soil Salinity 040 cm',(select id from converter.data_type where name = 'electric_conductivity'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Soil Salinity 050 cm',(select id from converter.data_type where name = 'electric_conductivity'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Soil Salinity 060 cm',(select id from converter.data_type where name = 'electric_conductivity'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Soil Salinity 070 cm',(select id from converter.data_type where name = 'electric_conductivity'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Soil Salinity 080 cm',(select id from converter.data_type where name = 'electric_conductivity'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Soil Salinity 090 cm',(select id from converter.data_type where name = 'electric_conductivity'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Soil Salinity 100 cm',(select id from converter.data_type where name = 'electric_conductivity'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Soil Salinity 110 cm',(select id from converter.data_type where name = 'electric_conductivity'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Soil Salinity 120 cm',(select id from converter.data_type where name = 'electric_conductivity'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Soil Salinity 130 cm',(select id from converter.data_type where name = 'electric_conductivity'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Solar Radiation',(select id from converter.data_type where name = 'solar_radiation'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Wind Speed',(select id from converter.data_type where name = 'speed'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Wind Speed Max',(select id from converter.data_type where name = 'speed'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Wind Speed Min',(select id from converter.data_type where name = 'speed'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Rainfall Rate',(select id from converter.data_type where name = 'speed'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Soil Temperature',(select id from converter.data_type where name = 'temperature'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Air Temperature',(select id from converter.data_type where name = 'temperature'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'DeltaT',(select id from converter.data_type where name = 'temperature'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Dew Point',(select id from converter.data_type where name = 'temperature'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Apparent Temperature',(select id from converter.data_type where name = 'temperature'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Soil Temperature 010 cm',(select id from converter.data_type where name = 'temperature'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Soil Temperature 020 cm',(select id from converter.data_type where name = 'temperature'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Soil Temperature 030 cm',(select id from converter.data_type where name = 'temperature'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Soil Temperature 040 cm',(select id from converter.data_type where name = 'temperature'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Soil Temperature 050 cm',(select id from converter.data_type where name = 'temperature'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Soil Temperature 060 cm',(select id from converter.data_type where name = 'temperature'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Soil Temperature 070 cm',(select id from converter.data_type where name = 'temperature'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Soil Temperature 080 cm',(select id from converter.data_type where name = 'temperature'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Soil Temperature 090 cm',(select id from converter.data_type where name = 'temperature'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Soil Temperature 100 cm',(select id from converter.data_type where name = 'temperature'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Soil Temperature 110 cm',(select id from converter.data_type where name = 'temperature'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Soil Temperature 120 cm',(select id from converter.data_type where name = 'temperature'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Soil Temperature 130 cm',(select id from converter.data_type where name = 'temperature'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'UV',(select id from converter.data_type where name = 'uv_index'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Battery Voltage',(select id from converter.data_type where name = 'voltage'));
-INSERT INTO converter.data_category (active, created, updated, created_by, updated_by, name, type_id) VALUES (true, now(), now(), -1, -1, 'Current Volume',(select id from converter.data_type where name = 'volume'));
+--Add data categories
+SELECT converter.add_data_category(-1, 'Wind Direction', (SELECT converter.get_data_type_id_from_name(-1,'angle')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Fire Danger Index', (SELECT converter.get_data_type_id_from_name(-1,'fire_rating')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Absolute Humidity', (SELECT converter.get_data_type_id_from_name(-1,'humidity')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Height', (SELECT converter.get_data_type_id_from_name(-1,'length')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'ETo', (SELECT converter.get_data_type_id_from_name(-1,'length')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Rainfall', (SELECT converter.get_data_type_id_from_name(-1,'length')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Visibilty', (SELECT converter.get_data_type_id_from_name(-1,'length')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Ozone', (SELECT converter.get_data_type_id_from_name(-1,'ozone')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Soil Moisture', (SELECT converter.get_data_type_id_from_name(-1,'percentage')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Soil Moisture 010 cm', (SELECT converter.get_data_type_id_from_name(-1,'percentage')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Soil Moisture 020 cm', (SELECT converter.get_data_type_id_from_name(-1,'percentage')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Soil Moisture 030 cm', (SELECT converter.get_data_type_id_from_name(-1,'percentage')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Soil Moisture 040 cm', (SELECT converter.get_data_type_id_from_name(-1,'percentage')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Pecentage Full', (SELECT converter.get_data_type_id_from_name(-1,'percentage')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Relative Humidity', (SELECT converter.get_data_type_id_from_name(-1,'percentage')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Leaf Wetness', (SELECT converter.get_data_type_id_from_name(-1,'percentage')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Cloud Cover', (SELECT converter.get_data_type_id_from_name(-1,'percentage')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Rainfall Probability', (SELECT converter.get_data_type_id_from_name(-1,'percentage')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Soil Moisture 050 cm', (SELECT converter.get_data_type_id_from_name(-1,'percentage')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Soil Moisture 060 cm', (SELECT converter.get_data_type_id_from_name(-1,'percentage')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Soil Moisture 070 cm', (SELECT converter.get_data_type_id_from_name(-1,'percentage')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Soil Moisture 080 cm', (SELECT converter.get_data_type_id_from_name(-1,'percentage')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Soil Moisture 090 cm', (SELECT converter.get_data_type_id_from_name(-1,'percentage')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Soil Moisture 100 cm', (SELECT converter.get_data_type_id_from_name(-1,'percentage')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Soil Moisture 110 cm', (SELECT converter.get_data_type_id_from_name(-1,'percentage')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Soil Moisture 120 cm', (SELECT converter.get_data_type_id_from_name(-1,'percentage')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Soil Moisture 130 cm', (SELECT converter.get_data_type_id_from_name(-1,'percentage')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Signal Strength', (SELECT converter.get_data_type_id_from_name(-1,'power_level')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Barometric Pressure', (SELECT converter.get_data_type_id_from_name(-1,'pressure')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Vapour Pressure', (SELECT converter.get_data_type_id_from_name(-1,'pressure')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Vapour Pressure Deficit', (SELECT converter.get_data_type_id_from_name(-1,'pressure')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Soil Salinity 010 cm', (SELECT converter.get_data_type_id_from_name(-1,'electric_conductivity')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Soil Salinity 020 cm', (SELECT converter.get_data_type_id_from_name(-1,'electric_conductivity')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Soil Salinity 030 cm', (SELECT converter.get_data_type_id_from_name(-1,'electric_conductivity')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Soil Salinity 040 cm', (SELECT converter.get_data_type_id_from_name(-1,'electric_conductivity')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Soil Salinity 050 cm', (SELECT converter.get_data_type_id_from_name(-1,'electric_conductivity')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Soil Salinity 060 cm', (SELECT converter.get_data_type_id_from_name(-1,'electric_conductivity')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Soil Salinity 070 cm', (SELECT converter.get_data_type_id_from_name(-1,'electric_conductivity')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Soil Salinity 080 cm', (SELECT converter.get_data_type_id_from_name(-1,'electric_conductivity')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Soil Salinity 090 cm', (SELECT converter.get_data_type_id_from_name(-1,'electric_conductivity')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Soil Salinity 100 cm', (SELECT converter.get_data_type_id_from_name(-1,'electric_conductivity')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Soil Salinity 110 cm', (SELECT converter.get_data_type_id_from_name(-1,'electric_conductivity')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Soil Salinity 120 cm', (SELECT converter.get_data_type_id_from_name(-1,'electric_conductivity')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Soil Salinity 130 cm', (SELECT converter.get_data_type_id_from_name(-1,'electric_conductivity')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Solar Radiation', (SELECT converter.get_data_type_id_from_name(-1,'solar_radiation')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Wind Speed', (SELECT converter.get_data_type_id_from_name(-1,'speed')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Wind Speed Max', (SELECT converter.get_data_type_id_from_name(-1,'speed')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Wind Speed Min', (SELECT converter.get_data_type_id_from_name(-1,'speed')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Rainfall Rate', (SELECT converter.get_data_type_id_from_name(-1,'speed')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Soil Temperature', (SELECT converter.get_data_type_id_from_name(-1,'temperature')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Air Temperature', (SELECT converter.get_data_type_id_from_name(-1,'temperature')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'DeltaT', (SELECT converter.get_data_type_id_from_name(-1,'temperature')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Dew Point', (SELECT converter.get_data_type_id_from_name(-1,'temperature')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Apparent Temperature', (SELECT converter.get_data_type_id_from_name(-1,'temperature')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Soil Temperature 010 cm', (SELECT converter.get_data_type_id_from_name(-1,'temperature')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Soil Temperature 020 cm', (SELECT converter.get_data_type_id_from_name(-1,'temperature')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Soil Temperature 030 cm', (SELECT converter.get_data_type_id_from_name(-1,'temperature')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Soil Temperature 040 cm', (SELECT converter.get_data_type_id_from_name(-1,'temperature')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Soil Temperature 050 cm', (SELECT converter.get_data_type_id_from_name(-1,'temperature')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Soil Temperature 060 cm', (SELECT converter.get_data_type_id_from_name(-1,'temperature')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Soil Temperature 070 cm', (SELECT converter.get_data_type_id_from_name(-1,'temperature')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Soil Temperature 080 cm', (SELECT converter.get_data_type_id_from_name(-1,'temperature')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Soil Temperature 090 cm', (SELECT converter.get_data_type_id_from_name(-1,'temperature')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Soil Temperature 100 cm', (SELECT converter.get_data_type_id_from_name(-1,'temperature')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Soil Temperature 110 cm', (SELECT converter.get_data_type_id_from_name(-1,'temperature')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Soil Temperature 120 cm', (SELECT converter.get_data_type_id_from_name(-1,'temperature')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Soil Temperature 130 cm', (SELECT converter.get_data_type_id_from_name(-1,'temperature')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'UV', (SELECT converter.get_data_type_id_from_name(-1,'uv_index')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Battery Voltage', (SELECT converter.get_data_type_id_from_name(-1,'voltage')))
+UNION ALL
+SELECT converter.add_data_category(-1, 'Current Volume', (SELECT converter.get_data_type_id_from_name(-1,'volume')));

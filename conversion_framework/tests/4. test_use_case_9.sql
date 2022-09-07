@@ -1,84 +1,211 @@
-create schema if not exists converter_tests;
-
 set search_path = "converter_tests";
-create or replace function  converter_tests.test_usecase_9 (
+create or replace function  converter_tests.test_use_case_9_add_data_category (
 ) returns setof text as $$
---verify functions have been created.
+    --verify functions have been created.
     select has_function('converter','add_data_category',ARRAY['integer','text','integer'])
     union all
-    select has_function('converter','update_data_category_name',ARRAY['integer','text','text'])
+    select isa_ok((select converter.add_data_category(-1, 'testcase', converter.get_data_type_id_from_name(-1,'Temperature'))),'integer','Data Category added successfully - Unit Test 1')
     union all
-    select has_function('converter','update_data_category_data_type',ARRAY['integer','text','integer'])
+    select isa_ok((select converter.get_data_category_id_from_name(-1, 'testcase')),'integer','Confirmed Data Category exists - Unit Test 2')
     union all
-    select has_function('converter','set_enabled_data_category',ARRAY['integer','text','boolean'])
+    -- test error states
+    select throws_ok ('select converter.add_data_category(null,''a'',1)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
+    'User ID cannot be null - Unit Test 3')
     union all
-    select has_function('converter','get_id_from_data_category',ARRAY['integer','text'])
+    select throws_ok ('select converter.add_data_category(-1,null,1)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
+    'Data Category Name cannot be null - Unit Test 4')
     union all
+    select throws_ok ('select converter.add_data_category(-1,''a'',null)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
+    'Data Type ID cannot be null - Unit Test 5')
+    union all
+    select throws_ok ('select converter.add_data_category(-1,''testcase'',1)', 'CF023', (select error_description from converter.response where error_code = 'CF023'),
+    'Data Category already exists - Unit Test 6')
+    union all
+    select throws_ok ('select converter.add_data_category(-1,''testcase'',-1)', 'CF015', (select error_description from converter.response where error_code = 'CF015'),
+    'Data Category already exists - Unit Test 7')
+$$ language sql;
 
---Check Add sub case
-    select results_eq('select converter.add_data_category(1, ''testcase'', 1)','select ''Data category: "testcase" was added successfully.''','add_data_category success return')
+create or replace function  converter_tests.test_use_case_9_update_data_category_name (
+) returns setof text as $$
+    --prepare data
+    select converter.add_data_category(-1, 'testcase', converter.get_data_type_id_from_name(-1,'temperature'));
+    --verify functions have been created.
+    select has_function('converter','update_data_category_name',ARRAY['integer','integer','text'])
     union all
-    select results_eq('select count(*) from converter.data_category where name = ''testcase'' ',ARRAY[1 :: BIGINT],'Data Category added successfully' )
+    select isa_ok((select converter.get_data_category_id_from_name(-1, 'testcase')),'integer','Confirmed Data Category exists - Unit Test 1a')
     union all
-    select results_eq('select converter.add_data_category(NULL,NULL,NULL)','select ''Error! Cannot input <NULL> values.''','\NULL Value Error Caught')
+    select ok((select converter.update_data_category_name(-1, converter.get_data_category_id_from_name(-1, 'testcase'),'testcase2')),'Updated Data Category name - Unit Test 1b')
     union all
-    select results_eq('select count(*) from converter.data_category where name is NULL ',ARRAY[0 :: BIGINT],'\NULL VALUE NOT added')
+    select isa_ok((select converter.get_data_category_id_from_name(-1, 'testcase2')),'integer','Confirmed New Data Category Name exists - Unit Test 1c')
     union all
-    select results_eq('select converter.add_data_category(1, ''testcase'',1)','select ''Error! The data category: "testcase" already exists.''','add_data_category failure duplicate')
+    select throws_ok ('select converter.get_data_category_id_from_name(-1,''testcase'')', 'CF025', (select error_description from converter.response where error_code = 'CF025'),
+    'Confirm old name does not exist - Unit Test 1d')
     union all
-    select results_eq('select count(*) from converter.data_category where name = ''testcase'' and type_id = 1',ARRAY[1 :: BIGINT],'Confirmed duplicate entry not added' )
+    -- test error states
+    select throws_ok ('select converter.update_data_category_name(null,1,''a'')', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
+    'User ID cannot be null - Unit Test 2')
     union all
+    select throws_ok ('select converter.update_data_category_name(-1,null,''a'')', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
+    'Data Category ID cannot be null - Unit Test 3')
+    union all
+    select throws_ok ('select converter.update_data_category_name(-1,1,null)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
+    'Data Category Name cannot be null - Unit Test 4')
+    union all
+    select throws_ok ('select converter.add_data_category(-1,-1,1)', 'CF014', (select error_description from converter.response where error_code = 'CF014'),
+    'Data Category does not exist - Unit Test 6')
+    union all
+    select throws_ok ('select converter.add_data_category(-1,converter.get_data_category_id_from_name(-1, ''testcase2''),''testcase2'')', 'CF023', (select error_description from converter.response where error_code = 'CF023'),
+    'Data Category name already exists - Unit Test 7')
+$$ language sql;
 
---Check update sub case. Current add value is testcase plus values existing in the database
-    select results_eq('select converter.update_data_category_data_type(1,''testcase'', 2)','select ''Data category: "testcase" was successfully updated to use data type: "2".''','testcase updated to data_type: 2')
-    union all
-    select results_eq('select count(*) from converter.data_category where name = ''testcase'' and type_id = 2',ARRAY[1 :: BIGINT],'Confirmed testcase is using datatype 2' )
-    union all
-    select results_eq('select converter.update_data_category_name(1, ''testcase'',''testcaseTwo'')','select ''Data category: "testcase" was successfully updated to: "testcaseTwo".''','testcase updated to testcaseTwo')
-    union all
-    select results_eq('select count(*) from converter.data_category where name = ''testcaseTwo'' and type_id = 2',ARRAY[1 :: BIGINT],'testcaseTwo now in database after Update' )
-    union all
-    select results_eq('select count(*) from converter.data_category where name = ''testcase'' ',ARRAY[0 :: BIGINT],'testcase is not in database after Update' )
-    union all
-    select converter.add_data_category(1, 'testcase', 1)
-    union all
-    select results_eq('select converter.update_data_category_name(1, ''testcaseTwo'',''testcase'')','select ''Error! The data category: "testcase" already exists.''')
-    union all
-    select results_eq('select count(*) from converter.data_category where name = ''testcaseTwo'' ',ARRAY[1 :: BIGINT],'testcaseTwo has not been updated in database after dup error' )
-    union all
-    select results_eq('select converter.update_data_category_name(NULL,''testcase'',NULL)','select ''Error! Cannot input <NULL> values.''','\NULL Value Error Caught')
-    union all
-    select results_eq('select count(*) from converter.data_category where name is NULL ',ARRAY[0 :: BIGINT],'\NULL VALUE NOT added during update')
-    union all
-    select results_eq('select converter.update_data_category_data_type(1,''testcase'',NULL)','select ''Error! Cannot input <NULL> values.''','\NULL Value Error Caught')
-    union all
-    select results_eq('select count(*) from converter.data_category where name = ''testcase'' and type_id is NULL ',ARRAY[0 :: BIGINT],'\NULL VALUE NOT added during update')
-    union all
 
---Check enable/disable sub case
-    select results_eq('select converter.set_enabled_data_category(1, ''testcase'',FALSE)','select ''Data category: "testcase" is now disabled.''','testcase success disabled data category returned')
+create or replace function  converter_tests.test_use_case_9_update_data_category_data_type (
+) returns setof text as $$
+    --prepare data
+    select converter.add_data_category(-1, 'testcase', converter.get_data_type_id_from_name(-1,'temperature'));
+    --verify functions have been created.
+    select has_function('converter','update_data_category_data_type',ARRAY['integer','integer','integer'])
     union all
-    select results_eq('select count(*) from converter.data_category where name = ''testcase'' and active = FALSE ',ARRAY[1 :: BIGINT],'Data Category testcase was disabled' )
+    select ok((select converter.update_data_category_data_type(-1,converter.get_data_category_id_from_name(-1, 'testcase'),2)),'Data Category Data Type updated - Unit Test 1a')
     union all
-    select results_eq('select converter.set_enabled_data_category(1, ''testcase'',TRUE)','select ''Data category: "testcase" is now enabled.''','testcase success enabled data category returned')
+    select ok((select converter.get_data_category_data_type_id_from_id(-1,converter.get_data_category_id_from_name(-1, 'testcase')) = 2),'Confirm Data Category Data Type updated - Unit Test 1b')
     union all
-    select results_eq('select count(*) from converter.data_category where name = ''testcase'' and active = TRUE ',ARRAY[1 :: BIGINT],'Data Category testcase was enabled' )
+    -- test error states
+    select throws_ok ('select converter.update_data_category_data_type(null,1,1)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
+    'User ID cannot be null - Unit Test 2')
     union all
-    select results_eq('select converter.set_enabled_data_category(NULL,NULL,FALSE)','select ''Error! Cannot input <NULL> values.''','\NULL Value Error Caught')
+    select throws_ok ('select converter.update_data_category_data_type(-1,null,1)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
+    'Data Category ID cannot be null - Unit Test 3')
     union all
-    select results_eq('select count(*) from converter.data_category where name is NULL and active = FALSE',ARRAY[0 :: BIGINT],'\NULL VALUE NOT set to false')
+    select throws_ok ('select converter.update_data_category_data_type(-1,1,null)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
+    'Data Type ID cannot be null - Unit Test 4')
     union all
-    select results_eq('select count(*) from converter.data_category where name is NULL and active = TRUE',ARRAY[0 :: BIGINT],'\NULL VALUE NOT set to true')
+    select throws_ok ('select converter.update_data_category_data_type(-1,-1,1)', 'CF014', (select error_description from converter.response where error_code = 'CF014'),
+    'Data Category does not exist - Unit Test 6')
     union all
-    select results_eq('select converter.set_enabled_data_category(1, ''doesNotExist'',FALSE)','select ''Error! The data category: "doesNotExist" does not exist.''','None existent Data Category error confirmed')
-    union all
-    select results_eq('select count(*) from converter.data_category where name = ''doesNotExist'' and active = FALSE ',ARRAY[0 :: BIGINT],'Data Category does not exist not in database')
-    union all
+    select throws_ok ('select converter.update_data_category_data_type(-1,converter.get_data_category_id_from_name(-1, ''testcase''),-1)', 'CF015', (select error_description from converter.response where error_code = 'CF015'),
+    'Data Type ID does not exist - Unit Test 7')
+$$ language sql;
 
---check the datatype getter
 
-    select results_eq('select converter.get_id_from_data_category(1,''testcase'')::INT','select id from converter.data_category where name = ''testcase''','ID retrieved.')
+create or replace function  converter_tests.test_use_case_9_set_enabled_data_category (
+) returns setof text as $$
+    --prepare data
+    select converter.add_data_category(-1, 'testcase', converter.get_data_type_id_from_name(-1,'temperature'));
+    --verify functions have been created.
+    select has_function('converter','set_enabled_data_category',ARRAY['integer','integer','boolean'])
     union all
-    select results_eq('select converter.get_id_from_data_category(1,''testcase23'')::INT',ARRAY[-1],'ID does not exist')
-;
-    $$ language sql;
+    select ok((select converter.get_data_category_status_from_id(-1,converter.get_data_category_id_from_name(-1, 'testcase'))),'Confirmed Data Category active - Unit Test 1a')
+    union all
+    select ok((select converter.set_enabled_data_category(-1,converter.get_data_category_id_from_name(-1, 'testcase'),false)),'Data Category Data Disabled - Unit Test 1b')
+    union all
+    select ok((select converter.get_data_category_status_from_id(-1,converter.get_data_category_id_from_name(-1, 'testcase')) = false),'Confirmed Data Category disabled - Unit Test 1c')
+    union all
+    select ok((select converter.set_enabled_data_category(-1,converter.get_data_category_id_from_name(-1, 'testcase'),true)),'Data Category Data Enabled - Unit Test 2a')
+    union all
+    select ok((select converter.get_data_category_status_from_id(-1,converter.get_data_category_id_from_name(-1, 'testcase'))),'Confirmed Data Category enabled - Unit Test 2b')
+    union all
+    -- test error states
+    select throws_ok ('select converter.set_enabled_data_category(null,1,true)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
+    'User ID cannot be null - Unit Test 3')
+    union all
+    select throws_ok ('select converter.set_enabled_data_category(-1,null,true)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
+    'Data Category ID cannot be null - Unit Test 4')
+    union all
+    select throws_ok ('select converter.set_enabled_data_category(-1,1,null)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
+    'Data Category Status cannot be null - Unit Test 5')
+    union all
+    select throws_ok ('select converter.set_enabled_data_category(-1,-1,true)', 'CF014', (select error_description from converter.response where error_code = 'CF014'),
+    'Data Category does not exist - Unit Test 6')
+    union all
+    select throws_ok ('select converter.set_enabled_data_category(-1,converter.get_data_category_id_from_name(-1, ''Air Temperature''),false)', 'CF024', (select error_description from converter.response where error_code = 'CF024'),
+    'Data Type ID does not exist - Unit Test 7')
+$$ language sql;
+
+create or replace function  converter_tests.test_use_case_9_get_data_category_data_type_id_from_id (
+) returns setof text as $$
+    --prepare data
+    select converter.add_data_category(-1, 'testcase', converter.get_data_type_id_from_name(-1,'temperature'));
+    --verify functions have been created.
+    select has_function('converter','get_data_category_data_type_id_from_id',ARRAY['integer','integer'])
+    union all
+    select ok((select converter.get_data_category_data_type_id_from_id(-1,converter.get_data_category_id_from_name(-1, 'testcase')) = converter.get_data_type_id_from_name(-1,'temperature')),'Confirm Data Type correct - Unit Test 1')
+    union all
+    -- test error states
+    select throws_ok ('select converter.update_data_category_data_type(null,1)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
+    'User ID cannot be null - Unit Test 2')
+    union all
+    select throws_ok ('select converter.update_data_category_data_type(-1,null)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
+    'Data Category ID cannot be null - Unit Test 3')
+    union all
+    select throws_ok ('select converter.update_data_category_data_type(-1,-1)', 'CF014', (select error_description from converter.response where error_code = 'CF014'),
+    'Data Category does not exist - Unit Test 6')
+$$ language sql;
+
+create or replace function  converter_tests.test_use_case_9_get_data_category_id_from_name (
+) returns setof text as $$
+    --verify functions have been created.
+    select has_function('converter','get_data_category_id_from_name',ARRAY['integer','text'])
+    union all
+    select ok((select converter.add_data_category(-1, 'testcase', converter.get_data_type_id_from_name(-1,'temperature')) = converter.get_data_category_id_from_name(-1,'testcase')),'Confirm Data category id correct - Unit Test 1')
+    union all
+    -- test error states
+    select throws_ok ('select converter.get_data_category_id_from_name(null,1)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
+    'User ID cannot be null - Unit Test 2')
+    union all
+    select throws_ok ('select converter.get_data_category_id_from_name(-1,null)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
+    'Data Category ID cannot be null - Unit Test 3')
+    union all
+    select throws_ok ('select converter.get_data_category_id_from_name(-1,-1)', 'CF014', (select error_description from converter.response where error_code = 'CF014'),
+    'Data Category does not exist - Unit Test 6')
+$$ language sql;
+
+create or replace function  converter_tests.test_use_case_9_is_data_category_dependency (
+) returns setof text as $$
+    --prepare data
+    select converter.add_data_category(-1, 'testcase', converter.get_data_type_id_from_name(-1,'temperature'));
+    --verify functions have been created.
+    select has_function('converter','is_data_category_dependency',ARRAY['integer','integer'])
+    union all
+    select ok((select converter.is_data_category_dependency(-1,converter.get_data_category_id_from_name(-1, 'testcase')) = false),'Confirmed Data Category has no dependency - Unit Test 1')
+    union all
+    select ok((select converter.is_data_category_dependency(-1,converter.get_data_category_id_from_name(-1, 'Air Temperature'))),'Confirmed Data Category has dependency - Unit Test 2')
+    union all
+    -- test error states
+    select throws_ok ('select converter.is_data_category_dependency(null,1)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
+    'User ID cannot be null - Unit Test 2')
+    union all
+    select throws_ok ('select converter.is_data_category_dependency(-1,null)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
+    'Data Category ID cannot be null - Unit Test 3')
+    union all
+    select throws_ok ('select converter.is_data_category_dependency(-1,-1)', 'CF014', (select error_description from converter.response where error_code = 'CF014'),
+    'Data Category does not exist - Unit Test 6')
+$$ language sql;
+
+create or replace function  converter_tests.test_use_case_9_get_data_category_status_from_id (
+) returns setof text as $$
+    --prepare data
+    select converter.add_data_category(-1, 'testcase', converter.get_data_type_id_from_name(-1,'temperature'));
+    --verify functions have been created.
+    select has_function('converter','get_data_category_status_from_id',ARRAY['integer','integer'])
+    union all
+    select ok((select converter.get_data_category_status_from_id(-1,converter.get_data_category_id_from_name(-1, 'testcase'))),'Confirmed Data Category active - Unit Test 1a')
+    union all
+    select ok((select converter.set_enabled_data_category(-1,converter.get_data_category_id_from_name(-1, 'testcase'),false)),'Data Category Data Disabled - Unit Test 1b')
+    union all
+    select ok((select converter.get_data_category_status_from_id(-1,converter.get_data_category_id_from_name(-1, 'testcase')) = false),'Confirmed Data Category disabled - Unit Test 1c')
+    union all
+    select ok((select converter.set_enabled_data_category(-1,converter.get_data_category_id_from_name(-1, 'testcase'),true)),'Data Category Data Enabled - Unit Test 2a')
+    union all
+    select ok((select converter.get_data_category_status_from_id(-1,converter.get_data_category_id_from_name(-1, 'testcase'))),'Confirmed Data Category enabled - Unit Test 2b')
+    union all
+    -- test error states
+    select throws_ok ('select converter.get_data_category_status_from_id(null,1)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
+    'User ID cannot be null - Unit Test 3')
+    union all
+    select throws_ok ('select converter.get_data_category_status_from_id(-1,null)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
+    'Data Category ID cannot be null - Unit Test 4')
+    union all
+    select throws_ok ('select converter.get_data_category_status_from_id(-1,-1)', 'CF014', (select error_description from converter.response where error_code = 'CF014'),
+    'Data Category does not exist - Unit Test 6')
+$$ language sql;

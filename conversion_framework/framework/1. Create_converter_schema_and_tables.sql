@@ -33,24 +33,24 @@ CONSTRAINT fk_uom_data_type_id
         REFERENCES converter.data_type(id)
         ON DELETE SET NULL);
 
-CREATE TABLE IF NOT EXISTS converter.default_units(
-id SERIAL,
-data_type_id INT,
-default_uom_id INT,
-created TIMESTAMPTZ,
-updated TIMESTAMPTZ,
-created_by INT,
-updated_by INT,
-active BOOLEAN,
-PRIMARY KEY (id),
-CONSTRAINT fk_default_units_data_type_id
-    FOREIGN KEY (data_type_id)
-        REFERENCES converter.data_type(id)
-        ON DELETE SET NULL,
-CONSTRAINT fk_default_units_default_uom_id
-    FOREIGN KEY (default_uom_id)
-        REFERENCES converter.uom(id)
-        ON DELETE SET NULL);
+-- CREATE TABLE IF NOT EXISTS converter.default_units(
+-- id SERIAL,
+-- data_type_id INT,
+-- default_uom_id INT,
+-- created TIMESTAMPTZ,
+-- updated TIMESTAMPTZ,
+-- created_by INT,
+-- updated_by INT,
+-- active BOOLEAN,
+-- PRIMARY KEY (id),
+-- CONSTRAINT fk_default_units_data_type_id
+--     FOREIGN KEY (data_type_id)
+--         REFERENCES converter.data_type(id)
+--         ON DELETE SET NULL,
+-- CONSTRAINT fk_default_units_default_uom_id
+--     FOREIGN KEY (default_uom_id)
+--         REFERENCES converter.uom(id)
+--         ON DELETE SET NULL);
 
 CREATE TABLE IF NOT EXISTS converter.data_category(
 id SERIAL,
@@ -90,7 +90,8 @@ CONSTRAINT fk_access_rights_permission_id
 
 CREATE TABLE IF NOT EXISTS converter.response(
 id SERIAL,
-description TEXT,
+error_code TEXT,
+error_description TEXT,
 PRIMARY KEY (id));
 
 CREATE TABLE IF NOT EXISTS converter.conversion_set(

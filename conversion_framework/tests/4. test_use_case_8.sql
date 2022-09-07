@@ -1,70 +1,119 @@
 set search_path = "converter_tests";
-create or replace function  converter_tests.test_usecase_8(
+
+create or replace function  converter_tests.test_use_case_8_add_data_type(
 ) returns setof text as $$
 --verify functions have been created.
     select has_function('converter','add_data_type',ARRAY['integer','text'])
     union all
-    select has_function('converter','update_data_type',ARRAY['integer','text','text'])
+    select isa_ok((select converter.add_data_type(-1, 'testcase')),'integer','Data Type added successfully - Unit Test 1')
     union all
-    select has_function('converter','set_enabled_data_type',ARRAY['integer','text','boolean'])
+    select results_eq('select count(*) from converter.data_type where name = ''testcase'' ',ARRAY[1 :: BIGINT],'Confrimed Data Type added successfully - Unit Test 2' )
     union all
+    -- test error states
+    select throws_ok ('select converter.add_data_type(null,''a'')', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
+    'User ID cannot be null - Unit Test 3')
+    union all
+    select throws_ok ('select converter.add_data_type(-1,null)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
+    'Data Type cannot be null - Unit Test 4')
+    union all
+    select throws_ok ('select converter.add_data_type(-1,''testcase'')', 'CF021', (select error_description from converter.response where error_code = 'CF021'),
+    'Data Type already exists - Unit Test 5')
+$$ language sql;
 
---Check Add sub case
-    select results_eq('select converter.add_data_type(1, ''testcase'')','select ''Data type: "testcase" was added successfully.''','add_data_type success return')
-    union all
-    select results_eq('select count(*) from converter.data_type where name = ''testcase'' ',ARRAY[1 :: BIGINT],'Data Type added successfully' )
-    union all
-    select results_eq('select converter.add_data_type(NULL,NULL)','select ''Error! Cannot input <NULL> values.''','\NULL Value Error Caught')
-    union all
-    select results_eq('select count(*) from converter.data_type where name is NULL ',ARRAY[0 :: BIGINT],'\NULL VALUE NOT added')
-    union all
-    select results_eq('select converter.add_data_type(1, ''testcase'')','select ''Error! The data type: "testcase" already exists.''','add_data_type failure duplicate')
-    union all
-    select results_eq('select count(*) from converter.data_type where name = ''testcase'' ',ARRAY[1 :: BIGINT],'Confirmed duplicate entry not added' )
-    union all
 
---Check update sub case. Current add value is testcase plus values existing in the database
-    select results_eq('select converter.update_data_type(1, ''testcase'',''testcaseTwo'')','select ''Data type: "testcase" was successfully updated to: "testcaseTwo".''','testcase updated to testcaseTwo')
+create or replace function  converter_tests.test_use_case_8_update_data_type(
+) returns setof text as $$
+    select converter.add_data_type(1, 'testcase');
+    --verify functions have been created.
+    select has_function('converter','update_data_type',ARRAY['integer','integer','text'])
     union all
-    select results_eq('select count(*) from converter.data_type where name = ''testcaseTwo'' ',ARRAY[1 :: BIGINT],'testcaseTwo now in database after Update' )
+    select throws_ok ('select converter.get_data_type_id_from_name(-1,''testcase2'')', 'CF022', (select error_description from converter.response where error_code = 'CF022'),
+    'Confirm new name does not exist - Unit Test 1a')
     union all
-    select results_eq('select count(*) from converter.data_type where name = ''testcase'' ',ARRAY[0 :: BIGINT],'testcase is not in database after Update' )
+    select ok((select converter.update_data_type(1, (select converter.get_data_type_id_from_name(-1,'testcase')),'testcase2')),'Data Type updated successfully - Unit Test 1b')
     union all
-    select converter.add_data_type(1, 'testcase')
+    select isa_ok((select converter.get_data_type_id_from_name(-1,'testcase2')),'integer','Confrimed Data Type update successfully - Unit Test 1c' )
     union all
-    select results_eq('select converter.update_data_type(1, ''testcaseTwo'',''testcase'')','select ''Error! The data type: "testcase" already exists.''')
+    -- test error states
+    select throws_ok ('select converter.update_data_type(null,1,''a'')', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
+    'User ID cannot be null - Unit Test 2')
     union all
-    select results_eq('select count(*) from converter.data_type where name = ''testcaseTwo'' ',ARRAY[1 :: BIGINT],'testcaseTwo has not been updated in database after dup error' )
+    select throws_ok ('select converter.update_data_type(-1,null,''a'')', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
+    'Data Type ID cannot be null - Unit Test 3')
     union all
-    select results_eq('select converter.update_data_type(NULL,''testcase'',NULL)','select ''Error! Cannot input <NULL> values.''','\NULL Value Error Caught')
+    select throws_ok ('select converter.update_data_type(-1,null,''a'')', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
+    'Data Type name cannot be null - Unit Test 4')
     union all
-    select results_eq('select count(*) from converter.data_type where name is NULL ',ARRAY[0 :: BIGINT],'\NULL VALUE NOT added during update')
+    select throws_ok ('select converter.update_data_type(-1,-1,''a'')', 'CF015', (select error_description from converter.response where error_code = 'CF015'),
+    'Data Type does not exist - Unit Test 5')
     union all
+    select throws_ok ('select converter.update_data_type(-1,1,''testcase2'')', 'CF021', (select error_description from converter.response where error_code = 'CF021'),
+    'Data Type already exists - Unit Test 6')
+$$ language sql;
 
---Check enable/disable sub case
-    select results_eq('select converter.set_enabled_data_type(1, ''testcase'',FALSE)','select ''Data type: "testcase" is now disabled.''','testcase success disabled data type returned')
+create or replace function  converter_tests.test_use_case_8_set_enabled_data_type(
+) returns setof text as $$
+    select converter.add_data_type(1, 'testcase');
+    --verify functions have been created.
+    select has_function('converter','set_enabled_data_type',ARRAY['integer','integer','boolean'])
     union all
-    select results_eq('select count(*) from converter.data_type where name = ''testcase'' and active = FALSE ',ARRAY[1 :: BIGINT],'Data Type testcase was disabled' )
+    select ok((select converter.get_data_type_status_from_id(-1,converter.get_data_type_id_from_name(-1,'testcase')) = true), 'Confirm type is active - Unit Test 1a')
     union all
-    select results_eq('select converter.set_enabled_data_type(1, ''testcase'',TRUE)','select ''Data type: "testcase" is now enabled.''','testcase success enabled data type returned')
+    select ok((select converter.set_enabled_data_type(1, (select converter.get_data_type_id_from_name(-1,'testcase')),false)),'Data Type status updated to false - Unit Test 1b')
     union all
-    select results_eq('select count(*) from converter.data_type where name = ''testcase'' and active = TRUE ',ARRAY[1 :: BIGINT],'Data Type testcase was enabled' )
+    select ok((select converter.get_data_type_status_from_id(-1,converter.get_data_type_id_from_name(-1,'testcase')) = false), 'Confirm type is inactive - Unit Test 1c')
     union all
-    select results_eq('select converter.set_enabled_data_type(NULL,NULL,FALSE)','select ''Error! Cannot input <NULL> values.''','\NULL Value Error Caught')
+    -- test error states
+    select throws_ok ('select converter.set_enabled_data_type(null,1,true)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
+    'User ID cannot be null - Unit Test 2')
     union all
-    select results_eq('select count(*) from converter.data_type where name is NULL and active = FALSE',ARRAY[0 :: BIGINT],'\NULL VALUE NOT set to false')
+    select throws_ok ('select converter.set_enabled_data_type(-1,null,true)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
+    'Data Type ID cannot be null - Unit Test 3')
     union all
-    select results_eq('select count(*) from converter.data_type where name is NULL and active = TRUE',ARRAY[0 :: BIGINT],'\NULL VALUE NOT set to true')
+    select throws_ok ('select converter.set_enabled_data_type(-1,1,null)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
+    'Data Type status cannot be null - Unit Test 4')
     union all
-    select results_eq('select converter.set_enabled_data_type(1, ''doesNotExist'',FALSE)','select ''Error! The data type: "doesNotExist" does not exist.''','None existent datatype error confirmed')
-    union all
-    select results_eq('select count(*) from converter.data_type where name = ''doesNotExist'' and active = FALSE ',ARRAY[0 :: BIGINT],'Data Type does not exist not in database')
-    union all
+    select throws_ok ('select converter.update_data_type(-1,-1,''a'')', 'CF015', (select error_description from converter.response where error_code = 'CF015'),
+    'Data Type does not exist - Unit Test 5')
+$$ language sql;
 
---check the datatype getter
-
-    select results_eq('select converter.get_id_from_data_type(1,''testcase'')::INT','select id from converter.data_type where name = ''testcase''','ID retrieved.')
+create or replace function  converter_tests.test_use_case_8_get_data_type_id_from_name(
+) returns setof text as $$
+    --verify functions have been created.
+    select has_function('converter','get_data_type_id_from_name',ARRAY['integer','text'])
     union all
-    select results_eq('select converter.get_id_from_data_type(1,''testcase23'')::INT',ARRAY[-1],'ID does not exist')
-;
-    $$ language sql;
+    select ok((select converter.add_data_type(1, 'testcase')) = (select converter.get_data_type_id_from_name(-1,'testcase')),'Confirm get ID function - Unit Test 1')
+    union all
+    -- test error states
+    select throws_ok ('select converter.get_data_type_id_from_name(null,1)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
+    'User ID cannot be null - Unit Test 2')
+    union all
+    select throws_ok ('select converter.get_data_type_id_from_name(-1,null)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
+    'Data Type ID cannot be null - Unit Test 3')
+    union all
+    select throws_ok ('select converter.get_data_type_id_from_name(-1,''asdfasdfeasdfe'')', 'CF022', (select error_description from converter.response where error_code = 'CF022'),
+    'Data Type name does not exist - Unit Test 3')
+$$ language sql;
+
+create or replace function  converter_tests.test_use_case_8_set_enabled_data_type(
+) returns setof text as $$
+    select converter.add_data_type(1, 'testcase');
+    --verify functions have been created.
+    select has_function('converter','get_data_type_status_from_id',ARRAY['integer','integer'])
+    union all
+    select ok((select converter.get_data_type_status_from_id(-1,converter.get_data_type_id_from_name(-1,'testcase')) = true), 'Confirm type is active - Unit Test 1a')
+    union all
+    select ok((select converter.set_enabled_data_type(1, (select converter.get_data_type_id_from_name(-1,'testcase')),false)),'Data Type status updated to false - Unit Test 1b')
+    union all
+    select ok((select converter.get_data_type_status_from_id(-1,converter.get_data_type_id_from_name(-1,'testcase')) = false), 'Confirm type is inactive - Unit Test 1c')
+    union all
+    -- test error states
+    select throws_ok ('select converter.get_data_type_status_from_id(null,1)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
+    'User ID cannot be null - Unit Test 2')
+    union all
+    select throws_ok ('select converter.get_data_type_status_from_id(-1,null)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
+    'Data Type ID cannot be null - Unit Test 3')
+    union all
+    select throws_ok ('select converter.set_enabled_data_type(-1,-1)', 'CF015', (select error_description from converter.response where error_code = 'CF015'),
+    'Data Type id cannot be found - Unit Test 4')
+$$ language sql;
