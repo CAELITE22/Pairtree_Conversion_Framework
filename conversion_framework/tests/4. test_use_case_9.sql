@@ -140,7 +140,6 @@ create or replace function  converter_tests.test_use_case_9_get_data_category_da
     union all
     select throws_ok ('select converter.update_data_category_data_type(-1,-1)', 'CF014', (select error_description from converter.response where error_code = 'CF014'),
     'Data Category does not exist - Unit Test 6')
-    union all
 $$ language sql;
 
 create or replace function  converter_tests.test_use_case_9_get_data_category_id_from_name (
@@ -168,7 +167,19 @@ create or replace function  converter_tests.test_use_case_9_is_data_category_dep
     --verify functions have been created.
     select has_function('converter','is_data_category_dependency',ARRAY['integer','integer'])
     union all
-    
+    select ok((select converter.is_data_category_dependency(-1,converter.get_data_category_id_from_name(-1, 'testcase')) = false),'Confirmed Data Category has no dependency - Unit Test 1')
+    union all
+    select ok((select converter.is_data_category_dependency(-1,converter.get_data_category_id_from_name(-1, 'Air Temperature'))),'Confirmed Data Category has dependency - Unit Test 2')
+    union all
+    -- test error states
+    select throws_ok ('select converter.is_data_category_dependency(null,1)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
+    'User ID cannot be null - Unit Test 2')
+    union all
+    select throws_ok ('select converter.is_data_category_dependency(-1,null)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
+    'Data Category ID cannot be null - Unit Test 3')
+    union all
+    select throws_ok ('select converter.is_data_category_dependency(-1,-1)', 'CF014', (select error_description from converter.response where error_code = 'CF014'),
+    'Data Category does not exist - Unit Test 6')
 $$ language sql;
 
 create or replace function  converter_tests.test_use_case_9_get_data_category_status_from_id (
