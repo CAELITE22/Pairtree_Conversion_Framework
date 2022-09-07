@@ -20,4 +20,6 @@ insert into converter.response (error_code, error_description) values
 ('CF017','Error! The supplied in_uom_name or in_uom_abbr already exists.'),
 ('CF018','Error! Boundary and UOM values must either be specified or both be null.'),
 ('CF019','Error! The UOM and boundary UOM are not of the same type.'),
-('CF020','Error! The supplied boundary UOM does not exist.');
+('CF020','Error! The supplied boundary UOM does not exist.'),
+('CF021','Error! The supplied data_type_name already exists.'),
+('CF022','Error! The supplied in_data_type_name is not found in the Data Type list.');

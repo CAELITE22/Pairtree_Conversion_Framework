@@ -1,17 +1,4 @@
 -- # use case 9 - add/delete/update a data category
-
-/*
- activity list:
-converter.add_data_category(in_user_id int, data_category_name text, data_type_id int)
-converter.update_data_category_name(in_user_id int, old_data_category_name text, new_data_category_name text)
-converter.update_data_category_data_type(in_user_id int, data_category_name text, new_data_type_id int)
-converter.set_enabled_data_category(in_user_id int, data_category_name text, isActive boolean)
-converter.check_data_category_in_conversion_sets(data_category_id)
-select count(*) from converter.category_to_conversion_set where data_category_id = <id> and active = true;
-if >0 in use, else inactive
-converter.get_id_from_data_category(in_user_id int, data_category_name text)
- */
-
 -- Add a new data_type to the converter
 CREATE OR REPLACE FUNCTION converter.add_data_category(in_user_id int, data_category_name text, data_type_id int)
 
