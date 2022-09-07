@@ -17,7 +17,7 @@ create or replace function  converter_tests.test_use_case_8_add_data_type(
     'Data Type cannot be null - Unit Test 4')
     union all
     select throws_ok ('select converter.add_data_type(-1,''testcase'')', 'CF021', (select error_description from converter.response where error_code = 'CF021'),
-    'Data Type already exists - Unit Test 4')
+    'Data Type already exists - Unit Test 5')
 $$ language sql;
 
 
