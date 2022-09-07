@@ -46,7 +46,7 @@ SELECT converter.add_data_type(-1, 'frequency');
 
 
 --Add UOMs
-SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'angle')), 'miliradians', 'mrad')
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'angle')), 'milliradians', 'mrad')
 UNION ALL
 SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'angle')), 'degrees', '°')
 UNION ALL
@@ -76,7 +76,7 @@ SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'ar
 UNION ALL
 SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'electrical_current')), 'micro-ampere', 'μA')
 UNION ALL
-SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'electrical_current')), 'mili-ampere', 'mA')
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'electrical_current')), 'milli-ampere', 'mA')
 UNION ALL
 SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'electrical_current')), 'ampere', 'A')
 UNION ALL
@@ -108,7 +108,7 @@ SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'en
 UNION ALL
 SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'energy')), 'megawatt hours', 'mWh')
 UNION ALL
-SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'frequency')), 'milihertz', 'mHz')
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'frequency')), 'millihertz', 'mHz')
 UNION ALL
 SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'frequency')), 'Hertz', 'Hz')
 UNION ALL
@@ -188,7 +188,7 @@ SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'pr
 UNION ALL
 SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'pressure')), 'bar', 'bar')
 UNION ALL
-SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'solar_radiation')), 'Watts per square metre', 'W/m2')
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'solar_radiation')), 'Watts per square meter', 'W/m2')
 UNION ALL
 SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'speed')), 'metres per hour', 'm/h')
 UNION ALL
@@ -196,7 +196,7 @@ SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'sp
 UNION ALL
 SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'speed')), 'metres per second', 'm/s')
 UNION ALL
-SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'speed')), 'yards per secord', 'yd/s')
+SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'speed')), 'yards per second', 'yd/s')
 UNION ALL
 SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'speed')), 'yards per hour', 'yd/h')
 UNION ALL
@@ -260,7 +260,7 @@ SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'vo
 UNION ALL
 SELECT converter.add_uom(-1, (SELECT converter.get_data_type_id_from_name(-1,'volume')), 'cubic foot', 'cu ft');
 
-INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'miliradians')),0.001, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'milliradians')),0.001, 0, now(), now(), -1, -1, TRUE);
 INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'degrees')),57.2958, 0, now(), now(), -1, -1, TRUE);
 INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'radians')),1, 0, now(), now(), -1, -1, TRUE);
 INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'gradians')),63.662, 0, now(), now(), -1, -1, TRUE);
@@ -275,7 +275,7 @@ INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, 
 INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'acre')),0.000247105, 0, now(), now(), -1, -1, TRUE);
 INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'square mile')),0.000621371, 0, now(), now(), -1, -1, TRUE);
 INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'micro-ampere')),1000000, 0, now(), now(), -1, -1, TRUE);
-INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'mili-ampere')),1000, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'milli-ampere')),1000, 0, now(), now(), -1, -1, TRUE);
 INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'ampere')),1, 0, now(), now(), -1, -1, TRUE);
 INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'kilo-ampere')),0.001, 0, now(), now(), -1, -1, TRUE);
 INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'mega-ampere')),0.000001, 0, now(), now(), -1, -1, TRUE);
@@ -291,7 +291,7 @@ INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, 
 INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'watt hours')),1, 0, now(), now(), -1, -1, TRUE);
 INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'kilowatt hours')),0.001, 0, now(), now(), -1, -1, TRUE);
 INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'megawatt hours')),0.000001, 0, now(), now(), -1, -1, TRUE);
-INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'milihertz')),1000, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'millihertz')),1000, 0, now(), now(), -1, -1, TRUE);
 INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'Hertz')),1, 0, now(), now(), -1, -1, TRUE);
 INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'kilohertz')),0.001, 0, now(), now(), -1, -1, TRUE);
 INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'megahertz')),0.000001, 0, now(), now(), -1, -1, TRUE);
@@ -331,11 +331,11 @@ INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, 
 INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'pounds per square inch')),0.000145038, 0, now(), now(), -1, -1, TRUE);
 INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'kilopascals')),0.001, 0, now(), now(), -1, -1, TRUE);
 INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'bar')),0.000001, 0, now(), now(), -1, -1, TRUE);
-INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'Watts per square metre')),1, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'Watts per square meter')),1, 0, now(), now(), -1, -1, TRUE);
 INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'metres per hour')),3600, 0, now(), now(), -1, -1, TRUE);
 INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'kilometres per hour')),3.6, 0, now(), now(), -1, -1, TRUE);
 INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'metres per second')),1, 0, now(), now(), -1, -1, TRUE);
-INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'yards per secord')),1.094, 0, now(), now(), -1, -1, TRUE);
+INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'yards per second')),1.094, 0, now(), now(), -1, -1, TRUE);
 INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'yards per hour')),3937.007, 0, now(), now(), -1, -1, TRUE);
 INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'miles per hour')),2.23694, 0, now(), now(), -1, -1, TRUE);
 INSERT INTO converter.conversion_rate(uom_id, rate, constant, created, updated, created_by,updated_by, active) VALUES ((SELECT converter.get_uom_id_from_name(-1,'knots')),1.94384, 0, now(), now(), -1, -1, TRUE);
