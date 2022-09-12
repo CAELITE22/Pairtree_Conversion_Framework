@@ -16,7 +16,7 @@ begin
     end if;
 
     -- ensure that the requested data_category does not already exist
-    if (select count(*) from converter.data_category where name = in_data_category_name) > 0 then
+    if (select count(*) from converter.data_category where lower(name) = lower(in_data_category_name)) > 0 then
         RAISE EXCEPTION SQLSTATE 'CF023' USING MESSAGE = (select error_description from converter.response where error_code = 'CF023');
     end if;
 
@@ -62,7 +62,7 @@ begin
     end if;
 
     -- Ensure the new name does not exist
-    if (select count(*) from converter.data_category where name = new_data_category_name) > 0 then
+    if (select count(*) from converter.data_category where lower(name) = lower(new_data_category_name)) > 0 then
         RAISE EXCEPTION SQLSTATE 'CF023' USING MESSAGE = (select error_description from converter.response where error_code = 'CF023');
     end if;
 
@@ -181,7 +181,7 @@ begin
     end if;
 
     -- get the category id from name
-    data_category_id = (select id from converter.data_category where name = in_data_category_name);
+    data_category_id = (select id from converter.data_category where lower(name) = lower(in_data_category_name));
 
     --ensure id is not null
     if (data_category_id is null) then
@@ -280,4 +280,4 @@ begin
     return false;
 
 end
-$$;)
+$$;

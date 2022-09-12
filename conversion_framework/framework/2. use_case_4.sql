@@ -35,7 +35,7 @@ BEGIN
 
     return true;
 end
-$$
+$$;
 
 create or replace function converter.get_user_conversion_set_id(
     in_user_id int
@@ -59,4 +59,4 @@ BEGIN
 
     return out_conversion_set_id;
 end
-$$
+$$;
