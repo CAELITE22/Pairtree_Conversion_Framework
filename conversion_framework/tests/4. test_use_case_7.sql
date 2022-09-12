@@ -4,8 +4,7 @@ create or replace function  converter_tests.test_use_case_7_add_uom(
     --verify function has been created.
     select has_function('converter','add_uom',ARRAY['integer','integer','text','text','real','real','integer','integer','integer','real','real','boolean'])
     union all
-    select isa_ok((select converter.add_uom(-1, 1, 'testcase1', 'tc1',24.67,33.2))
-        ,'integer', 'Correct return from add_uom function - base inputs - Unit Test 1')
+    select isa_ok((select converter.add_uom(-1, 1, 'testcase1', 'tc1',24.67,33.2)),'integer', 'Correct return from add_uom function - base inputs - Unit Test 1')
     union all
     select isa_ok((select converter.get_uom_id_from_name(-1,'testcase1')), 'integer','UOM added successfully - Unit Test 2')
     union all
