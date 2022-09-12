@@ -37,11 +37,13 @@ begin
         RAISE EXCEPTION SQLSTATE 'CF015' USING MESSAGE = (select error_description from converter.response where error_code = 'CF015');
     end if;
 
-    if (select count(*) from converter.uom where data_type_id = in_data_type_id AND uom_name = in_uom_name) > 0 then
+    --check that the name does not exist for that data type
+    if (select count(*) from converter.uom where data_type_id = in_data_type_id AND lower(uom_name) = lower(in_uom_name)) > 0 then
         RAISE EXCEPTION SQLSTATE 'CF016' USING MESSAGE = (select error_description from converter.response where error_code = 'CF016');
     end if;
 
-    if (select count(*) from converter.uom where uom_name = in_uom_name or uom_abbreviation = in_uom_abbreviation) > 0 then
+    --check that the name and abbreviation does not exist
+    if (select count(*) from converter.uom where uom_name = in_uom_name or lower(uom_abbreviation) = lower(in_uom_abbreviation)) > 0 then
         RAISE EXCEPTION SQLSTATE 'CF017' USING MESSAGE = (select error_description from converter.response where error_code = 'CF017');
     end if;
 
@@ -160,7 +162,7 @@ begin
         RAISE EXCEPTION SQLSTATE 'CF005' USING MESSAGE = (select error_description from converter.response where error_code = 'CF005');
     end if;
 
-    if((((select count(*) from converter.uom where uom_name = in_uom_name) > 0) or ((select count(*) from converter.uom where uom_abbreviation = in_uom_abbreviation) > 0 ))) then
+    if((((select count(*) from converter.uom where lower(uom_name) = lower(in_uom_name)) > 0) or ((select count(*) from converter.uom where lower(uom_abbreviation) = lower(in_uom_abbreviation)) > 0 ))) then
         RAISE EXCEPTION SQLSTATE 'CF017' USING MESSAGE = (select error_description from converter.response where error_code = 'CF017');
     end if;
 
@@ -202,7 +204,7 @@ begin
         RAISE EXCEPTION SQLSTATE 'CF005' USING MESSAGE = (select error_description from converter.response where error_code = 'CF005');
     end if;
 
-    if(select count(*) from converter.uom where uom_name = in_uom_name) > 0 then
+    if(select count(*) from converter.uom where lower(uom_name) = lower(in_uom_name)) > 0 then
         RAISE EXCEPTION SQLSTATE 'CF017' USING MESSAGE = (select error_description from converter.response where error_code = 'CF017');
     end if;
 
@@ -243,7 +245,7 @@ begin
         RAISE EXCEPTION SQLSTATE 'CF009' USING MESSAGE = (select error_description from converter.response where error_code = 'CF009');
     end if;
 
-    if(select count(*) from converter.uom where uom_abbreviation = in_uom_abbreviation) > 0 then
+    if(select count(*) from converter.uom where lower(uom_abbreviation) = lower(in_uom_abbreviation)) > 0 then
         RAISE EXCEPTION SQLSTATE 'CF017' USING MESSAGE = (select error_description from converter.response where error_code = 'CF017');
     end if;
 
@@ -454,7 +456,7 @@ begin
         RAISE EXCEPTION SQLSTATE 'CF001' USING MESSAGE = 'Error! Cannot input <NULL> values.';
     end if;
 
-    uom_id = (select id from converter.uom where uom_name = in_uom_name);
+    uom_id = (select id from converter.uom where lower(uom_name) = lower(in_uom_name));
     if uom_id is null then
         RAISE EXCEPTION SQLSTATE 'CF005' USING MESSAGE = (select error_description from converter.response where error_code = 'CF005');
     end if;
@@ -480,7 +482,7 @@ begin
         RAISE EXCEPTION SQLSTATE 'CF001' USING MESSAGE = (select error_description from converter.response where error_code = 'CF001');
     end if;
 
-    uom_id = (select id from converter.uom where uom_abbreviation = in_uom_abbr);
+    uom_id = (select id from converter.uom where lower(uom_abbreviation) = lower(in_uom_abbr));
     if uom_id is null then
         RAISE EXCEPTION SQLSTATE 'CF010' USING MESSAGE = (select error_description from converter.response where error_code = 'CF010');
     end if;

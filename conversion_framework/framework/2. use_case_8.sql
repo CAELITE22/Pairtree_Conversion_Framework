@@ -16,7 +16,7 @@ begin
     end if;
 
     -- ensure that the requested data_type does not already exist
-    if (select count(*) from converter.data_type where name = data_type_name) > 0 then
+    if (select count(*) from converter.data_type where lower(name) = lower(data_type_name)) > 0 then
         RAISE EXCEPTION SQLSTATE 'CF021' USING MESSAGE = (select error_description from converter.response where error_code = 'CF021');
     end if;
     -- create the new data_type
@@ -56,7 +56,7 @@ begin
     end if;
 
     -- Ensure the new name does not exist
-    if ((select count(*) from converter.data_type where name = new_data_type_name) > 0) then
+    if ((select count(*) from converter.data_type where lower(name) = lower(new_data_type_name)) > 0) then
         RAISE EXCEPTION SQLSTATE 'CF021' USING MESSAGE = (select error_description from converter.response where error_code = 'CF021');
     end if;
 
@@ -131,7 +131,7 @@ begin
 
     -- return the ID
     if (num_records) = 1 then
-        outcome = (select id from converter.data_type where name = in_data_type_name);
+        outcome = (select id from converter.data_type where lower(name) = lower(in_data_type_name));
         return outcome;
     end if;
 
