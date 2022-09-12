@@ -127,7 +127,7 @@ begin
     end if;
 
     -- store the number of records for error checking - requires on one query.
-    num_records = (select count(*) from converter.data_type where name = in_data_type_name);
+    num_records = (select count(*) from converter.data_type where lower(name) = lower(in_data_type_name));
 
     -- return the ID
     if (num_records) = 1 then
