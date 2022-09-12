@@ -5,6 +5,8 @@ CREATE OR REPLACE FUNCTION converter.add_uom(
     in_data_type_id int,
     in_uom_name text,
     in_uom_abbreviation text,
+    in_rate real,
+    in_constant real,
     in_prec int default 3,
     in_upper_uom int default null,
     in_lower_uom int default null,
@@ -25,7 +27,8 @@ begin
     -- if uom_abbreviation is NULL, it defaults to uom_name
     -- upper_uom, lower_uom, upper_boundary, lower_boundary are completely nullable
     -- active defaults to true
-    if (in_user_id is NULL OR in_data_type_id is NULL OR in_uom_name is NULL OR in_uom_abbreviation is NULL) then
+    if (in_user_id is NULL OR in_data_type_id is NULL OR in_uom_name is NULL OR in_uom_abbreviation is NULL OR
+        in_rate is NULL or in_constant is NULL) then
         RAISE EXCEPTION SQLSTATE 'CF001' USING MESSAGE = (select error_description from converter.response where error_code = 'CF001');
     end if;
 
@@ -49,6 +52,8 @@ begin
         RAISE EXCEPTION SQLSTATE 'CF000' USING MESSAGE = (select error_description from converter.response where error_code = 'CF000');
     end if;
 
+    insert into converter.conversion_rate (uom_id, rate, constant, created, updated, created_by, updated_by, active)
+        values (new_id, in_rate, in_constant, now(), now(), in_user_id, in_user_id, true);
     return new_id;
 
 end
@@ -231,7 +236,7 @@ begin
     end if;
 
     if(select count(*) from converter.uom where id = in_uom_id) = 0 then
-        RAISE EXCEPTION SQLSTATE 'CF005' USING MESSAGE = (select error_description from converter.response where error_code = 'CF005');
+        RAISE EXCEPTION SQLSTATE 'CF009' USING MESSAGE = (select error_description from converter.response where error_code = 'CF009');
     end if;
 
     if(select count(*) from converter.uom where uom_abbreviation = in_uom_abbreviation) > 0 then
@@ -252,6 +257,42 @@ begin
     return true;
 end
 $$;
+
+CREATE OR REPLACE FUNCTION converter.update_uom_constant_rate(
+    in_user_id int,
+    in_uom_id int,
+    in_constant real,
+    in_rate real
+)
+
+RETURNS bool
+language plpgsql
+as
+$$
+BEGIN
+    if (in_user_id is NULL or in_uom_id is NULL or in_constant is NULL or in_rate is NULL) then
+        RAISE EXCEPTION SQLSTATE 'CF001' USING MESSAGE = (select error_description from converter.response where error_code = 'CF001');
+    end if;
+
+    if((select count(*) from converter.conversion_rate where uom_id = in_uom_id) = 0) then
+        RAISE EXCEPTION SQLSTATE 'CF009' USING MESSAGE = (select error_description from converter.response where error_code = 'CF009');
+    end if;
+
+    UPDATE converter.conversion_rate
+    SET
+        rate = in_rate,
+        constant = in_constant,
+        updated = now(),
+        updated_by = in_user_id
+    where id = in_uom_id;
+
+    if ((select count(*) from converter.conversion_rate WHERE uom_id = in_uom_id and rate = in_rate and constant = in_constant) =0) then
+        RAISE EXCEPTION SQLSTATE 'CF000' USING MESSAGE = (select error_description from converter.response where error_code = 'CF000');
+    end if;
+end;
+$$;
+
+
 
 CREATE OR REPLACE FUNCTION converter.update_uom_precision(
     in_user_id int,
@@ -648,5 +689,59 @@ begin
     out_uom_concat = (select (upper_uom || '|' || upper_boundary) from converter.uom where id = in_uom_id);
 
     return out_uom_concat;
+end
+$$;
+
+CREATE OR REPLACE FUNCTION converter.get_uom_rate_from_id(
+    in_user_id int,
+    in_uom_id int
+)
+
+RETURNS real
+language plpgsql
+as
+$$
+declare
+    output real;
+begin
+
+    if(in_user_id is NULL OR in_uom_id is NULL) then
+        RAISE EXCEPTION SQLSTATE 'CF001' USING MESSAGE = (select error_description from converter.response where error_code = 'CF001');
+    end if;
+
+    output = (select rate from converter.conversion_rate where uom_id = in_uom_id);
+
+    if (output is null) then
+        RAISE EXCEPTION SQLSTATE 'CF005' USING MESSAGE = (select error_description from converter.response where error_code = 'CF005');
+    end if;
+
+    return output;
+end
+$$;
+
+CREATE OR REPLACE FUNCTION converter.get_uom_constant_from_id(
+    in_user_id int,
+    in_uom_id int
+)
+
+RETURNS real
+language plpgsql
+as
+$$
+declare
+    output real;
+begin
+
+    if(in_user_id is NULL OR in_uom_id is NULL) then
+        RAISE EXCEPTION SQLSTATE 'CF001' USING MESSAGE = (select error_description from converter.response where error_code = 'CF001');
+    end if;
+
+    output = (select constant from converter.conversion_rate where uom_id = in_uom_id);
+
+    if (output is null) then
+        RAISE EXCEPTION SQLSTATE 'CF005' USING MESSAGE = (select error_description from converter.response where error_code = 'CF005');
+    end if;
+
+    return output;
 end
 $$;
