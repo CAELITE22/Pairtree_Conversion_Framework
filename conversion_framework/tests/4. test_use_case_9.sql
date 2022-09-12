@@ -21,7 +21,7 @@ create or replace function  converter_tests.test_use_case_9_add_data_category (
     select throws_ok ('select converter.add_data_category(-1,''testcase'',1)', 'CF023', (select error_description from converter.response where error_code = 'CF023'),
     'Data Category already exists - Unit Test 6')
     union all
-    select throws_ok ('select converter.add_data_category(-1,''testcase'',-1)', 'CF015', (select error_description from converter.response where error_code = 'CF015'),
+    select throws_ok ('select converter.add_data_category(-1,''testcase'',-1)', 'CF023', (select error_description from converter.response where error_code = 'CF023'),
     'Data Category already exists - Unit Test 7')
 $$ language sql;
 
