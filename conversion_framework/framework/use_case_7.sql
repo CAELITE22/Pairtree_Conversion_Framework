@@ -41,6 +41,10 @@ begin
         RAISE EXCEPTION SQLSTATE 'CF016' USING MESSAGE = (select error_description from converter.response where error_code = 'CF016');
     end if;
 
+    if (select count(*) from converter.uom where uom_name = in_uom_name or uom_abbreviation = in_uom_abbreviation) > 0 then
+        RAISE EXCEPTION SQLSTATE 'CF017' USING MESSAGE = (select error_description from converter.response where error_code = 'CF017');
+    end if;
+
     -- create the new uom
     insert into converter.uom (data_type_id, uom_name, uom_abbreviation, precision, upper_boundary, lower_boundary, upper_uom, lower_uom, owner_user_id, created, updated, created_by, updated_by, active)
                 values (in_data_type_id, in_uom_name, in_uom_abbreviation, in_prec, in_upper_boundary, in_lower_boundary, in_upper_uom, in_lower_uom, in_user_id, now(), now(), in_user_id, in_user_id, in_active);
@@ -258,11 +262,11 @@ begin
 end
 $$;
 
-CREATE OR REPLACE FUNCTION converter.update_uom_constant_rate(
+CREATE OR REPLACE FUNCTION converter.update_uom_rate_constant(
     in_user_id int,
     in_uom_id int,
-    in_constant real,
-    in_rate real
+    in_rate real,
+    in_constant real
 )
 
 RETURNS bool
@@ -284,11 +288,13 @@ BEGIN
         constant = in_constant,
         updated = now(),
         updated_by = in_user_id
-    where id = in_uom_id;
+    where uom_id = in_uom_id;
 
-    if ((select count(*) from converter.conversion_rate WHERE uom_id = in_uom_id and rate = in_rate and constant = in_constant) =0) then
+    if ((select count(*) from converter.conversion_rate cr WHERE uom_id = in_uom_id and rate = in_rate and cr.constant = in_constant) = 0) then
         RAISE EXCEPTION SQLSTATE 'CF000' USING MESSAGE = (select error_description from converter.response where error_code = 'CF000');
     end if;
+
+    return true;
 end;
 $$;
 
