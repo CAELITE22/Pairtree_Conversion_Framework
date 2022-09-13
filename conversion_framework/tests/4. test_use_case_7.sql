@@ -157,7 +157,7 @@ returns setof text as $$
     select converter.add_uom(-1, 1, 'testcase1', 'tc1',1,0);
     --converter.update_uom_data_type(in_user_id int, in_uom_id int, in_data_type_id int)
     --verify function has been created.
-    select has_function('converter','update_uom_name',ARRAY['integer','integer','text','text'])
+    select has_function('converter','update_uom_name',ARRAY['integer','integer','text'])
     union all
     select ok(((select converter.get_uom_name_from_id(-1,converter.get_uom_id_from_name(-1,'testcase1'))) = 'testcase1'),'Confirm current UOM name - Unit Test 1a')
     union all

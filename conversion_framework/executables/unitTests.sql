@@ -327,8 +327,8 @@ create or replace function converter_tests.test_use_case_4_get_user_conversion_s
     select throws_ok ('select converter.get_user_conversion_set_id(null)', 'CF001', (select error_description from converter.response where error_code = 'CF001')::text,
         'User ID cannot be null - Unit Test 2')
     union all
-    select throws_ok ('select converter.set_user_conversion_set(-5)', 'CF002', (select error_description from converter.response where error_code = 'CF001')::text,
-        'Conversion Set ID cannot be null - Unit Test 3')
+    select throws_ok ('select converter.get_user_conversion_set_id(-5)', 'CF002', (select error_description from converter.response where error_code = 'CF002')::text,
+        'User does not have default user set - Unit Test 3')
 $$ language sql;set search_path = "converter_tests";
 create or replace function converter_tests.test_use_case_5_add_conversion_set(
 ) returns setof text as $$
@@ -440,7 +440,7 @@ create or replace function converter_tests.test_use_case_6_update_target_convers
 ) returns setof text as $$
     -- verify functions have been created
     --converter.update_target_conversion_set_category(in_user_id int, in_conversion_set_id int, in_data_category_id int, in_uom_id int)
-    select has_function('converter', 'update_target_conversion_set_category', ARRAY['integer', 'integer', 'integer', 'integer'])
+    select has_function('converter', 'update_target_conversion_set_category_uom', ARRAY['integer', 'integer', 'integer', 'integer'])
     union all
     select ok((select converter.update_target_conversion_set_category_uom(-1, converter.get_conversion_set_id_from_name(-1,'Metric'),converter.get_data_category_id_from_name(-1,'Air Temperature'), converter.get_uom_id_from_abbreviation(-1,'°F'))),'Category updated OK - Unit Test 1')
     union all
@@ -448,22 +448,22 @@ create or replace function converter_tests.test_use_case_6_update_target_convers
         'select converter.get_uom_id_from_abbreviation(-1,''°F'')','Confirm update ran successfully - Unit Test 2')
     union all
     -- test error states
-    select throws_ok ('select converter.update_target_conversion_set_category(null,2,2,2)', 'CF001', (select error_description from converter.response where error_code = 'CF001')::text,
+    select throws_ok ('select converter.update_target_conversion_set_category_uom(null,2,2,2)', 'CF001', (select error_description from converter.response where error_code = 'CF001')::text,
     'User ID cannot be null - Unit Test 3')
     union all
-    select throws_ok ('select converter.update_target_conversion_set_category(2,null,2,2)', 'CF001', (select error_description from converter.response where error_code = 'CF001')::text,
+    select throws_ok ('select converter.update_target_conversion_set_category_uom(2,null,2,2)', 'CF001', (select error_description from converter.response where error_code = 'CF001')::text,
     'Conversion Set ID cannot be null - Unit Test 4')
     union all
-    select throws_ok ('select converter.update_target_conversion_set_category(2,2,null,2)', 'CF001', (select error_description from converter.response where error_code = 'CF001')::text,
+    select throws_ok ('select converter.update_target_conversion_set_category_uom(2,2,null,2)', 'CF001', (select error_description from converter.response where error_code = 'CF001')::text,
     'Data Category cannot be null - Unit Test 5')
     union all
-    select throws_ok ('select converter.update_target_conversion_set_category(2,2,2,null)', 'CF001', (select error_description from converter.response where error_code = 'CF001')::text,
+    select throws_ok ('select converter.update_target_conversion_set_category_uom(2,2,2,null)', 'CF001', (select error_description from converter.response where error_code = 'CF001')::text,
     'UOM ID cannot be null - Unit Test 6')
     union all
-    select throws_ok ('select converter.update_target_conversion_set_category(2,2,-1,(select converter.get_uom_id_from_abbreviation(-1,''°C'')))', 'CF014', (select error_description from converter.response where error_code = 'CF014')::text,
+    select throws_ok ('select converter.update_target_conversion_set_category_uom(2,2,-1,(select converter.get_uom_id_from_abbreviation(-1,''°C'')))', 'CF014', (select error_description from converter.response where error_code = 'CF014')::text,
     'Supplied Data Category ID does not exist - Unit Test 7')
     union all
-    select throws_ok ('select converter.update_target_conversion_set_category(2,2,(select converter.get_data_category_id_from_name(-1,''Air Temperature'')),-1)', 'CF009', (select error_description from converter.response where error_code = 'CF009')::text,
+    select throws_ok ('select converter.update_target_conversion_set_category_uom(2,2,(select converter.get_data_category_id_from_name(-1,''Air Temperature'')),-1)', 'CF009', (select error_description from converter.response where error_code = 'CF009')::text,
     'Supplied UOM ID does not exist - Unit Test 8')
 $$ language sql;
 set search_path = "converter_tests";
@@ -482,9 +482,9 @@ create or replace function  converter_tests.test_use_case_7_add_uom(
     union all
     select isa_ok((select converter.get_uom_id_from_name(-1,'testcase1')), 'integer','UOM added successfully - Unit Test 4')
     union all
-    select ok((select converter.get_uom_rate_from_id(-1,converter.get_uom_id_from_name(-1,'testcase1'))) = 24.67,'Confirmed rate added - Use Case 5')
+    select ok((select converter.get_uom_rate_from_id(-1,converter.get_uom_id_from_name(-1,'testcase1'))) = 24.67::real,'Confirmed rate added - Use Case 5')
     union all
-    select ok((select converter.get_uom_constant_from_id(-1,converter.get_uom_id_from_name(-1,'testcase1'))) = 33.2,'Confirmed rate added - Use Case 6')
+    select ok((select converter.get_uom_constant_from_id(-1,converter.get_uom_id_from_name(-1,'testcase1'))) = 33.2::real,'Confirmed rate added - Use Case 6')
     union all
     -- test error states
     select throws_ok ('select converter.add_uom(null,2,''a'',''b'',1,1)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
@@ -625,7 +625,7 @@ returns setof text as $$
     select converter.add_uom(-1, 1, 'testcase1', 'tc1',1,0);
     --converter.update_uom_data_type(in_user_id int, in_uom_id int, in_data_type_id int)
     --verify function has been created.
-    select has_function('converter','update_uom_name',ARRAY['integer','integer','text','text'])
+    select has_function('converter','update_uom_name',ARRAY['integer','integer','text'])
     union all
     select ok(((select converter.get_uom_name_from_id(-1,converter.get_uom_id_from_name(-1,'testcase1'))) = 'testcase1'),'Confirm current UOM name - Unit Test 1a')
     union all
@@ -678,7 +678,7 @@ returns setof text as $$
     select throws_ok ('select converter.update_uom_abbr(-1,-1,''a'')', 'CF009', (select error_description from converter.response where error_code = 'CF009'),
     'UOM ID cannot be found - Unit Test 5')
     union all
-    select throws_ok ('select converter.update_uom_abbr(-1,2,''testcase2'')', 'CF017', (select error_description from converter.response where error_code = 'CF017'),
+    select throws_ok ('select converter.update_uom_abbr(-1,2,''tc2'')', 'CF017', (select error_description from converter.response where error_code = 'CF017'),
     'UOM Name already exists - Unit Test 6')
 $$ language sql;
 
@@ -715,7 +715,7 @@ returns setof text as $$
     select throws_ok ('select converter.update_uom_precision(-1,2,null)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
     'UOM Name cannot be null - Unit Test 4')
     union all
-    select throws_ok ('select converter.update_uom_abbr(-1,-1,1)', 'CF005', (select error_description from converter.response where error_code = 'CF005'),
+    select throws_ok ('select converter.update_uom_precision(-1,-1,1)', 'CF005', (select error_description from converter.response where error_code = 'CF005'),
     'UOM ID cannot be found - Unit Test 5')
 $$ language sql;
 
@@ -813,7 +813,7 @@ CREATE OR REPLACE FUNCTION converter_tests.test_use_case_7_get_uom_id_from_name(
 returns setof text as $$
     --converter.get_uom_id_from_name(in_user_id int, in_uom_name text)
     --verify function has been created.
-    select has_function('converter','get_uom_id_from_name',ARRAY['integer','integer','real','integer'])
+    select has_function('converter','get_uom_id_from_name',ARRAY['integer','text'])
     union all
     select ok((select converter.add_uom(-1, 1, 'testcase1', 'tc1',1,0) = (select converter.get_uom_id_from_name(-1,'testcase1'))),'Confirmed correct ID returned from name - Unit Test 1')
     union all
@@ -1064,7 +1064,7 @@ returns setof text as $$
     --verify function has been created.
     select has_function('converter','get_uom_rate_from_id',ARRAY['integer','integer'])
     union all
-    select ok(((select converter.get_uom_rate_from_id(-1,converter.get_uom_id_from_abbreviation(-1,'tc1'))) = 589.78),'Confirmed UOM rate correct - Unit Test 1')
+    select ok(((select converter.get_uom_rate_from_id(-1,converter.get_uom_id_from_abbreviation(-1,'tc1'))) = 589.78::real),'Confirmed UOM rate correct - Unit Test 1')
     union all
     -- test error states
     select throws_ok ('select converter.get_uom_rate_from_id(null, 1)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
@@ -1085,7 +1085,7 @@ returns setof text as $$
     --verify function has been created.
     select has_function('converter','get_uom_constant_from_id',ARRAY['integer','integer'])
     union all
-    select ok(((select converter.get_uom_constant_from_id(-1,converter.get_uom_id_from_abbreviation(-1,'tc1'))) = 2986.04),'Confirmed UOM Constant correct - Unit Test 1')
+    select ok(((select converter.get_uom_constant_from_id(-1,converter.get_uom_id_from_abbreviation(-1,'tc1'))) = 2986.04::real),'Confirmed UOM Constant correct - Unit Test 1')
     union all
     -- test error states
     select throws_ok ('select converter.get_uom_constant_from_id(null, 1)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
@@ -1107,34 +1107,32 @@ returns setof text as $$
     --verify function has been created.
     select has_function('converter','update_uom_rate_constant',ARRAY['integer','integer','real','real'])
     union all
-    select ok(((select converter.get_uom_rate_from_id(-1,converter.get_uom_id_from_abbreviation(-1,'tc1'))) = 589.78::real),'Confirmed UOM rate correct - Unit Test 1a')
+    select ok((select converter.get_uom_rate_from_id(-1,(select converter.get_uom_id_from_abbreviation(-1,'tc1'))) = 589.78::real),'Confirmed UOM rate correct - Unit Test 1a')
     union all
-    select ok(((select converter.get_uom_constant_from_id(-1,converter.get_uom_id_from_abbreviation(-1,'tc1'))) = 2986.04::real),'Confirmed UOM Constant correct - Unit Test 1b')
+    select ok((select converter.get_uom_constant_from_id(-1,(select converter.get_uom_id_from_abbreviation(-1,'tc1'))) = 2986.04::real),'Confirmed UOM Constant correct - Unit Test 1b')
     union all
-    select ok((select converter.update_uom_rate_constant(-1,converter.get_uom_id_from_abbreviation(-1,'tc1'),0.12345,12345.6)),'Update Rate and Constant successfully - Unit Test 1c')
+    select ok((select converter.update_uom_rate_constant(-1, (select converter.get_uom_id_from_abbreviation(-1,'tc1')),0.12345,12345.6)),'Update Rate and Constant successfully - Unit Test 1c')
     union all
-    select ok(((select converter.get_uom_rate_from_id(-1,converter.get_uom_id_from_abbreviation(-1,'tc1'))) = 0.12345::real),'Confirmed UOM rate updated correctly - Unit Test 1d')
+    select ok((select converter.get_uom_rate_from_id(-1,(select converter.get_uom_id_from_abbreviation(-1,'tc1'))) = 0.12345::real),'Confirmed UOM rate updated correctly - Unit Test 1d')
     union all
-    select ok(((select converter.get_uom_constant_from_id(-1,converter.get_uom_id_from_abbreviation(-1,'tc1'))) = 12345.6::real),'Confirmed UOM Constant updated correctly - Unit Test 1e')
+    select ok((select converter.get_uom_constant_from_id(-1,(select converter.get_uom_id_from_abbreviation(-1,'tc1'))) = 12345.6::real),'Confirmed UOM Constant updated correctly - Unit Test 1e')
     union all
     -- test error states
-    select throws_ok ('select converter.update_uom_rate_constant(null, 1,1,2)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
+    select throws_ok ('select converter.update_uom_rate_constant(null, 1,1.0::real,2.0::real)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
     'User ID cannot be null - Unit Test 3')
     union all
-    select throws_ok ('select converter.get_uom_constant_from_id(-1, null,1,2)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
+    select throws_ok ('select converter.update_uom_rate_constant(-1, null,1.0::real,2.0::real)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
     'UOM ID cannot be null - Unit Test 4')
     union all
-    select throws_ok ('select converter.get_uom_constant_from_id(-1, 1,null,2)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
+    select throws_ok ('select converter.update_uom_rate_constant(-1, 1,null,2.0::real)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
     'Rate cannot be null - Unit Test 5')
     union all
-    select throws_ok ('select converter.get_uom_constant_from_id(-1, 1,1,null)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
+    select throws_ok ('select converter.update_uom_rate_constant(-1, 1,1,null)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
     'Constant cannot be null - Unit Test 6')
     union all
     select throws_ok ('select converter.get_uom_constant_from_id(-1, -1)', 'CF005', (select error_description from converter.response where error_code = 'CF005'),
     'Confirmed UOM ID not found - Unit Test 7')
-    union all
-    select throws_ok ('select converter.get_uom_constant_from_id(-1, -1)', 'CF009', (select error_description from converter.response where error_code = 'CF009'),
-    'Confirmed UOM ID not found - Unit Test 7')
+
 $$ language sql;set search_path = "converter_tests";
 
 create or replace function  converter_tests.test_use_case_8_add_data_type(
@@ -1222,7 +1220,7 @@ create or replace function  converter_tests.test_use_case_8_get_data_type_id_fro
     select ok((select converter.add_data_type(1, 'testcase')) = (select converter.get_data_type_id_from_name(-1,'testcase')),'Confirm get ID function - Unit Test 1')
     union all
     -- test error states
-    select throws_ok ('select converter.get_data_type_id_from_name(null,1)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
+    select throws_ok ('select converter.get_data_type_id_from_name(null,''testcase'')', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
     'User ID cannot be null - Unit Test 2')
     union all
     select throws_ok ('select converter.get_data_type_id_from_name(-1,null)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
@@ -1232,7 +1230,7 @@ create or replace function  converter_tests.test_use_case_8_get_data_type_id_fro
     'Data Type name does not exist - Unit Test 3')
 $$ language sql;
 
-create or replace function  converter_tests.test_use_case_8_set_enabled_data_type(
+create or replace function  converter_tests.test_use_case_8_get_data_type_status_from_id(
 ) returns setof text as $$
     select converter.add_data_type(1, 'testcase');
     --verify functions have been created.
@@ -1251,7 +1249,7 @@ create or replace function  converter_tests.test_use_case_8_set_enabled_data_typ
     select throws_ok ('select converter.get_data_type_status_from_id(-1,null)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
     'Data Type ID cannot be null - Unit Test 3')
     union all
-    select throws_ok ('select converter.set_enabled_data_type(-1,-1)', 'CF015', (select error_description from converter.response where error_code = 'CF015'),
+    select throws_ok ('select converter.get_data_type_status_from_id(-1,-1)', 'CF015', (select error_description from converter.response where error_code = 'CF015'),
     'Data Type id cannot be found - Unit Test 4')
 $$ language sql;set search_path = "converter_tests";
 create or replace function  converter_tests.test_use_case_9_add_data_category (
@@ -1306,11 +1304,11 @@ create or replace function  converter_tests.test_use_case_9_update_data_category
     select throws_ok ('select converter.update_data_category_name(-1,1,null)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
     'Data Category Name cannot be null - Unit Test 4')
     union all
-    select throws_ok ('select converter.add_data_category(-1,-1,1)', 'CF014', (select error_description from converter.response where error_code = 'CF014'),
-    'Data Category does not exist - Unit Test 6')
+    select throws_ok ('select converter.update_data_category_name(-1,-1,''hello'')', 'CF014', (select error_description from converter.response where error_code = 'CF014'),
+    'Data Category does not exist - Unit Test 5')
     union all
-    select throws_ok ('select converter.add_data_category(-1,converter.get_data_category_id_from_name(-1, ''testcase2''),''testcase2'')', 'CF023', (select error_description from converter.response where error_code = 'CF023'),
-    'Data Category name already exists - Unit Test 7')
+    select throws_ok ('select converter.update_data_category_name(-1,converter.get_data_category_id_from_name(-1, ''testcase2''),''testcase2'')', 'CF023', (select error_description from converter.response where error_code = 'CF023'),
+    'Data Category name already exists - Unit Test 6')
 $$ language sql;
 
 
@@ -1336,10 +1334,10 @@ create or replace function  converter_tests.test_use_case_9_update_data_category
     'Data Type ID cannot be null - Unit Test 4')
     union all
     select throws_ok ('select converter.update_data_category_data_type(-1,-1,1)', 'CF014', (select error_description from converter.response where error_code = 'CF014'),
-    'Data Category does not exist - Unit Test 6')
+    'Data Category does not exist - Unit Test 5')
     union all
     select throws_ok ('select converter.update_data_category_data_type(-1,converter.get_data_category_id_from_name(-1, ''testcase''),-1)', 'CF015', (select error_description from converter.response where error_code = 'CF015'),
-    'Data Type ID does not exist - Unit Test 7')
+    'Data Type ID does not exist - Unit Test 6')
 $$ language sql;
 
 
@@ -1387,13 +1385,13 @@ create or replace function  converter_tests.test_use_case_9_get_data_category_da
     select ok((select converter.get_data_category_data_type_id_from_id(-1,converter.get_data_category_id_from_name(-1, 'testcase')) = converter.get_data_type_id_from_name(-1,'temperature')),'Confirm Data Type correct - Unit Test 1')
     union all
     -- test error states
-    select throws_ok ('select converter.update_data_category_data_type(null,1)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
+    select throws_ok ('select converter.get_data_category_data_type_id_from_id(null,1)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
     'User ID cannot be null - Unit Test 2')
     union all
-    select throws_ok ('select converter.update_data_category_data_type(-1,null)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
+    select throws_ok ('select converter.get_data_category_data_type_id_from_id(-1,null)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
     'Data Category ID cannot be null - Unit Test 3')
     union all
-    select throws_ok ('select converter.update_data_category_data_type(-1,-1)', 'CF014', (select error_description from converter.response where error_code = 'CF014'),
+    select throws_ok ('select converter.get_data_category_data_type_id_from_id(-1,-1)', 'CF014', (select error_description from converter.response where error_code = 'CF014'),
     'Data Category does not exist - Unit Test 6')
 $$ language sql;
 
@@ -1405,13 +1403,13 @@ create or replace function  converter_tests.test_use_case_9_get_data_category_id
     select ok((select converter.add_data_category(-1, 'testcase', converter.get_data_type_id_from_name(-1,'temperature')) = converter.get_data_category_id_from_name(-1,'testcase')),'Confirm Data category id correct - Unit Test 1')
     union all
     -- test error states
-    select throws_ok ('select converter.get_data_category_id_from_name(null,1)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
+    select throws_ok ('select converter.get_data_category_id_from_name(null,''testcase'')', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
     'User ID cannot be null - Unit Test 2')
     union all
     select throws_ok ('select converter.get_data_category_id_from_name(-1,null)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
-    'Data Category ID cannot be null - Unit Test 3')
+    'Data Category Name cannot be null - Unit Test 3')
     union all
-    select throws_ok ('select converter.get_data_category_id_from_name(-1,-1)', 'CF014', (select error_description from converter.response where error_code = 'CF014'),
+    select throws_ok ('select converter.get_data_category_id_from_name(-1,''adfaagteladfa'')', 'CF025', (select error_description from converter.response where error_code = 'CF025'),
     'Data Category does not exist - Unit Test 6')
 $$ language sql;
 

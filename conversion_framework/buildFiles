@@ -1,0 +1,4 @@
+cat ./conversion_framework/framework/1*.sql > ./conversion_framework/executables/loadFile1.sql
+cat ./conversion_framework/framework/2*.sql > ./conversion_framework/executables/loadFile2.sql
+cat ./conversion_framework/framework/3*.sql > ./conversion_framework/executables/loadFile3.sql
+cat ./conversion_framework/tests/*.sql > ./conversion_framework/executables/unitTests.sql
