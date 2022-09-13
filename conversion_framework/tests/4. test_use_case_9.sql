@@ -51,11 +51,11 @@ create or replace function  converter_tests.test_use_case_9_update_data_category
     select throws_ok ('select converter.update_data_category_name(-1,1,null)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
     'Data Category Name cannot be null - Unit Test 4')
     union all
-    select throws_ok ('select converter.add_data_category(-1,-1,1)', 'CF014', (select error_description from converter.response where error_code = 'CF014'),
-    'Data Category does not exist - Unit Test 6')
+    select throws_ok ('select converter.update_data_category_name(-1,-1,''hello'')', 'CF014', (select error_description from converter.response where error_code = 'CF014'),
+    'Data Category does not exist - Unit Test 5')
     union all
-    select throws_ok ('select converter.add_data_category(-1,converter.get_data_category_id_from_name(-1, ''testcase2''),''testcase2'')', 'CF023', (select error_description from converter.response where error_code = 'CF023'),
-    'Data Category name already exists - Unit Test 7')
+    select throws_ok ('select converter.update_data_category_name(-1,converter.get_data_category_id_from_name(-1, ''testcase2''),''testcase2'')', 'CF023', (select error_description from converter.response where error_code = 'CF023'),
+    'Data Category name already exists - Unit Test 6')
 $$ language sql;
 
 
@@ -81,10 +81,10 @@ create or replace function  converter_tests.test_use_case_9_update_data_category
     'Data Type ID cannot be null - Unit Test 4')
     union all
     select throws_ok ('select converter.update_data_category_data_type(-1,-1,1)', 'CF014', (select error_description from converter.response where error_code = 'CF014'),
-    'Data Category does not exist - Unit Test 6')
+    'Data Category does not exist - Unit Test 5')
     union all
     select throws_ok ('select converter.update_data_category_data_type(-1,converter.get_data_category_id_from_name(-1, ''testcase''),-1)', 'CF015', (select error_description from converter.response where error_code = 'CF015'),
-    'Data Type ID does not exist - Unit Test 7')
+    'Data Type ID does not exist - Unit Test 6')
 $$ language sql;
 
 

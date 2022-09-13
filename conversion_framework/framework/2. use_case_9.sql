@@ -96,7 +96,7 @@ begin
 
     -- Ensure there are no NULL values
     if (in_user_id is NULL OR in_data_category_id is NULL OR new_data_type_id is NULL) then
-        RAISE EXCEPTION SQLSTATE 'CF000' USING MESSAGE = (select error_description from converter.response where error_code = 'CF000');
+        RAISE EXCEPTION SQLSTATE 'CF001' USING MESSAGE = (select error_description from converter.response where error_code = 'CF001');
     end if;
 
     -- Ensure the data_category_id exists

@@ -95,7 +95,7 @@ create or replace function  converter_tests.test_use_case_8_get_data_type_id_fro
     'Data Type name does not exist - Unit Test 3')
 $$ language sql;
 
-create or replace function  converter_tests.test_use_case_8_set_enabled_data_type(
+create or replace function  converter_tests.test_use_case_8_get_data_type_status_from_id(
 ) returns setof text as $$
     select converter.add_data_type(1, 'testcase');
     --verify functions have been created.
@@ -114,6 +114,6 @@ create or replace function  converter_tests.test_use_case_8_set_enabled_data_typ
     select throws_ok ('select converter.get_data_type_status_from_id(-1,null)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
     'Data Type ID cannot be null - Unit Test 3')
     union all
-    select throws_ok ('select converter.set_enabled_data_type(-1,-1)', 'CF015', (select error_description from converter.response where error_code = 'CF015'),
+    select throws_ok ('select converter.get_data_type_status_from_id(-1,-1)', 'CF015', (select error_description from converter.response where error_code = 'CF015'),
     'Data Type id cannot be found - Unit Test 4')
 $$ language sql;
