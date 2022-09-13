@@ -14,9 +14,9 @@ create or replace function  converter_tests.test_use_case_7_add_uom(
     union all
     select isa_ok((select converter.get_uom_id_from_name(-1,'testcase1')), 'integer','UOM added successfully - Unit Test 4')
     union all
-    select ok((select converter.get_uom_rate_from_id(-1,converter.get_uom_id_from_name(-1,'testcase1'))) = 24.67,'Confirmed rate added - Use Case 5')
+    select ok((select converter.get_uom_rate_from_id(-1,converter.get_uom_id_from_name(-1,'testcase1'))) = 24.67::real,'Confirmed rate added - Use Case 5')
     union all
-    select ok((select converter.get_uom_constant_from_id(-1,converter.get_uom_id_from_name(-1,'testcase1'))) = 33.2,'Confirmed rate added - Use Case 6')
+    select ok((select converter.get_uom_constant_from_id(-1,converter.get_uom_id_from_name(-1,'testcase1'))) = 33.2::real,'Confirmed rate added - Use Case 6')
     union all
     -- test error states
     select throws_ok ('select converter.add_uom(null,2,''a'',''b'',1,1)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
@@ -210,7 +210,7 @@ returns setof text as $$
     select throws_ok ('select converter.update_uom_abbr(-1,-1,''a'')', 'CF009', (select error_description from converter.response where error_code = 'CF009'),
     'UOM ID cannot be found - Unit Test 5')
     union all
-    select throws_ok ('select converter.update_uom_abbr(-1,2,''testcase2'')', 'CF017', (select error_description from converter.response where error_code = 'CF017'),
+    select throws_ok ('select converter.update_uom_abbr(-1,2,''tc2'')', 'CF017', (select error_description from converter.response where error_code = 'CF017'),
     'UOM Name already exists - Unit Test 6')
 $$ language sql;
 
@@ -247,7 +247,7 @@ returns setof text as $$
     select throws_ok ('select converter.update_uom_precision(-1,2,null)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
     'UOM Name cannot be null - Unit Test 4')
     union all
-    select throws_ok ('select converter.update_uom_abbr(-1,-1,1)', 'CF005', (select error_description from converter.response where error_code = 'CF005'),
+    select throws_ok ('select converter.update_uom_precision(-1,-1,1)', 'CF005', (select error_description from converter.response where error_code = 'CF005'),
     'UOM ID cannot be found - Unit Test 5')
 $$ language sql;
 
@@ -345,7 +345,7 @@ CREATE OR REPLACE FUNCTION converter_tests.test_use_case_7_get_uom_id_from_name(
 returns setof text as $$
     --converter.get_uom_id_from_name(in_user_id int, in_uom_name text)
     --verify function has been created.
-    select has_function('converter','get_uom_id_from_name',ARRAY['integer','integer','real','integer'])
+    select has_function('converter','get_uom_id_from_name',ARRAY['integer','text'])
     union all
     select ok((select converter.add_uom(-1, 1, 'testcase1', 'tc1',1,0) = (select converter.get_uom_id_from_name(-1,'testcase1'))),'Confirmed correct ID returned from name - Unit Test 1')
     union all
@@ -596,7 +596,7 @@ returns setof text as $$
     --verify function has been created.
     select has_function('converter','get_uom_rate_from_id',ARRAY['integer','integer'])
     union all
-    select ok(((select converter.get_uom_rate_from_id(-1,converter.get_uom_id_from_abbreviation(-1,'tc1'))) = 589.78),'Confirmed UOM rate correct - Unit Test 1')
+    select ok(((select converter.get_uom_rate_from_id(-1,converter.get_uom_id_from_abbreviation(-1,'tc1'))) = 589.78::real),'Confirmed UOM rate correct - Unit Test 1')
     union all
     -- test error states
     select throws_ok ('select converter.get_uom_rate_from_id(null, 1)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
@@ -617,7 +617,7 @@ returns setof text as $$
     --verify function has been created.
     select has_function('converter','get_uom_constant_from_id',ARRAY['integer','integer'])
     union all
-    select ok(((select converter.get_uom_constant_from_id(-1,converter.get_uom_id_from_abbreviation(-1,'tc1'))) = 2986.04),'Confirmed UOM Constant correct - Unit Test 1')
+    select ok(((select converter.get_uom_constant_from_id(-1,converter.get_uom_id_from_abbreviation(-1,'tc1'))) = 2986.04::real),'Confirmed UOM Constant correct - Unit Test 1')
     union all
     -- test error states
     select throws_ok ('select converter.get_uom_constant_from_id(null, 1)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
@@ -639,32 +639,30 @@ returns setof text as $$
     --verify function has been created.
     select has_function('converter','update_uom_rate_constant',ARRAY['integer','integer','real','real'])
     union all
-    select ok(((select converter.get_uom_rate_from_id(-1,converter.get_uom_id_from_abbreviation(-1,'tc1'))) = 589.78::real),'Confirmed UOM rate correct - Unit Test 1a')
+    select ok((select converter.get_uom_rate_from_id(-1,(select converter.get_uom_id_from_abbreviation(-1,'tc1'))) = 589.78::real),'Confirmed UOM rate correct - Unit Test 1a')
     union all
-    select ok(((select converter.get_uom_constant_from_id(-1,converter.get_uom_id_from_abbreviation(-1,'tc1'))) = 2986.04::real),'Confirmed UOM Constant correct - Unit Test 1b')
+    select ok((select converter.get_uom_constant_from_id(-1,(select converter.get_uom_id_from_abbreviation(-1,'tc1'))) = 2986.04::real),'Confirmed UOM Constant correct - Unit Test 1b')
     union all
-    select ok((select converter.update_uom_rate_constant(-1,converter.get_uom_id_from_abbreviation(-1,'tc1'),0.12345,12345.6)),'Update Rate and Constant successfully - Unit Test 1c')
+    select ok((select converter.update_uom_rate_constant(-1, (select converter.get_uom_id_from_abbreviation(-1,'tc1')),0.12345,12345.6)),'Update Rate and Constant successfully - Unit Test 1c')
     union all
-    select ok(((select converter.get_uom_rate_from_id(-1,converter.get_uom_id_from_abbreviation(-1,'tc1'))) = 0.12345::real),'Confirmed UOM rate updated correctly - Unit Test 1d')
+    select ok((select converter.get_uom_rate_from_id(-1,(select converter.get_uom_id_from_abbreviation(-1,'tc1'))) = 0.12345::real),'Confirmed UOM rate updated correctly - Unit Test 1d')
     union all
-    select ok(((select converter.get_uom_constant_from_id(-1,converter.get_uom_id_from_abbreviation(-1,'tc1'))) = 12345.6::real),'Confirmed UOM Constant updated correctly - Unit Test 1e')
+    select ok((select converter.get_uom_constant_from_id(-1,(select converter.get_uom_id_from_abbreviation(-1,'tc1'))) = 12345.6::real),'Confirmed UOM Constant updated correctly - Unit Test 1e')
     union all
     -- test error states
-    select throws_ok ('select converter.update_uom_rate_constant(null, 1,1,2)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
+    select throws_ok ('select converter.update_uom_rate_constant(null, 1,1.0::real,2.0::real)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
     'User ID cannot be null - Unit Test 3')
     union all
-    select throws_ok ('select converter.get_uom_constant_from_id(-1, null,1,2)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
+    select throws_ok ('select converter.update_uom_rate_constant(-1, null,1.0::real,2.0::real)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
     'UOM ID cannot be null - Unit Test 4')
     union all
-    select throws_ok ('select converter.get_uom_constant_from_id(-1, 1,null,2)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
+    select throws_ok ('select converter.update_uom_rate_constant(-1, 1,null,2.0::real)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
     'Rate cannot be null - Unit Test 5')
     union all
-    select throws_ok ('select converter.get_uom_constant_from_id(-1, 1,1,null)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
+    select throws_ok ('select converter.update_uom_rate_constant(-1, 1,1,null)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
     'Constant cannot be null - Unit Test 6')
     union all
     select throws_ok ('select converter.get_uom_constant_from_id(-1, -1)', 'CF005', (select error_description from converter.response where error_code = 'CF005'),
     'Confirmed UOM ID not found - Unit Test 7')
-    union all
-    select throws_ok ('select converter.get_uom_constant_from_id(-1, -1)', 'CF009', (select error_description from converter.response where error_code = 'CF009'),
-    'Confirmed UOM ID not found - Unit Test 7')
+
 $$ language sql;
