@@ -48,6 +48,6 @@ create or replace function converter_tests.test_use_case_4_get_user_conversion_s
     select throws_ok ('select converter.get_user_conversion_set_id(null)', 'CF001', (select error_description from converter.response where error_code = 'CF001')::text,
         'User ID cannot be null - Unit Test 2')
     union all
-    select throws_ok ('select converter.set_user_conversion_set(-5)', 'CF002', (select error_description from converter.response where error_code = 'CF001')::text,
-        'Conversion Set ID cannot be null - Unit Test 3')
+    select throws_ok ('select converter.get_user_conversion_set_id(-5)', 'CF002', (select error_description from converter.response where error_code = 'CF002')::text,
+        'User does not have default user set - Unit Test 3')
 $$ language sql;

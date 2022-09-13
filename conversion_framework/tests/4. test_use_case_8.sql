@@ -85,7 +85,7 @@ create or replace function  converter_tests.test_use_case_8_get_data_type_id_fro
     select ok((select converter.add_data_type(1, 'testcase')) = (select converter.get_data_type_id_from_name(-1,'testcase')),'Confirm get ID function - Unit Test 1')
     union all
     -- test error states
-    select throws_ok ('select converter.get_data_type_id_from_name(null,1)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
+    select throws_ok ('select converter.get_data_type_id_from_name(null,''testcase'')', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
     'User ID cannot be null - Unit Test 2')
     union all
     select throws_ok ('select converter.get_data_type_id_from_name(-1,null)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
