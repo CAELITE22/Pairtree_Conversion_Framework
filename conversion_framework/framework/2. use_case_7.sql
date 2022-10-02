@@ -441,7 +441,8 @@ $$;
 
 CREATE OR REPLACE FUNCTION converter.get_uom_id_from_name(
     in_user_id int,
-    in_uom_name text
+    in_uom_name text,
+    in_throw boolean default true
 )
 
 RETURNS int
@@ -457,7 +458,7 @@ begin
     end if;
 
     uom_id = (select id from converter.uom where lower(uom_name) = lower(in_uom_name));
-    if uom_id is null then
+    if uom_id is null and in_throw then
         RAISE EXCEPTION SQLSTATE 'CF005' USING MESSAGE = (select error_description from converter.response where error_code = 'CF005');
     end if;
 
@@ -467,7 +468,8 @@ $$;
 
 CREATE OR REPLACE FUNCTION converter.get_uom_id_from_abbreviation(
     in_user_id int,
-    in_uom_abbr text
+    in_uom_abbr text,
+    in_throw boolean default true
 )
 
 RETURNS int
@@ -483,7 +485,7 @@ begin
     end if;
 
     uom_id = (select id from converter.uom where uom_abbreviation = in_uom_abbr);
-    if uom_id is null then
+    if uom_id is null and in_throw then
         RAISE EXCEPTION SQLSTATE 'CF010' USING MESSAGE = (select error_description from converter.response where error_code = 'CF010');
     end if;
 

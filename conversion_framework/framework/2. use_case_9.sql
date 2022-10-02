@@ -166,7 +166,7 @@ end
 $$;
 
 -- get the id from a data_category
-CREATE OR REPLACE FUNCTION converter.get_data_category_id_from_name(in_user_id int, in_data_category_name text)
+CREATE OR REPLACE FUNCTION converter.get_data_category_id_from_name(in_user_id int, in_data_category_name text, in_throw boolean default true)
 
 RETURNS int
 language plpgsql
@@ -184,7 +184,7 @@ begin
     data_category_id = (select id from converter.data_category where lower(name) = lower(in_data_category_name));
 
     --ensure id is not null
-    if (data_category_id is null) then
+    if (data_category_id is null and in_throw) then
         RAISE EXCEPTION SQLSTATE 'CF025' USING MESSAGE = (select error_description from converter.response where error_code = 'CF025');
     end if;
 
