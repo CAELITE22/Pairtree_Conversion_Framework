@@ -1,5 +1,5 @@
 -- # this conversion process uses the users default conversion set - numerical values only
-
+DROP FUNCTION converter.convert_by_conversion_set;
 CREATE OR REPLACE FUNCTION converter.convert_by_conversion_set(in_user_id int, in_conversion_set_id int, in_uom_id int, in_data_category_id int, in_value float)
 RETURNS real
 language plpgsql

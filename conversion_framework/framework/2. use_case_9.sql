@@ -1,5 +1,6 @@
 -- # use case 9 - add/delete/update a data category
 -- Add a new data_type to the converter
+DROP FUNCTION converter.add_data_category;
 CREATE OR REPLACE FUNCTION converter.add_data_category(in_user_id int, in_data_category_name text, in_data_type_id int)
 
 RETURNS int
@@ -41,6 +42,7 @@ end
 $$;
 
 -- Update an existing data category
+DROP FUNCTION converter.update_data_category_name;
 CREATE OR REPLACE FUNCTION converter.update_data_category_name(in_user_id int, in_data_category_id int, new_data_category_name text)
 
 RETURNS bool
@@ -84,6 +86,7 @@ $$;
 
 
 -- Update an existing data type association in a data category
+DROP FUNCTION converter.update_data_category_data_type;
 CREATE OR REPLACE FUNCTION converter.update_data_category_data_type(in_user_id int, in_data_category_id int, new_data_type_id int)
 
 RETURNS bool
@@ -127,6 +130,8 @@ $$;
 
 
 -- Enable/Disable an existing data category
+DROP FUNCTION converter.set_enabled_data_category;
+
 CREATE OR REPLACE FUNCTION converter.set_enabled_data_category(in_user_id int, in_data_category_id int, isEnabled boolean)
 
 RETURNS bool
@@ -166,6 +171,8 @@ end
 $$;
 
 -- get the id from a data_category
+DROP FUNCTION converter.get_data_category_id_from_name;
+
 CREATE OR REPLACE FUNCTION converter.get_data_category_id_from_name(in_user_id int, in_data_category_name text, in_throw boolean default true)
 
 RETURNS int
@@ -194,6 +201,8 @@ end
 $$;
 
 -- get the id from a data_category
+DROP FUNCTION converter.get_data_category_status_from_id;
+
 CREATE OR REPLACE FUNCTION converter.get_data_category_status_from_id(in_user_id int, in_data_category_id int)
 
 RETURNS bool
@@ -222,7 +231,9 @@ end
 $$;
 
 -- get the id from a data_category
-CREATE OR REPLACE FUNCTION converter.get_data_category_data_type_id_from_id(in_user_id int, in_data_category_id int)
+DROP FUNCTION converter.get_data_category_data_type_id_from_id;
+
+CREATE OR REPLACE FUNCTION converter.get_data_category_data_type_id_from_id(in_user_id int, in_data_category_id int, in_throw boolean DEFAULT TRUE)
 
 RETURNS int
 language plpgsql
@@ -240,7 +251,7 @@ begin
     data_type_id = (select type_id from converter.data_category where id = in_data_category_id);
 
     --ensure id is not null
-    if (data_type_id is null) then
+    if (data_type_id is null and in_throw) then
         RAISE EXCEPTION SQLSTATE 'CF014' USING MESSAGE = (select error_description from converter.response where error_code = 'CF014');
     end if;
 
@@ -250,6 +261,8 @@ end
 $$;
 
 -- check if a data_category exists in an active conversion set - used before disabling
+DROP FUNCTION converter.is_data_category_dependency;
+
 CREATE OR REPLACE FUNCTION converter.is_data_category_dependency(in_user_id int, in_data_category_id int)
 
 RETURNS bool

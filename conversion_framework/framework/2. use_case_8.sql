@@ -1,5 +1,6 @@
 -- # use case 8 - add/delete/update a data type
 -- Add a new data_type to the converter
+DROP FUNCTION converter.add_data_type;
 CREATE OR REPLACE FUNCTION converter.add_data_type(in_user_id int, data_type_name text)
 
 RETURNS int
@@ -36,6 +37,7 @@ end
 $$;
 
 -- Update an existing data type
+DROP FUNCTION converter.update_data_type;
 CREATE OR REPLACE FUNCTION converter.update_data_type(in_user_id int, in_data_type_id int, new_data_type_name text)
 
 RETURNS bool
@@ -77,6 +79,7 @@ end
 $$;
 
 -- Enable/Disable an existing data type
+DROP FUNCTION converter.set_enabled_data_type;
 CREATE OR REPLACE FUNCTION converter.set_enabled_data_type(in_user_id int, in_data_type_id int, isEnabled boolean)
 
 RETURNS bool
@@ -111,7 +114,9 @@ end
 $$;
 
 -- Get the id from a data_type
-CREATE OR REPLACE FUNCTION converter.get_data_type_id_from_name(in_user_id int, in_data_type_name text)
+
+DROP FUNCTION converter.get_data_type_id_from_name;
+CREATE OR REPLACE FUNCTION converter.get_data_type_id_from_name(in_user_id int, in_data_type_name text, in_throw boolean DEFAULT TRUE)
 
 RETURNS int
 language plpgsql
@@ -136,18 +141,19 @@ begin
     end if;
 
     -- ensure that the requested data_type exists, or return -1 if it doesn't
-    if (num_records) = 0 then
+    if ((num_records = 0) and in_throw) then
         RAISE EXCEPTION SQLSTATE 'CF022' USING MESSAGE = (select error_description from converter.response where error_code = 'CF022');
     end if;
 
     -- if there are multiple records containing the same data type, return -2
-    if (num_records) > 1 then
+    if ((num_records > 1) and in_throw) then
         RAISE EXCEPTION SQLSTATE 'CF000' USING MESSAGE = (select error_description from converter.response where error_code = 'CF000');
     end if;
 end
 $$;
 
 -- Get the id from a data_type
+DROP FUNCTION converter.get_data_type_status_from_id;
 CREATE OR REPLACE FUNCTION converter.get_data_type_status_from_id(in_user_id int, in_data_type_id int)
 
 RETURNS bool

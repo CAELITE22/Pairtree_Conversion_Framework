@@ -1,4 +1,5 @@
 -- Add a new empty conversion_set to the converter
+DROP FUNCTION converter.add_conversion_set;
 CREATE OR REPLACE FUNCTION converter.add_conversion_set(in_user_id int, conversion_set_name text)
 
 RETURNS int
@@ -33,6 +34,8 @@ end
 $$;
 
 -- Creating a new conversion set and cloning the category to conversion set relationships from the source_conversion_set to the destination_conversion_set
+DROP FUNCTION converter.clone_conversion_set;
+
 CREATE OR REPLACE FUNCTION converter.clone_conversion_set(in_user_id int, source_conversion_set_name text, destination_conversion_set_name text)
 
 RETURNS int
@@ -80,8 +83,9 @@ begin
 end
 $$;
 
+DROP FUNCTION converter.get_conversion_set_id_from_name;
 
-CREATE OR REPLACE FUNCTION converter.get_conversion_set_id_from_name(in_user_id int, conversion_set_name text)
+CREATE OR REPLACE FUNCTION converter.get_conversion_set_id_from_name(in_user_id int, conversion_set_name text, in_throw boolean DEFAULT TRUE)
 
 RETURNS int
 language plpgsql
@@ -96,7 +100,7 @@ begin
     end if;
 
     outcome = (select id from converter.conversion_set where lower(name) = lower(conversion_set_name) and active = true);
-    if (outcome is null) then
+    if (outcome is null and in_throw) then
         RAISE EXCEPTION SQLSTATE 'CF012' USING MESSAGE = (select error_description from converter.response where error_code = 'CF012');
     end if;
 

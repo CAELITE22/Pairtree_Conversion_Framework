@@ -1,3 +1,4 @@
+DROP FUNCTION converter.set_user_conversion_set;
 create or replace function converter.set_user_conversion_set(
     in_user_id int,
     in_conversion_set_id int
@@ -37,6 +38,7 @@ BEGIN
 end
 $$;
 
+DROP FUNCTION converter.get_user_conversion_set_id;
 create or replace function converter.get_user_conversion_set_id(
     in_user_id int
 )
