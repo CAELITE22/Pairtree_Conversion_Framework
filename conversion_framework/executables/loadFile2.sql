@@ -25,7 +25,9 @@ insert into converter.response (error_code, error_description) values
 ('CF022','Error! The supplied in_data_type_name is not found in the Data Type list.'),
 ('CF023','Error! The supplied in_data_category_name already exists.'),
 ('CF024','Error! The supplied in_data_category_id has dependencies and cannot be disabled.'),
-('CF025','Error! The supplied in_data_category_name is not found in the Data Category list.');-- # this conversion process uses the users default conversion set - numerical values only
+('CF025','Error! The supplied in_data_category_name is not found in the Data Category list.'),
+('CF026','Error! No SI UOM found for in_data_type');-- # this conversion process uses the users default conversion set - numerical values only
+DROP FUNCTION IF EXISTS converter.convert;
 CREATE OR REPLACE FUNCTION converter.convert(in_user_id int, in_uom_id int, in_data_category_id int, in_value float)
 RETURNS real
 language plpgsql
@@ -90,7 +92,7 @@ begin
 end;
 $$;
 -- # this conversion process uses the users default conversion set - numerical values only
-
+DROP FUNCTION IF EXISTS converter.convert_by_conversion_set;
 CREATE OR REPLACE FUNCTION converter.convert_by_conversion_set(in_user_id int, in_conversion_set_id int, in_uom_id int, in_data_category_id int, in_value float)
 RETURNS real
 language plpgsql
@@ -151,6 +153,7 @@ begin
 end;
 $$;
 -- # this conversion process uses the specified UOM
+DROP FUNCTION IF EXISTS converter.convert_by_uom;
 CREATE OR REPLACE FUNCTION converter.convert_by_uom(in_user_id int, in_uom_id int, out_uom_id int, in_value float)
 RETURNS real
 language plpgsql
@@ -199,7 +202,10 @@ begin
     end if;
     return in_value;
 end;
-$$;create or replace function converter.set_user_conversion_set(
+$$;-- Set user conversion sets
+
+DROP FUNCTION IF EXISTS converter.set_user_conversion_set;
+create or replace function converter.set_user_conversion_set(
     in_user_id int,
     in_conversion_set_id int
 )
@@ -238,6 +244,7 @@ BEGIN
 end
 $$;
 
+DROP FUNCTION IF EXISTS converter.get_user_conversion_set_id;
 create or replace function converter.get_user_conversion_set_id(
     in_user_id int
 )
@@ -261,6 +268,7 @@ BEGIN
     return out_conversion_set_id;
 end
 $$;-- Add a new empty conversion_set to the converter
+DROP FUNCTION IF EXISTS converter.add_conversion_set;
 CREATE OR REPLACE FUNCTION converter.add_conversion_set(in_user_id int, conversion_set_name text)
 
 RETURNS int
@@ -295,6 +303,8 @@ end
 $$;
 
 -- Creating a new conversion set and cloning the category to conversion set relationships from the source_conversion_set to the destination_conversion_set
+DROP FUNCTION IF EXISTS converter.clone_conversion_set;
+
 CREATE OR REPLACE FUNCTION converter.clone_conversion_set(in_user_id int, source_conversion_set_name text, destination_conversion_set_name text)
 
 RETURNS int
@@ -342,8 +352,9 @@ begin
 end
 $$;
 
+DROP FUNCTION IF EXISTS converter.get_conversion_set_id_from_name;
 
-CREATE OR REPLACE FUNCTION converter.get_conversion_set_id_from_name(in_user_id int, conversion_set_name text)
+CREATE OR REPLACE FUNCTION converter.get_conversion_set_id_from_name(in_user_id int, conversion_set_name text, in_throw boolean DEFAULT TRUE)
 
 RETURNS int
 language plpgsql
@@ -358,7 +369,7 @@ begin
     end if;
 
     outcome = (select id from converter.conversion_set where lower(name) = lower(conversion_set_name) and active = true);
-    if (outcome is null) then
+    if (outcome is null and in_throw) then
         RAISE EXCEPTION SQLSTATE 'CF012' USING MESSAGE = (select error_description from converter.response where error_code = 'CF012');
     end if;
 
@@ -367,6 +378,8 @@ begin
 end
     $$;
 -- Updates a category UOM in the users default conversion set
+DROP FUNCTION IF EXISTS converter.update_default_conversion_set_category_uom;
+
 CREATE OR REPLACE FUNCTION converter.update_default_conversion_set_category_uom(in_user_id int, in_data_category_id int, in_uom_id int)
 
 RETURNS bool
@@ -423,6 +436,8 @@ begin
     return true;
 end
 $$;
+
+DROP FUNCTION IF EXISTS converter.update_target_conversion_set_category_uom;
 
 -- Updates a category UOM in a specified conversion set
 CREATE OR REPLACE FUNCTION converter.update_target_conversion_set_category_uom(in_user_id int, in_conversion_set_id int,
@@ -482,6 +497,8 @@ begin
 end
 $$;-- # use case 7 - add/delete/update a UOM
 -- add a new UOM
+DROP FUNCTION IF EXISTS converter.add_uom;
+
 CREATE OR REPLACE FUNCTION converter.add_uom(
     in_user_id int,
     in_data_type_id int,
@@ -548,6 +565,7 @@ end
 $$;
 
 -- Enable/Disable an existing data type
+DROP FUNCTION IF EXISTS converter.set_enabled_uom;
 CREATE OR REPLACE FUNCTION converter.set_enabled_uom(in_user_id int, in_uom_id int, isEnabled boolean)
 
 RETURNS bool
@@ -581,6 +599,7 @@ begin
 end
 $$;
 
+DROP FUNCTION IF EXISTS converter.update_uom_data_type;
 CREATE OR REPLACE FUNCTION converter.update_uom_data_type(
     in_user_id int,
     in_uom_id int,
@@ -620,6 +639,7 @@ begin
     return true;
 end
 $$;
+DROP FUNCTION IF EXISTS converter.update_uom_name_and_abbr;
 
 CREATE OR REPLACE FUNCTION converter.update_uom_name_and_abbr(
     in_user_id int,
@@ -664,6 +684,8 @@ begin
 end
 $$;
 
+DROP FUNCTION IF EXISTS converter.update_uom_name;
+
 CREATE OR REPLACE FUNCTION converter.update_uom_name(
     in_user_id int,
     in_uom_id int,
@@ -705,6 +727,7 @@ begin
 end
 $$;
 
+DROP FUNCTION IF EXISTS converter.update_uom_abbr;
 CREATE OR REPLACE FUNCTION converter.update_uom_abbr(
     in_user_id int,
     in_uom_id int,
@@ -746,6 +769,7 @@ begin
 end
 $$;
 
+DROP FUNCTION IF EXISTS converter.update_uom_rate_constant;
 CREATE OR REPLACE FUNCTION converter.update_uom_rate_constant(
     in_user_id int,
     in_uom_id int,
@@ -782,8 +806,7 @@ BEGIN
 end;
 $$;
 
-
-
+DROP FUNCTION IF EXISTS converter.update_uom_precision;
 CREATE OR REPLACE FUNCTION converter.update_uom_precision(
     in_user_id int,
     in_uom_id int,
@@ -821,6 +844,7 @@ begin
 end
 $$;
 
+DROP FUNCTION IF EXISTS converter.update_uom_lower;
 CREATE OR REPLACE FUNCTION converter.update_uom_lower(
     in_user_id int,
     in_uom_id int,
@@ -871,6 +895,7 @@ begin
 end
 $$;
 
+DROP FUNCTION IF EXISTS converter.update_uom_upper;
 CREATE OR REPLACE FUNCTION converter.update_uom_upper(
     in_user_id int,
     in_uom_id int,
@@ -921,9 +946,11 @@ begin
 end
 $$;
 
+DROP FUNCTION IF EXISTS converter.get_uom_id_from_name;
 CREATE OR REPLACE FUNCTION converter.get_uom_id_from_name(
     in_user_id int,
-    in_uom_name text
+    in_uom_name text,
+    in_throw boolean default true
 )
 
 RETURNS int
@@ -939,7 +966,7 @@ begin
     end if;
 
     uom_id = (select id from converter.uom where lower(uom_name) = lower(in_uom_name));
-    if uom_id is null then
+    if uom_id is null and in_throw then
         RAISE EXCEPTION SQLSTATE 'CF005' USING MESSAGE = (select error_description from converter.response where error_code = 'CF005');
     end if;
 
@@ -947,9 +974,11 @@ begin
 end
 $$;
 
+DROP FUNCTION IF EXISTS converter.get_uom_id_from_abbreviation;
 CREATE OR REPLACE FUNCTION converter.get_uom_id_from_abbreviation(
     in_user_id int,
-    in_uom_abbr text
+    in_uom_abbr text,
+    in_throw boolean default true
 )
 
 RETURNS int
@@ -965,7 +994,7 @@ begin
     end if;
 
     uom_id = (select id from converter.uom where uom_abbreviation = in_uom_abbr);
-    if uom_id is null then
+    if uom_id is null and in_throw then
         RAISE EXCEPTION SQLSTATE 'CF010' USING MESSAGE = (select error_description from converter.response where error_code = 'CF010');
     end if;
 
@@ -973,6 +1002,7 @@ begin
 end
 $$;
 
+DROP FUNCTION IF EXISTS converter.get_uom_status_from_id;
 CREATE OR REPLACE FUNCTION converter.get_uom_status_from_id(
     in_user_id int,
     in_uom_id int
@@ -999,6 +1029,7 @@ begin
 end
 $$;
 
+DROP FUNCTION IF EXISTS converter.get_uom_data_type_from_id;
 CREATE OR REPLACE FUNCTION converter.get_uom_data_type_from_id(
     in_user_id int,
     in_uom_id int
@@ -1025,6 +1056,7 @@ begin
 end
 $$;
 
+DROP FUNCTION IF EXISTS converter.get_uom_abbr_from_id;
 CREATE OR REPLACE FUNCTION converter.get_uom_abbr_from_id(
     in_user_id int,
     in_uom_id int
@@ -1052,6 +1084,7 @@ end
 $$;
 
 
+DROP FUNCTION IF EXISTS converter.get_uom_name_from_id;
 CREATE OR REPLACE FUNCTION converter.get_uom_name_from_id(
     in_user_id int,
     in_uom_id int
@@ -1078,6 +1111,7 @@ begin
 end
 $$;
 
+DROP FUNCTION IF EXISTS converter.get_uom_name_abbr_from_id;
 CREATE OR REPLACE FUNCTION converter.get_uom_name_abbr_from_id(
     in_user_id int,
     in_uom_id int
@@ -1104,6 +1138,7 @@ begin
 end
 $$;
 
+DROP FUNCTION IF EXISTS converter.get_uom_prec_from_id;
 CREATE OR REPLACE FUNCTION converter.get_uom_prec_from_id(
     in_user_id int,
     in_uom_id int
@@ -1130,6 +1165,7 @@ begin
 end
 $$;
 
+DROP FUNCTION IF EXISTS converter.get_uom_lower_from_id;
 CREATE OR REPLACE FUNCTION converter.get_uom_lower_from_id(
     in_user_id int,
     in_uom_id int
@@ -1156,6 +1192,7 @@ begin
 end
 $$;
 
+DROP FUNCTION IF EXISTS converter.get_uom_upper_from_id;
 CREATE OR REPLACE FUNCTION converter.get_uom_upper_from_id(
     in_user_id int,
     in_uom_id int
@@ -1182,6 +1219,7 @@ begin
 end
 $$;
 
+DROP FUNCTION IF EXISTS converter.get_uom_rate_from_id;
 CREATE OR REPLACE FUNCTION converter.get_uom_rate_from_id(
     in_user_id int,
     in_uom_id int
@@ -1209,6 +1247,7 @@ begin
 end
 $$;
 
+DROP FUNCTION IF EXISTS converter.get_uom_constant_from_id;
 CREATE OR REPLACE FUNCTION converter.get_uom_constant_from_id(
     in_user_id int,
     in_uom_id int
@@ -1236,6 +1275,7 @@ begin
 end
 $$;-- # use case 8 - add/delete/update a data type
 -- Add a new data_type to the converter
+DROP FUNCTION IF EXISTS converter.add_data_type;
 CREATE OR REPLACE FUNCTION converter.add_data_type(in_user_id int, data_type_name text)
 
 RETURNS int
@@ -1272,6 +1312,7 @@ end
 $$;
 
 -- Update an existing data type
+DROP FUNCTION IF EXISTS converter.update_data_type;
 CREATE OR REPLACE FUNCTION converter.update_data_type(in_user_id int, in_data_type_id int, new_data_type_name text)
 
 RETURNS bool
@@ -1313,6 +1354,7 @@ end
 $$;
 
 -- Enable/Disable an existing data type
+DROP FUNCTION IF EXISTS converter.set_enabled_data_type;
 CREATE OR REPLACE FUNCTION converter.set_enabled_data_type(in_user_id int, in_data_type_id int, isEnabled boolean)
 
 RETURNS bool
@@ -1347,7 +1389,9 @@ end
 $$;
 
 -- Get the id from a data_type
-CREATE OR REPLACE FUNCTION converter.get_data_type_id_from_name(in_user_id int, in_data_type_name text)
+
+DROP FUNCTION IF EXISTS converter.get_data_type_id_from_name;
+CREATE OR REPLACE FUNCTION converter.get_data_type_id_from_name(in_user_id int, in_data_type_name text, in_throw boolean DEFAULT TRUE)
 
 RETURNS int
 language plpgsql
@@ -1355,35 +1399,26 @@ as
 $$
 declare
     outcome int;
-    num_records int;
 begin
     -- Ensure there are no NULL values
     if (in_user_id is NULL OR in_data_type_name is NULL) then
         RAISE EXCEPTION SQLSTATE 'CF001' USING MESSAGE = (select error_description from converter.response where error_code = 'CF001');
     end if;
 
-    -- store the number of records for error checking - requires on one query.
-    num_records = (select count(*) from converter.data_type where lower(name) = lower(in_data_type_name));
+    -- store the id for error checking - requires on one query.
+        outcome = (select id from converter.data_type where lower(name) = lower(in_data_type_name));
 
     -- return the ID
-    if (num_records) = 1 then
-        outcome = (select id from converter.data_type where lower(name) = lower(in_data_type_name));
-        return outcome;
-    end if;
-
-    -- ensure that the requested data_type exists, or return -1 if it doesn't
-    if (num_records) = 0 then
+    if (outcome is null and in_throw)  then
         RAISE EXCEPTION SQLSTATE 'CF022' USING MESSAGE = (select error_description from converter.response where error_code = 'CF022');
     end if;
 
-    -- if there are multiple records containing the same data type, return -2
-    if (num_records) > 1 then
-        RAISE EXCEPTION SQLSTATE 'CF000' USING MESSAGE = (select error_description from converter.response where error_code = 'CF000');
-    end if;
+    return outcome;
 end
 $$;
 
 -- Get the id from a data_type
+DROP FUNCTION IF EXISTS converter.get_data_type_status_from_id;
 CREATE OR REPLACE FUNCTION converter.get_data_type_status_from_id(in_user_id int, in_data_type_id int)
 
 RETURNS bool
@@ -1408,8 +1443,38 @@ begin
 
     return data_type_status;
 end
+$$;
+
+DROP FUNCTION IF EXISTS converter.get_data_type_si_unit_id;
+CREATE OR REPLACE FUNCTION converter.get_data_type_si_unit_id(
+    in_user_id int,
+    in_data_type_id int
+)
+
+RETURNS int
+language plpgsql
+as
+$$
+declare
+    output int;
+begin
+    if(in_user_id is NULL or in_data_type_id is NULL) then
+                RAISE EXCEPTION SQLSTATE 'CF001' USING MESSAGE = (select error_description from converter.response where error_code = 'CF001');
+    end if;
+
+    output = (SELECT uom_id FROM converter.conversion_rate
+                    WHERE rate = 1 AND  constant = 0 AND uom_id IN
+                           (SELECT id FROM converter.uom WHERE data_type_id = in_data_type_id));
+
+    IF (output IS NULL) THEN
+        RAISE  EXCEPTION SQLSTATE 'CF026' USING MESSAGE = (select error_description from converter.response where error_code = 'CF026');
+    end if;
+
+    RETURN output;
+end
 $$;-- # use case 9 - add/delete/update a data category
 -- Add a new data_type to the converter
+DROP FUNCTION IF EXISTS converter.add_data_category;
 CREATE OR REPLACE FUNCTION converter.add_data_category(in_user_id int, in_data_category_name text, in_data_type_id int)
 
 RETURNS int
@@ -1451,6 +1516,7 @@ end
 $$;
 
 -- Update an existing data category
+DROP FUNCTION IF EXISTS converter.update_data_category_name;
 CREATE OR REPLACE FUNCTION converter.update_data_category_name(in_user_id int, in_data_category_id int, new_data_category_name text)
 
 RETURNS bool
@@ -1494,6 +1560,7 @@ $$;
 
 
 -- Update an existing data type association in a data category
+DROP FUNCTION IF EXISTS converter.update_data_category_data_type;
 CREATE OR REPLACE FUNCTION converter.update_data_category_data_type(in_user_id int, in_data_category_id int, new_data_type_id int)
 
 RETURNS bool
@@ -1537,6 +1604,8 @@ $$;
 
 
 -- Enable/Disable an existing data category
+DROP FUNCTION IF EXISTS converter.set_enabled_data_category;
+
 CREATE OR REPLACE FUNCTION converter.set_enabled_data_category(in_user_id int, in_data_category_id int, isEnabled boolean)
 
 RETURNS bool
@@ -1576,7 +1645,9 @@ end
 $$;
 
 -- get the id from a data_category
-CREATE OR REPLACE FUNCTION converter.get_data_category_id_from_name(in_user_id int, in_data_category_name text)
+DROP FUNCTION IF EXISTS converter.get_data_category_id_from_name;
+
+CREATE OR REPLACE FUNCTION converter.get_data_category_id_from_name(in_user_id int, in_data_category_name text, in_throw boolean default true)
 
 RETURNS int
 language plpgsql
@@ -1594,7 +1665,7 @@ begin
     data_category_id = (select id from converter.data_category where lower(name) = lower(in_data_category_name));
 
     --ensure id is not null
-    if (data_category_id is null) then
+    if (data_category_id is null and in_throw) then
         RAISE EXCEPTION SQLSTATE 'CF025' USING MESSAGE = (select error_description from converter.response where error_code = 'CF025');
     end if;
 
@@ -1604,6 +1675,8 @@ end
 $$;
 
 -- get the id from a data_category
+DROP FUNCTION IF EXISTS converter.get_data_category_status_from_id;
+
 CREATE OR REPLACE FUNCTION converter.get_data_category_status_from_id(in_user_id int, in_data_category_id int)
 
 RETURNS bool
@@ -1632,7 +1705,9 @@ end
 $$;
 
 -- get the id from a data_category
-CREATE OR REPLACE FUNCTION converter.get_data_category_data_type_id_from_id(in_user_id int, in_data_category_id int)
+DROP FUNCTION IF EXISTS converter.get_data_category_data_type_id_from_id;
+
+CREATE OR REPLACE FUNCTION converter.get_data_category_data_type_id_from_id(in_user_id int, in_data_category_id int, in_throw boolean DEFAULT TRUE)
 
 RETURNS int
 language plpgsql
@@ -1650,7 +1725,7 @@ begin
     data_type_id = (select type_id from converter.data_category where id = in_data_category_id);
 
     --ensure id is not null
-    if (data_type_id is null) then
+    if (data_type_id is null and in_throw) then
         RAISE EXCEPTION SQLSTATE 'CF014' USING MESSAGE = (select error_description from converter.response where error_code = 'CF014');
     end if;
 
@@ -1660,6 +1735,8 @@ end
 $$;
 
 -- check if a data_category exists in an active conversion set - used before disabling
+DROP FUNCTION IF EXISTS converter.is_data_category_dependency;
+
 CREATE OR REPLACE FUNCTION converter.is_data_category_dependency(in_user_id int, in_data_category_id int)
 
 RETURNS bool

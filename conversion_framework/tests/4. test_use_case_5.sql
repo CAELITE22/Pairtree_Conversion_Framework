@@ -55,19 +55,25 @@ set search_path = "converter_tests";
 create or replace function converter_tests.test_use_case_5_get_conversion_set_id_from_name(
 ) returns setof text as $$
     -- label testing
-    select '# # # Testing Use Case 5 - Clone Conversion Set # # #'
+    select '# # # Testing Use Case 5 - Get Conversion Set ID from Name # # #'
     union all
     --confirm function exists
-    select has_function('converter', 'get_conversion_set_id_from_name', ARRAY['integer', 'text'])
+    select has_function('converter', 'get_conversion_set_id_from_name', ARRAY['integer', 'text','boolean'])
     union all
     --test operation
     select isa_ok((select converter.get_conversion_set_id_from_name(-1, 'Metric')),
-       'integer', 'Conversion set was successfully cloned - Unit Test 1')
+       'integer', 'Conversion set id successfully retrieved - Unit Test 1')
+    union all
+        select ok((select converter.get_conversion_set_id_from_name(-1, 'Alphabet',false) is null), 'Throws override was successful - Unit Test 2')
     union all
     --test error states
-    select throws_ok ('select converter.add_conversion_set(null,''Metric'')', 'CF001', (select error_description from converter.response where error_code = 'CF001')::text,
-        'User ID cannot be null - Unit Test 2')
+    select throws_ok ('select converter.get_conversion_set_id_from_name(null,''Metric'')', 'CF001', (select error_description from converter.response where error_code = 'CF001')::text,
+        'User ID cannot be null - Unit Test 3')
     union all
-    select throws_ok ('select converter.add_conversion_set(-1,null)', 'CF001', (select error_description from converter.response where error_code = 'CF001')::text,
-        'Source Conversion Set Name cannot be null - Unit Test 3')
+    select throws_ok ('select converter.get_conversion_set_id_from_name(-1,null)', 'CF001', (select error_description from converter.response where error_code = 'CF001')::text,
+        'Source Conversion Set Name cannot be null - Unit Test 4')
+    union all
+    select throws_ok ('select converter.get_conversion_set_id_from_name(-1,''Alphabet'')', 'CF012', (select error_description from converter.response where error_code = 'CF012')::text,
+        'Source Conversion Set Name cannot be null - Unit Test 5')
+
 $$ language sql;

@@ -1,5 +1,7 @@
 -- # use case 7 - add/delete/update a UOM
 -- add a new UOM
+DROP FUNCTION IF EXISTS converter.add_uom;
+
 CREATE OR REPLACE FUNCTION converter.add_uom(
     in_user_id int,
     in_data_type_id int,
@@ -66,6 +68,7 @@ end
 $$;
 
 -- Enable/Disable an existing data type
+DROP FUNCTION IF EXISTS converter.set_enabled_uom;
 CREATE OR REPLACE FUNCTION converter.set_enabled_uom(in_user_id int, in_uom_id int, isEnabled boolean)
 
 RETURNS bool
@@ -99,6 +102,7 @@ begin
 end
 $$;
 
+DROP FUNCTION IF EXISTS converter.update_uom_data_type;
 CREATE OR REPLACE FUNCTION converter.update_uom_data_type(
     in_user_id int,
     in_uom_id int,
@@ -138,6 +142,7 @@ begin
     return true;
 end
 $$;
+DROP FUNCTION IF EXISTS converter.update_uom_name_and_abbr;
 
 CREATE OR REPLACE FUNCTION converter.update_uom_name_and_abbr(
     in_user_id int,
@@ -182,6 +187,8 @@ begin
 end
 $$;
 
+DROP FUNCTION IF EXISTS converter.update_uom_name;
+
 CREATE OR REPLACE FUNCTION converter.update_uom_name(
     in_user_id int,
     in_uom_id int,
@@ -223,6 +230,7 @@ begin
 end
 $$;
 
+DROP FUNCTION IF EXISTS converter.update_uom_abbr;
 CREATE OR REPLACE FUNCTION converter.update_uom_abbr(
     in_user_id int,
     in_uom_id int,
@@ -264,6 +272,7 @@ begin
 end
 $$;
 
+DROP FUNCTION IF EXISTS converter.update_uom_rate_constant;
 CREATE OR REPLACE FUNCTION converter.update_uom_rate_constant(
     in_user_id int,
     in_uom_id int,
@@ -300,8 +309,7 @@ BEGIN
 end;
 $$;
 
-
-
+DROP FUNCTION IF EXISTS converter.update_uom_precision;
 CREATE OR REPLACE FUNCTION converter.update_uom_precision(
     in_user_id int,
     in_uom_id int,
@@ -339,6 +347,7 @@ begin
 end
 $$;
 
+DROP FUNCTION IF EXISTS converter.update_uom_lower;
 CREATE OR REPLACE FUNCTION converter.update_uom_lower(
     in_user_id int,
     in_uom_id int,
@@ -389,6 +398,7 @@ begin
 end
 $$;
 
+DROP FUNCTION IF EXISTS converter.update_uom_upper;
 CREATE OR REPLACE FUNCTION converter.update_uom_upper(
     in_user_id int,
     in_uom_id int,
@@ -439,9 +449,11 @@ begin
 end
 $$;
 
+DROP FUNCTION IF EXISTS converter.get_uom_id_from_name;
 CREATE OR REPLACE FUNCTION converter.get_uom_id_from_name(
     in_user_id int,
-    in_uom_name text
+    in_uom_name text,
+    in_throw boolean default true
 )
 
 RETURNS int
@@ -457,7 +469,7 @@ begin
     end if;
 
     uom_id = (select id from converter.uom where lower(uom_name) = lower(in_uom_name));
-    if uom_id is null then
+    if uom_id is null and in_throw then
         RAISE EXCEPTION SQLSTATE 'CF005' USING MESSAGE = (select error_description from converter.response where error_code = 'CF005');
     end if;
 
@@ -465,9 +477,11 @@ begin
 end
 $$;
 
+DROP FUNCTION IF EXISTS converter.get_uom_id_from_abbreviation;
 CREATE OR REPLACE FUNCTION converter.get_uom_id_from_abbreviation(
     in_user_id int,
-    in_uom_abbr text
+    in_uom_abbr text,
+    in_throw boolean default true
 )
 
 RETURNS int
@@ -483,7 +497,7 @@ begin
     end if;
 
     uom_id = (select id from converter.uom where uom_abbreviation = in_uom_abbr);
-    if uom_id is null then
+    if uom_id is null and in_throw then
         RAISE EXCEPTION SQLSTATE 'CF010' USING MESSAGE = (select error_description from converter.response where error_code = 'CF010');
     end if;
 
@@ -491,6 +505,7 @@ begin
 end
 $$;
 
+DROP FUNCTION IF EXISTS converter.get_uom_status_from_id;
 CREATE OR REPLACE FUNCTION converter.get_uom_status_from_id(
     in_user_id int,
     in_uom_id int
@@ -517,6 +532,7 @@ begin
 end
 $$;
 
+DROP FUNCTION IF EXISTS converter.get_uom_data_type_from_id;
 CREATE OR REPLACE FUNCTION converter.get_uom_data_type_from_id(
     in_user_id int,
     in_uom_id int
@@ -543,6 +559,7 @@ begin
 end
 $$;
 
+DROP FUNCTION IF EXISTS converter.get_uom_abbr_from_id;
 CREATE OR REPLACE FUNCTION converter.get_uom_abbr_from_id(
     in_user_id int,
     in_uom_id int
@@ -570,6 +587,7 @@ end
 $$;
 
 
+DROP FUNCTION IF EXISTS converter.get_uom_name_from_id;
 CREATE OR REPLACE FUNCTION converter.get_uom_name_from_id(
     in_user_id int,
     in_uom_id int
@@ -596,6 +614,7 @@ begin
 end
 $$;
 
+DROP FUNCTION IF EXISTS converter.get_uom_name_abbr_from_id;
 CREATE OR REPLACE FUNCTION converter.get_uom_name_abbr_from_id(
     in_user_id int,
     in_uom_id int
@@ -622,6 +641,7 @@ begin
 end
 $$;
 
+DROP FUNCTION IF EXISTS converter.get_uom_prec_from_id;
 CREATE OR REPLACE FUNCTION converter.get_uom_prec_from_id(
     in_user_id int,
     in_uom_id int
@@ -648,6 +668,7 @@ begin
 end
 $$;
 
+DROP FUNCTION IF EXISTS converter.get_uom_lower_from_id;
 CREATE OR REPLACE FUNCTION converter.get_uom_lower_from_id(
     in_user_id int,
     in_uom_id int
@@ -674,6 +695,7 @@ begin
 end
 $$;
 
+DROP FUNCTION IF EXISTS converter.get_uom_upper_from_id;
 CREATE OR REPLACE FUNCTION converter.get_uom_upper_from_id(
     in_user_id int,
     in_uom_id int
@@ -700,6 +722,7 @@ begin
 end
 $$;
 
+DROP FUNCTION IF EXISTS converter.get_uom_rate_from_id;
 CREATE OR REPLACE FUNCTION converter.get_uom_rate_from_id(
     in_user_id int,
     in_uom_id int
@@ -727,6 +750,7 @@ begin
 end
 $$;
 
+DROP FUNCTION IF EXISTS converter.get_uom_constant_from_id;
 CREATE OR REPLACE FUNCTION converter.get_uom_constant_from_id(
     in_user_id int,
     in_uom_id int
@@ -753,30 +777,3 @@ begin
     return output;
 end
 $$;
-
-CREATE OR REPLACE FUNCTION converter.get_si_uom(
-    in_data_type_id int
-)
-
-RETURNS int
-language plpgsql
-as
-$$
-declare
-    output int;
-begin
-    if(in_data_type_id is NULL) then
-                RAISE EXCEPTION SQLSTATE 'CF001' USING MESSAGE = (select error_description from converter.response where error_code = 'CF001');
-    end if;
-
-    output = (SELECT uom_id FROM converter.conversion_rate
-                    WHERE rate = 1 AND  constant = 0 AND uom_id IN
-                           (SELECT id FROM converter.uom WHERE data_type_id = in_data_type_id));
-
-    IF (output IS NULL) THEN
-        RAISE  EXCEPTION SQLSTATE 'CF026' USING MESSAGE = (select error_description from converter.response where error_code = 'CF026');
-    end if;
-
-    RETURN output;
-end;
-$$

@@ -80,19 +80,21 @@ $$ language sql;
 create or replace function  converter_tests.test_use_case_8_get_data_type_id_from_name(
 ) returns setof text as $$
     --verify functions have been created.
-    select has_function('converter','get_data_type_id_from_name',ARRAY['integer','text'])
+    select has_function('converter','get_data_type_id_from_name',ARRAY['integer','text','boolean'])
     union all
     select ok((select converter.add_data_type(1, 'testcase')) = (select converter.get_data_type_id_from_name(-1,'testcase')),'Confirm get ID function - Unit Test 1')
     union all
+    select ok((select converter.get_data_type_id_from_name(-1,'Alphabet',false) is null),'Throws override was successful - Unit Test 2')
+    union all
     -- test error states
     select throws_ok ('select converter.get_data_type_id_from_name(null,''testcase'')', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
-    'User ID cannot be null - Unit Test 2')
+    'User ID cannot be null - Unit Test 3')
     union all
     select throws_ok ('select converter.get_data_type_id_from_name(-1,null)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
-    'Data Type ID cannot be null - Unit Test 3')
+    'Data Type ID cannot be null - Unit Test 4')
     union all
     select throws_ok ('select converter.get_data_type_id_from_name(-1,''asdfasdfeasdfe'')', 'CF022', (select error_description from converter.response where error_code = 'CF022'),
-    'Data Type name does not exist - Unit Test 3')
+    'Data Type name does not exist - Unit Test 5')
 $$ language sql;
 
 create or replace function  converter_tests.test_use_case_8_get_data_type_status_from_id(
@@ -116,4 +118,22 @@ create or replace function  converter_tests.test_use_case_8_get_data_type_status
     union all
     select throws_ok ('select converter.get_data_type_status_from_id(-1,-1)', 'CF015', (select error_description from converter.response where error_code = 'CF015'),
     'Data Type id cannot be found - Unit Test 4')
+$$ language sql;
+
+create or replace function  converter_tests.test_use_case_8_get_data_type_si_unit_id(
+) returns setof text as $$
+    --verify functions have been created.
+    select has_function('converter','get_data_type_si_unit_id',ARRAY['integer','integer'])
+    union all
+    select ok((select converter.get_data_type_si_unit_id(1, converter.get_data_type_id_from_name(-1,'Temperature'))) = (select converter.get_uom_id_from_name(-1,'Kelvin')),'Confirm get SI ID function - Unit Test 1')
+    union all
+    -- test error states
+    select throws_ok ('select converter.get_data_type_si_unit_id(null,1)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
+    'User ID cannot be null - Unit Test 2')
+    union all
+    select throws_ok ('select converter.get_data_type_si_unit_id(-1,null)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
+    'Data Type ID cannot be null - Unit Test 3')
+    union all
+    select throws_ok ('select converter.get_data_type_si_unit_id(-1,-25)', 'CF026', (select error_description from converter.response where error_code = 'CF026'),
+    'Data Type name does not exist - Unit Test 4')
 $$ language sql;

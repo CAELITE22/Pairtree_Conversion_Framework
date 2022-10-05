@@ -1,5 +1,6 @@
 -- # use case 8 - add/delete/update a data type
 -- Add a new data_type to the converter
+DROP FUNCTION IF EXISTS converter.add_data_type;
 CREATE OR REPLACE FUNCTION converter.add_data_type(in_user_id int, data_type_name text)
 
 RETURNS int
@@ -36,6 +37,7 @@ end
 $$;
 
 -- Update an existing data type
+DROP FUNCTION IF EXISTS converter.update_data_type;
 CREATE OR REPLACE FUNCTION converter.update_data_type(in_user_id int, in_data_type_id int, new_data_type_name text)
 
 RETURNS bool
@@ -77,6 +79,7 @@ end
 $$;
 
 -- Enable/Disable an existing data type
+DROP FUNCTION IF EXISTS converter.set_enabled_data_type;
 CREATE OR REPLACE FUNCTION converter.set_enabled_data_type(in_user_id int, in_data_type_id int, isEnabled boolean)
 
 RETURNS bool
@@ -111,7 +114,9 @@ end
 $$;
 
 -- Get the id from a data_type
-CREATE OR REPLACE FUNCTION converter.get_data_type_id_from_name(in_user_id int, in_data_type_name text)
+
+DROP FUNCTION IF EXISTS converter.get_data_type_id_from_name;
+CREATE OR REPLACE FUNCTION converter.get_data_type_id_from_name(in_user_id int, in_data_type_name text, in_throw boolean DEFAULT TRUE)
 
 RETURNS int
 language plpgsql
@@ -119,35 +124,26 @@ as
 $$
 declare
     outcome int;
-    num_records int;
 begin
     -- Ensure there are no NULL values
     if (in_user_id is NULL OR in_data_type_name is NULL) then
         RAISE EXCEPTION SQLSTATE 'CF001' USING MESSAGE = (select error_description from converter.response where error_code = 'CF001');
     end if;
 
-    -- store the number of records for error checking - requires on one query.
-    num_records = (select count(*) from converter.data_type where lower(name) = lower(in_data_type_name));
+    -- store the id for error checking - requires on one query.
+        outcome = (select id from converter.data_type where lower(name) = lower(in_data_type_name));
 
     -- return the ID
-    if (num_records) = 1 then
-        outcome = (select id from converter.data_type where lower(name) = lower(in_data_type_name));
-        return outcome;
-    end if;
-
-    -- ensure that the requested data_type exists, or return -1 if it doesn't
-    if (num_records) = 0 then
+    if (outcome is null and in_throw)  then
         RAISE EXCEPTION SQLSTATE 'CF022' USING MESSAGE = (select error_description from converter.response where error_code = 'CF022');
     end if;
 
-    -- if there are multiple records containing the same data type, return -2
-    if (num_records) > 1 then
-        RAISE EXCEPTION SQLSTATE 'CF000' USING MESSAGE = (select error_description from converter.response where error_code = 'CF000');
-    end if;
+    return outcome;
 end
 $$;
 
 -- Get the id from a data_type
+DROP FUNCTION IF EXISTS converter.get_data_type_status_from_id;
 CREATE OR REPLACE FUNCTION converter.get_data_type_status_from_id(in_user_id int, in_data_type_id int)
 
 RETURNS bool
@@ -171,5 +167,34 @@ begin
     end if;
 
     return data_type_status;
+end
+$$;
+
+DROP FUNCTION IF EXISTS converter.get_data_type_si_unit_id;
+CREATE OR REPLACE FUNCTION converter.get_data_type_si_unit_id(
+    in_user_id int,
+    in_data_type_id int
+)
+
+RETURNS int
+language plpgsql
+as
+$$
+declare
+    output int;
+begin
+    if(in_user_id is NULL or in_data_type_id is NULL) then
+                RAISE EXCEPTION SQLSTATE 'CF001' USING MESSAGE = (select error_description from converter.response where error_code = 'CF001');
+    end if;
+
+    output = (SELECT uom_id FROM converter.conversion_rate
+                    WHERE rate = 1 AND  constant = 0 AND uom_id IN
+                           (SELECT id FROM converter.uom WHERE data_type_id = in_data_type_id));
+
+    IF (output IS NULL) THEN
+        RAISE  EXCEPTION SQLSTATE 'CF026' USING MESSAGE = (select error_description from converter.response where error_code = 'CF026');
+    end if;
+
+    RETURN output;
 end
 $$;
