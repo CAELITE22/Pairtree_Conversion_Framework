@@ -345,19 +345,21 @@ CREATE OR REPLACE FUNCTION converter_tests.test_use_case_7_get_uom_id_from_name(
 returns setof text as $$
     --converter.get_uom_id_from_name(in_user_id int, in_uom_name text)
     --verify function has been created.
-    select has_function('converter','get_uom_id_from_name',ARRAY['integer','text'])
+    select has_function('converter','get_uom_id_from_name',ARRAY['integer','text','boolean'])
     union all
     select ok((select converter.add_uom(-1, 1, 'testcase1', 'tc1',1,0) = (select converter.get_uom_id_from_name(-1,'testcase1'))),'Confirmed correct ID returned from name - Unit Test 1')
     union all
+    select ok((select converter.get_uom_id_from_name(-1,'alphabet', false) is null),'Throws override was successful - Unit Test 2')
+    union all
     -- test error states
     select throws_ok ('select converter.get_uom_id_from_name(null,''a'')', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
-    'User ID cannot be null - Unit Test 2')
+    'User ID cannot be null - Unit Test 3')
     union all
     select throws_ok ('select converter.get_uom_id_from_name(-1,null)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
-    'UOM Name cannot be null - Unit Test 3')
+    'UOM Name cannot be null - Unit Test 4')
     union all
     select throws_ok ('select converter.get_uom_id_from_name(-1,''a'')', 'CF005', (select error_description from converter.response where error_code = 'CF005'),
-    'UOM Name cannot be found - Unit Test 4')
+    'UOM Name cannot be found - Unit Test 5')
 $$ language sql;
 
 
@@ -365,19 +367,21 @@ CREATE OR REPLACE FUNCTION converter_tests.test_use_case_7_get_uom_id_from_abbre
 returns setof text as $$
   --converter.get_uom_id_from_abbreviation(in_user_id int, in_uom_abbr text)
     --verify function has been created.
-    select has_function('converter','get_uom_id_from_abbreviation',ARRAY['integer','text'])
+    select has_function('converter','get_uom_id_from_abbreviation',ARRAY['integer','text','boolean'])
     union all
     select ok((select converter.add_uom(-1, 1, 'testcase1', 'tc1',1,0) = (select converter.get_uom_id_from_abbreviation(-1,'tc1'))),'Confirmed correct ID returned from abbreviation - Unit Test 1')
     union all
+    select ok((select converter.get_uom_id_from_abbreviation(-1,'alphabet', false) is null),'Throws override was successful - Unit Test 2')
+    union all
     -- test error states
     select throws_ok ('select converter.get_uom_id_from_abbreviation(null,''a'')', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
-    'User ID cannot be null - Unit Test 2')
+    'User ID cannot be null - Unit Test 3')
     union all
     select throws_ok ('select converter.get_uom_id_from_abbreviation(-1,null)', 'CF001', (select error_description from converter.response where error_code = 'CF001'),
-    'UOM Name cannot be null - Unit Test 3')
+    'UOM Name cannot be null - Unit Test 4')
     union all
     select throws_ok ('select converter.get_uom_id_from_abbreviation(-1,''a'')', 'CF010', (select error_description from converter.response where error_code = 'CF010'),
-    'UOM abbreviation cannot be found - Unit Test 4')
+    'UOM abbreviation cannot be found - Unit Test 5')
 $$ language sql;
 
 

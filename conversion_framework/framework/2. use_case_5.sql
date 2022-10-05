@@ -1,5 +1,5 @@
 -- Add a new empty conversion_set to the converter
-DROP FUNCTION converter.add_conversion_set;
+DROP FUNCTION IF EXISTS converter.add_conversion_set;
 CREATE OR REPLACE FUNCTION converter.add_conversion_set(in_user_id int, conversion_set_name text)
 
 RETURNS int
@@ -34,7 +34,7 @@ end
 $$;
 
 -- Creating a new conversion set and cloning the category to conversion set relationships from the source_conversion_set to the destination_conversion_set
-DROP FUNCTION converter.clone_conversion_set;
+DROP FUNCTION IF EXISTS converter.clone_conversion_set;
 
 CREATE OR REPLACE FUNCTION converter.clone_conversion_set(in_user_id int, source_conversion_set_name text, destination_conversion_set_name text)
 
@@ -83,7 +83,7 @@ begin
 end
 $$;
 
-DROP FUNCTION converter.get_conversion_set_id_from_name;
+DROP FUNCTION IF EXISTS converter.get_conversion_set_id_from_name;
 
 CREATE OR REPLACE FUNCTION converter.get_conversion_set_id_from_name(in_user_id int, conversion_set_name text, in_throw boolean DEFAULT TRUE)
 

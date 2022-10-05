@@ -1,6 +1,6 @@
 -- # use case 9 - add/delete/update a data category
 -- Add a new data_type to the converter
-DROP FUNCTION converter.add_data_category;
+DROP FUNCTION IF EXISTS converter.add_data_category;
 CREATE OR REPLACE FUNCTION converter.add_data_category(in_user_id int, in_data_category_name text, in_data_type_id int)
 
 RETURNS int
@@ -42,7 +42,7 @@ end
 $$;
 
 -- Update an existing data category
-DROP FUNCTION converter.update_data_category_name;
+DROP FUNCTION IF EXISTS converter.update_data_category_name;
 CREATE OR REPLACE FUNCTION converter.update_data_category_name(in_user_id int, in_data_category_id int, new_data_category_name text)
 
 RETURNS bool
@@ -86,7 +86,7 @@ $$;
 
 
 -- Update an existing data type association in a data category
-DROP FUNCTION converter.update_data_category_data_type;
+DROP FUNCTION IF EXISTS converter.update_data_category_data_type;
 CREATE OR REPLACE FUNCTION converter.update_data_category_data_type(in_user_id int, in_data_category_id int, new_data_type_id int)
 
 RETURNS bool
@@ -130,7 +130,7 @@ $$;
 
 
 -- Enable/Disable an existing data category
-DROP FUNCTION converter.set_enabled_data_category;
+DROP FUNCTION IF EXISTS converter.set_enabled_data_category;
 
 CREATE OR REPLACE FUNCTION converter.set_enabled_data_category(in_user_id int, in_data_category_id int, isEnabled boolean)
 
@@ -171,7 +171,7 @@ end
 $$;
 
 -- get the id from a data_category
-DROP FUNCTION converter.get_data_category_id_from_name;
+DROP FUNCTION IF EXISTS converter.get_data_category_id_from_name;
 
 CREATE OR REPLACE FUNCTION converter.get_data_category_id_from_name(in_user_id int, in_data_category_name text, in_throw boolean default true)
 
@@ -201,7 +201,7 @@ end
 $$;
 
 -- get the id from a data_category
-DROP FUNCTION converter.get_data_category_status_from_id;
+DROP FUNCTION IF EXISTS converter.get_data_category_status_from_id;
 
 CREATE OR REPLACE FUNCTION converter.get_data_category_status_from_id(in_user_id int, in_data_category_id int)
 
@@ -231,7 +231,7 @@ end
 $$;
 
 -- get the id from a data_category
-DROP FUNCTION converter.get_data_category_data_type_id_from_id;
+DROP FUNCTION IF EXISTS converter.get_data_category_data_type_id_from_id;
 
 CREATE OR REPLACE FUNCTION converter.get_data_category_data_type_id_from_id(in_user_id int, in_data_category_id int, in_throw boolean DEFAULT TRUE)
 
@@ -261,7 +261,7 @@ end
 $$;
 
 -- check if a data_category exists in an active conversion set - used before disabling
-DROP FUNCTION converter.is_data_category_dependency;
+DROP FUNCTION IF EXISTS converter.is_data_category_dependency;
 
 CREATE OR REPLACE FUNCTION converter.is_data_category_dependency(in_user_id int, in_data_category_id int)
 

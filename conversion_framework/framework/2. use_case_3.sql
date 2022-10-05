@@ -1,5 +1,5 @@
 -- # this conversion process uses the specified UOM
-DROP FUNCTION converter.convert_by_uom;
+DROP FUNCTION IF EXISTS converter.convert_by_uom;
 CREATE OR REPLACE FUNCTION converter.convert_by_uom(in_user_id int, in_uom_id int, out_uom_id int, in_value float)
 RETURNS real
 language plpgsql
