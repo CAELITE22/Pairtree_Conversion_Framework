@@ -25,4 +25,5 @@ insert into converter.response (error_code, error_description) values
 ('CF022','Error! The supplied in_data_type_name is not found in the Data Type list.'),
 ('CF023','Error! The supplied in_data_category_name already exists.'),
 ('CF024','Error! The supplied in_data_category_id has dependencies and cannot be disabled.'),
-('CF025','Error! The supplied in_data_category_name is not found in the Data Category list.');
+('CF025','Error! The supplied in_data_category_name is not found in the Data Category list.'),
+('CF026','Error! No SI UOM found for in_data_type');

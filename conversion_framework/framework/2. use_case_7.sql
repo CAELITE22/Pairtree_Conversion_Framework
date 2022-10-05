@@ -777,3 +777,30 @@ begin
     return output;
 end
 $$;
+
+CREATE OR REPLACE FUNCTION converter.get_si_uom(
+    in_data_type_id int
+)
+
+RETURNS int
+language plpgsql
+as
+$$
+declare
+    output int;
+begin
+    if(in_data_type_id is NULL) then
+                RAISE EXCEPTION SQLSTATE 'CF001' USING MESSAGE = (select error_description from converter.response where error_code = 'CF001');
+    end if;
+
+    output = (SELECT uom_id FROM converter.conversion_rate
+                    WHERE rate = 1 AND  constant = 0 AND uom_id IN
+                           (SELECT id FROM converter.uom WHERE data_type_id = in_data_type_id));
+
+    IF (output IS NULL) THEN
+        RAISE  EXCEPTION SQLSTATE 'CF026' USING MESSAGE = (select error_description from converter.response where error_code = 'CF026');
+    end if;
+
+    RETURN output;
+end;
+$$
